@@ -156,3 +156,45 @@ class GraphIndexer:
         with driver.session(database=self.database) as session:
             result = session.run(cypher, address=address)
             return [record.data() for record in result]
+
+    def get_fan_out_metrics(self, address: str) -> dict:
+        """
+        Support query for T1 pattern detection:
+        Counts outbound branches and total value exiting a wallet.
+        """
+        driver = self.connect()
+        cypher = """
+        MATCH (w:Wallet {address: $address})-[r:TRANSACTION]->(target:Wallet)
+        RETURN
+            count(r) AS branch_count,
+            coalesce(sum(r.amount), 0.0) AS total_out_amount,
+            collect(target.address) AS target_addresses
+        """
+        with driver.session(database=self.database) as session:
+            record = session.run(cypher, address=address).single()
+            if record:
+                return {
+                    "branch_count": record["branch_count"],
+                    "total_out_amount": record["total_out_amount"],
+                    "target_addresses": record["target_addresses"],
+                }
+            return {"branch_count": 0, "total_out_amount": 0.0, "target_addresses": []}
+
+    def get_inbound_and_outbound_window(self, address: str) -> dict:
+        """
+        Support query for rapid forwarding detection (>90% value moved in <10 min).
+        """
+        driver = self.connect()
+        cypher = """
+        OPTIONAL MATCH (src:Wallet)-[rin:TRANSACTION]->(w:Wallet {address: $address})
+        WITH w, collect(rin) AS in_txs
+        OPTIONAL MATCH (w)-[rout:TRANSACTION]->(dst:Wallet)
+        RETURN
+            [tx IN in_txs | {amount: tx.amount, timestamp: tx.timestamp, tx_hash: tx.tx_hash}] AS in_transactions,
+            collect({amount: rout.amount, timestamp: rout.timestamp, tx_hash: rout.tx_hash}) AS out_transactions
+        """
+        with driver.session(database=self.database) as session:
+            record = session.run(cypher, address=address).single()
+            if record:
+                return record.data()
+            return {"in_transactions": [], "out_transactions": []}

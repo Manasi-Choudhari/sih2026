@@ -3,6 +3,13 @@
 .env.local
 *.env
 
+# Internal build specs (do not push)
+BUILD.md
+BUILD_T*.md
+INTEGRATION.md
+PREREQUISITES.md
+T3_TEAM_HANDOFF.md
+
 # Python
 __pycache__/
 *.py[cod]

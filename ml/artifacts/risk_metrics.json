@@ -1,0 +1,89 @@
+{
+  "accuracy": 0.5,
+  "precision": 0.5,
+  "recall": 1.0,
+  "f1": 0.6667,
+  "roc_auc": 0.5,
+  "average_precision": 0.5,
+  "holdout_scenario": "scenario_5_conflicting",
+  "train_rows": 22,
+  "test_rows": 2,
+  "model_version": "risk_xgb_gpu-20260910T083034Z-nogit",
+  "device": "cuda",
+  "data_source": "neo4j",
+  "feature_importance": [
+    {
+      "feature": "touches_known_mixer",
+      "importance": 0.5944
+    },
+    {
+      "feature": "hops_to_nearest_mixer",
+      "importance": 0.3732
+    },
+    {
+      "feature": "pct_value_moved_10min",
+      "importance": 0.0325
+    },
+    {
+      "feature": "total_in",
+      "importance": 0.0
+    },
+    {
+      "feature": "total_out",
+      "importance": 0.0
+    },
+    {
+      "feature": "tx_count",
+      "importance": 0.0
+    },
+    {
+      "feature": "avg_tx_size",
+      "importance": 0.0
+    },
+    {
+      "feature": "dormant_days_before_activity",
+      "importance": 0.0
+    },
+    {
+      "feature": "avg_time_between_tx_hours",
+      "importance": 0.0
+    },
+    {
+      "feature": "fan_out_max",
+      "importance": 0.0
+    },
+    {
+      "feature": "fan_in_max",
+      "importance": 0.0
+    },
+    {
+      "feature": "hops_to_nearest_vasp",
+      "importance": 0.0
+    },
+    {
+      "feature": "touches_bridge",
+      "importance": 0.0
+    },
+    {
+      "feature": "peel_chain_score",
+      "importance": 0.0
+    },
+    {
+      "feature": "label_reliability",
+      "importance": 0.0
+    },
+    {
+      "feature": "conflicting_labels",
+      "importance": 0.0
+    },
+    {
+      "feature": "clustering_strength",
+      "importance": 0.0
+    },
+    {
+      "feature": "cross_chain_confidence",
+      "importance": 0.0
+    }
+  ],
+  "note": "Prototype GPU XGBoost model trained on Neo4j/synthetic features. Not a production fraud classifier. Output is model_output only."
+}

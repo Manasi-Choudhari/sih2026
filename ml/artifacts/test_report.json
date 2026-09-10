@@ -1,0 +1,401 @@
+{
+  "neo4j": {
+    "database": "sih2026",
+    "node_count": 29
+  },
+  "wallets": 24,
+  "labeled_positive": 17,
+  "labeled_negative": 7,
+  "predicted_positive": 19,
+  "ml_probability_mean": 0.7365,
+  "ml_probability_std": 0.1698,
+  "ml_probability_min": 0.4188,
+  "ml_probability_max": 0.9129,
+  "anomaly_flagged": 4,
+  "anomaly_score_mean": 0.4573,
+  "device": "cuda",
+  "model_version": "risk_xgb_gpu-20260910T083034Z-nogit",
+  "holdout_metrics": {
+    "accuracy": 0.5,
+    "precision": 0.5,
+    "recall": 1.0,
+    "f1": 0.6667,
+    "roc_auc": 0.5,
+    "average_precision": 0.5,
+    "holdout_scenario": "scenario_5_conflicting",
+    "train_rows": 22,
+    "test_rows": 2,
+    "model_version": "risk_xgb_gpu-20260910T083034Z-nogit",
+    "device": "cuda",
+    "data_source": "neo4j",
+    "feature_importance": [
+      {
+        "feature": "touches_known_mixer",
+        "importance": 0.5944
+      },
+      {
+        "feature": "hops_to_nearest_mixer",
+        "importance": 0.3732
+      },
+      {
+        "feature": "pct_value_moved_10min",
+        "importance": 0.0325
+      },
+      {
+        "feature": "total_in",
+        "importance": 0.0
+      },
+      {
+        "feature": "total_out",
+        "importance": 0.0
+      },
+      {
+        "feature": "tx_count",
+        "importance": 0.0
+      },
+      {
+        "feature": "avg_tx_size",
+        "importance": 0.0
+      },
+      {
+        "feature": "dormant_days_before_activity",
+        "importance": 0.0
+      },
+      {
+        "feature": "avg_time_between_tx_hours",
+        "importance": 0.0
+      },
+      {
+        "feature": "fan_out_max",
+        "importance": 0.0
+      },
+      {
+        "feature": "fan_in_max",
+        "importance": 0.0
+      },
+      {
+        "feature": "hops_to_nearest_vasp",
+        "importance": 0.0
+      },
+      {
+        "feature": "touches_bridge",
+        "importance": 0.0
+      },
+      {
+        "feature": "peel_chain_score",
+        "importance": 0.0
+      },
+      {
+        "feature": "label_reliability",
+        "importance": 0.0
+      },
+      {
+        "feature": "conflicting_labels",
+        "importance": 0.0
+      },
+      {
+        "feature": "clustering_strength",
+        "importance": 0.0
+      },
+      {
+        "feature": "cross_chain_confidence",
+        "importance": 0.0
+      }
+    ],
+    "note": "Prototype GPU XGBoost model trained on Neo4j/synthetic features. Not a production fraud classifier. Output is model_output only."
+  },
+  "full_set_metrics": {
+    "accuracy": 0.75,
+    "precision": 0.7895,
+    "recall": 0.8824,
+    "f1": 0.8333,
+    "roc_auc": 0.7731,
+    "average_precision": 0.8666
+  },
+  "per_scenario": {
+    "scenario_1_direct": {
+      "n": 4,
+      "positives": 2,
+      "avg_ml_probability": 0.5991,
+      "accuracy": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "roc_auc": 1.0,
+      "average_precision": 1.0
+    },
+    "scenario_2_peel": {
+      "n": 5,
+      "positives": 4,
+      "avg_ml_probability": 0.7794,
+      "accuracy": 0.8,
+      "precision": 0.8,
+      "recall": 1.0,
+      "f1": 0.8889,
+      "roc_auc": 0.5,
+      "average_precision": 0.8
+    },
+    "scenario_3_cross_chain": {
+      "n": 3,
+      "positives": 2,
+      "avg_ml_probability": 0.539,
+      "accuracy": 0.0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "roc_auc": 0.0,
+      "average_precision": 0.6667
+    },
+    "scenario_4_mixer": {
+      "n": 8,
+      "positives": 7,
+      "avg_ml_probability": 0.8309,
+      "accuracy": 1.0,
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1": 1.0,
+      "roc_auc": 1.0,
+      "average_precision": 1.0
+    },
+    "scenario_5_conflicting": {
+      "n": 2,
+      "positives": 1,
+      "avg_ml_probability": 0.7794,
+      "accuracy": 0.5,
+      "precision": 0.5,
+      "recall": 1.0,
+      "f1": 0.6667,
+      "roc_auc": 0.5,
+      "average_precision": 0.5
+    },
+    "scenario_dormant": {
+      "n": 2,
+      "positives": 1,
+      "avg_ml_probability": 0.7794,
+      "accuracy": 0.5,
+      "precision": 0.5,
+      "recall": 1.0,
+      "f1": 0.6667,
+      "roc_auc": 0.5,
+      "average_precision": 0.5
+    }
+  },
+  "per_wallet": [
+    {
+      "wallet_id": "s4_mixer",
+      "scenario_id": "scenario_4_mixer",
+      "label": 1,
+      "ml_probability": 0.9129006862640381,
+      "pred": 1,
+      "anomaly_score": 0.5405,
+      "is_anomaly": true
+    },
+    {
+      "wallet_id": "s4_out_3",
+      "scenario_id": "scenario_4_mixer",
+      "label": 1,
+      "ml_probability": 0.8858850002288818,
+      "pred": 1,
+      "anomaly_score": 0.3787,
+      "is_anomaly": false
+    },
+    {
+      "wallet_id": "s4_out_4",
+      "scenario_id": "scenario_4_mixer",
+      "label": 1,
+      "ml_probability": 0.8858850002288818,
+      "pred": 1,
+      "anomaly_score": 0.3787,
+      "is_anomaly": false
+    },
+    {
+      "wallet_id": "s4_out_5",
+      "scenario_id": "scenario_4_mixer",
+      "label": 1,
+      "ml_probability": 0.8858850002288818,
+      "pred": 1,
+      "anomaly_score": 0.3787,
+      "is_anomaly": false
+    },
+    {
+      "wallet_id": "s4_out_2",
+      "scenario_id": "scenario_4_mixer",
+      "label": 1,
+      "ml_probability": 0.8858850002288818,
+      "pred": 1,
+      "anomaly_score": 0.3787,
+      "is_anomaly": false
+    },
+    {
+      "wallet_id": "s4_out_1",
+      "scenario_id": "scenario_4_mixer",
+      "label": 1,
+      "ml_probability": 0.8858850002288818,
+      "pred": 1,
+      "anomaly_score": 0.3787,
+      "is_anomaly": false
+    },
+    {
+      "wallet_id": "s4_pre_mixer",
+      "scenario_id": "scenario_4_mixer",
+      "label": 1,
+      "ml_probability": 0.8858850002288818,
+      "pred": 1,
+      "anomaly_score": 0.4824,
+      "is_anomaly": false
+    },
+    {
+      "wallet_id": "s1_victim",
+      "scenario_id": "scenario_1_direct",
+      "label": 1,
+      "ml_probability": 0.7794495820999146,
+      "pred": 1,
+      "anomaly_score": 0.4569,
+      "is_anomaly": false
+    },
+    {
+      "wallet_id": "s5_conflict",
+      "scenario_id": "scenario_5_conflicting",
+      "label": 1,
+      "ml_probability": 0.7794495820999146,
+      "pred": 1,
+      "anomaly_score": 0.4042,
+      "is_anomaly": false
+    },
+    {
+      "wallet_id": "s5_clean_label",
+      "scenario_id": "scenario_5_conflicting",
+      "label": 0,
+      "ml_probability": 0.7794495820999146,
+      "pred": 1,
+      "anomaly_score": 0.4555,
+      "is_anomaly": false
+    },
+    {
+      "wallet_id": "s2_peel_1",
+      "scenario_id": "scenario_2_peel",
+      "label": 1,
+      "ml_probability": 0.7794495820999146,
+      "pred": 1,
+      "anomaly_score": 0.4911,
+      "is_anomaly": false
+    },
+    {
+      "wallet_id": "s2_peel_2",
+      "scenario_id": "scenario_2_peel",
+      "label": 1,
+      "ml_probability": 0.7794495820999146,
+      "pred": 1,
+      "anomaly_score": 0.4691,
+      "is_anomaly": false
+    },
+    {
+      "wallet_id": "s2_peel_0",
+      "scenario_id": "scenario_2_peel",
+      "label": 1,
+      "ml_probability": 0.7794495820999146,
+      "pred": 1,
+      "anomaly_score": 0.461,
+      "is_anomaly": false
+    },
+    {
+      "wallet_id": "s1_hop1",
+      "scenario_id": "scenario_1_direct",
+      "label": 1,
+      "ml_probability": 0.7794495820999146,
+      "pred": 1,
+      "anomaly_score": 0.4911,
+      "is_anomaly": false
+    },
+    {
+      "wallet_id": "s2_peel_3",
+      "scenario_id": "scenario_2_peel",
+      "label": 1,
+      "ml_probability": 0.7794495820999146,
+      "pred": 1,
+      "anomaly_score": 0.424,
+      "is_anomaly": false
+    },
+    {
+      "wallet_id": "s2_normal",
+      "scenario_id": "scenario_2_peel",
+      "label": 0,
+      "ml_probability": 0.7794495820999146,
+      "pred": 1,
+      "anomaly_score": 0.3637,
+      "is_anomaly": false
+    },
+    {
+      "wallet_id": "s_dormant_cold",
+      "scenario_id": "scenario_dormant",
+      "label": 0,
+      "ml_probability": 0.7794495820999146,
+      "pred": 1,
+      "anomaly_score": 0.6608,
+      "is_anomaly": true
+    },
+    {
+      "wallet_id": "s3_benign",
+      "scenario_id": "scenario_3_cross_chain",
+      "label": 0,
+      "ml_probability": 0.7794495820999146,
+      "pred": 1,
+      "anomaly_score": 0.3626,
+      "is_anomaly": false
+    },
+    {
+      "wallet_id": "s_dormant_hot",
+      "scenario_id": "scenario_dormant",
+      "label": 1,
+      "ml_probability": 0.7794495820999146,
+      "pred": 1,
+      "anomaly_score": 0.6608,
+      "is_anomaly": true
+    },
+    {
+      "wallet_id": "s1_vasp",
+      "scenario_id": "scenario_1_direct",
+      "label": 0,
+      "ml_probability": 0.4188403785228729,
+      "pred": 0,
+      "anomaly_score": 0.5445,
+      "is_anomaly": true
+    },
+    {
+      "wallet_id": "s1_cold",
+      "scenario_id": "scenario_1_direct",
+      "label": 0,
+      "ml_probability": 0.4188403785228729,
+      "pred": 0,
+      "anomaly_score": 0.4521,
+      "is_anomaly": false
+    },
+    {
+      "wallet_id": "s4_quiet",
+      "scenario_id": "scenario_4_mixer",
+      "label": 0,
+      "ml_probability": 0.4188403785228729,
+      "pred": 0,
+      "anomaly_score": 0.4521,
+      "is_anomaly": false
+    },
+    {
+      "wallet_id": "s3_btc_lock",
+      "scenario_id": "scenario_3_cross_chain",
+      "label": 1,
+      "ml_probability": 0.4188403785228729,
+      "pred": 0,
+      "anomaly_score": 0.4401,
+      "is_anomaly": false
+    },
+    {
+      "wallet_id": "s3_eth_mint",
+      "scenario_id": "scenario_3_cross_chain",
+      "label": 1,
+      "ml_probability": 0.4188403785228729,
+      "pred": 0,
+      "anomaly_score": 0.4693,
+      "is_anomaly": false
+    }
+  ]
+}

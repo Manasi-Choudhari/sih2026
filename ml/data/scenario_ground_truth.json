@@ -1,0 +1,36 @@
+{
+  "note": "T3 proposal for scenario ground-truth labels. T5 merges into /scenarios/fixtures/.",
+  "label_meaning": {
+    "1": "suspicious / prioritize for investigator",
+    "0": "low priority / benign relative to scenario"
+  },
+  "scenarios": {
+    "scenario_1_direct": {
+      "high_risk_wallets": ["s1_victim", "s1_hop1"],
+      "low_risk_wallets": ["s1_vasp", "s1_cold"],
+      "expected_terminal": "VASP"
+    },
+    "scenario_2_peel": {
+      "high_risk_wallets": ["s2_peel_0", "s2_peel_1", "s2_peel_2", "s2_peel_3"],
+      "low_risk_wallets": ["s2_normal"],
+      "expected_pattern": "peel_chain"
+    },
+    "scenario_3_cross_chain": {
+      "high_risk_wallets": ["s3_btc_lock", "s3_eth_mint"],
+      "low_risk_wallets": ["s3_benign"],
+      "expected_pattern": "cross_chain_bridge",
+      "confidence_note": "bridge links carry lower default confidence than same-chain"
+    },
+    "scenario_4_mixer": {
+      "high_risk_wallets": ["s4_pre_mixer", "s4_mixer"],
+      "low_risk_wallets": ["s4_quiet"],
+      "expected_termination": "mixer_boundary"
+    },
+    "scenario_5_conflicting": {
+      "high_risk_wallets": ["s5_conflict"],
+      "low_risk_wallets": ["s5_clean_label"],
+      "expected_tier_pressure": "conflicting_labels_lower_reliability"
+    }
+  },
+  "holdout_default_for_ml_eval": "scenario_5_conflicting"
+}

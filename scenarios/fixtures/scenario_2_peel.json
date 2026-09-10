@@ -1,0 +1,103 @@
+{
+  "scenario_id": "scenario_2_peel",
+  "name": "Peel Chain Obfuscation Pattern",
+  "description": "Sequential peel chain transactions repeatedly peeling off small change amounts while forwarding the bulk value.",
+  "chain": "BTC",
+  "expected_pattern": "peel_chain",
+  "wallets": [
+    {
+      "address": "s2_peel_0",
+      "chain": "BTC",
+      "entity_type": "eoa",
+      "cluster_id": "c_peel",
+      "first_seen": "2026-09-10T08:00:00Z",
+      "last_seen": "2026-09-10T12:00:00Z"
+    },
+    {
+      "address": "s2_peel_1",
+      "chain": "BTC",
+      "entity_type": "eoa",
+      "cluster_id": "c_peel",
+      "first_seen": "2026-09-10T09:00:00Z",
+      "last_seen": "2026-09-10T12:00:00Z"
+    },
+    {
+      "address": "s2_peel_2",
+      "chain": "BTC",
+      "entity_type": "eoa",
+      "cluster_id": "c_peel",
+      "first_seen": "2026-09-10T10:00:00Z",
+      "last_seen": "2026-09-10T12:00:00Z"
+    },
+    {
+      "address": "s2_peel_3",
+      "chain": "BTC",
+      "entity_type": "eoa",
+      "cluster_id": "c_peel",
+      "first_seen": "2026-09-10T11:00:00Z",
+      "last_seen": "2026-09-10T12:00:00Z"
+    },
+    {
+      "address": "s2_normal",
+      "chain": "BTC",
+      "entity_type": "eoa",
+      "cluster_id": "c_norm",
+      "first_seen": "2026-09-01T00:00:00Z",
+      "last_seen": "2026-09-10T12:00:00Z"
+    }
+  ],
+  "transactions": [
+    {
+      "tx_hash": "s2_tx_0",
+      "chain": "BTC",
+      "from_address": "s2_peel_0",
+      "to_address": "s2_peel_1",
+      "block_height": 860200,
+      "timestamp": "2026-09-10T09:10:00Z",
+      "amount": 2.7,
+      "asset": "BTC",
+      "direction": "out",
+      "is_bridge_leg": false,
+      "confidence_of_link": 0.95
+    },
+    {
+      "tx_hash": "s2_tx_1",
+      "chain": "BTC",
+      "from_address": "s2_peel_1",
+      "to_address": "s2_peel_2",
+      "block_height": 860210,
+      "timestamp": "2026-09-10T10:15:00Z",
+      "amount": 2.3,
+      "asset": "BTC",
+      "direction": "out",
+      "is_bridge_leg": false,
+      "confidence_of_link": 0.95
+    },
+    {
+      "tx_hash": "s2_tx_2",
+      "chain": "BTC",
+      "from_address": "s2_peel_2",
+      "to_address": "s2_peel_3",
+      "block_height": 860220,
+      "timestamp": "2026-09-10T11:20:00Z",
+      "amount": 1.9,
+      "asset": "BTC",
+      "direction": "out",
+      "is_bridge_leg": false,
+      "confidence_of_link": 0.95
+    },
+    {
+      "tx_hash": "s2_norm_tx",
+      "chain": "BTC",
+      "from_address": "s2_normal",
+      "to_address": "s2_normal",
+      "block_height": 860050,
+      "timestamp": "2026-09-01T00:00:00Z",
+      "amount": 0.15,
+      "asset": "BTC",
+      "direction": "out",
+      "is_bridge_leg": false,
+      "confidence_of_link": 0.8
+    }
+  ]
+}

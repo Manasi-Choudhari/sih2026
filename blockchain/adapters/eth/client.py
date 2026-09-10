@@ -21,7 +21,7 @@ class EtherscanAdapter(BaseAdapter):
     def __init__(
         self,
         api_key: Optional[str] = None,
-        base_url: str = "https://api.etherscan.io/api",
+        base_url: str = "https://api.etherscan.io/v2/api",
         timeout_seconds: int = 10,
         max_retries: int = 3,
     ):
@@ -45,6 +45,7 @@ class EtherscanAdapter(BaseAdapter):
             return self._cache.get(cache_key, [])
 
         params = {
+            "chainid": 1,
             "module": "account",
             "action": "txlist",
             "address": address,

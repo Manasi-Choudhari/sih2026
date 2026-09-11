@@ -12,6 +12,7 @@ from backend.attribution.candidates import attribute_trace, AttributionResponse
 from backend.atlas.engine import atlas_engine, AtlasResult
 from backend.attribution.evidence_ledger import evidence_ledger, EvidenceEntry
 from backend.recommendation.engine import recommendation_store, Recommendation
+from backend.information_gap.ranking import rank_next_actions, ActionRecommendation
 from backend.reporting.report_generator import generate_report, ReportResponse
 from backend.external.ncrp_mock import process_mock_callback, ExternalCaseUpdate, ExternalCaseUpdateAck
 
@@ -101,6 +102,19 @@ def verify_case_ledger(id: str = Path(...)):
 @router.get("/cases/{id}/recommendations", response_model=List[Recommendation])
 def get_case_recommendations(id: str = Path(...)):
     return recommendation_store.get_case_recommendations(id)
+
+@router.get("/cases/{id}/actions", response_model=List[ActionRecommendation])
+def get_case_next_actions(id: str = Path(...)):
+    case = case_manager.get_case(id)
+    if not case:
+        raise HTTPException(status_code=404, detail="Case not found")
+    fin_rel = 0.85 if case.reported_amount and case.reported_amount > 1.0 else 0.60
+    return rank_next_actions(
+        financial_relevance=fin_rel,
+        attribution_potential=case.attribution_confidence or 0.70,
+        evidence_quality=case.rule_risk_score or 0.80,
+        case_status=case.status
+    )
 
 @router.post("/cases/{id}/recommendations", response_model=Recommendation)
 def act_on_recommendation(id: str, req: RecommendationActionRequest):

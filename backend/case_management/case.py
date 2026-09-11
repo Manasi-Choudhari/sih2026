@@ -26,6 +26,9 @@ class CaseRecord(BaseModel):
     created_at: str
     victim_address: str
     chain: str
+    reported_amount: Optional[float] = 0.0
+    currency: Optional[str] = "ETH"
+    fraud_category: Optional[str] = "Theft"
     rule_risk_score: float = 0.0
     attribution_confidence: float = 0.0
     ml_probability: float = 0.0
@@ -161,6 +164,9 @@ class CaseManager:
             created_at=datetime.now(timezone.utc).isoformat(),
             victim_address=data.victim_address,
             chain=data.chain.upper(),
+            reported_amount=data.reported_amount or 0.0,
+            currency=data.currency or "ETH",
+            fraud_category=data.fraud_category or "Theft",
             rule_risk_score=0.5,
             attribution_confidence=0.0,
             ml_probability=0.5,

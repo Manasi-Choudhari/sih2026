@@ -108,6 +108,15 @@ def test_recommendation_and_approval_gate():
     assert act_res.status_code == 200
     assert act_res.json()["approval_status"] == "approved"
 
+def test_information_gap_next_actions():
+    res = client.get("/cases/case_s1/actions")
+    assert res.status_code == 200
+    actions = res.json()
+    assert len(actions) >= 3
+    assert "priority_score" in actions[0]
+    assert actions[0]["priority_score"] >= actions[1]["priority_score"]
+    assert "target_entity" in actions[0]
+
 def test_report_generation():
     res = client.post("/cases/case_s1/report")
     assert res.status_code == 200

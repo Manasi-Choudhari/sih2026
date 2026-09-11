@@ -23,5 +23,9 @@ htmlcov/
 .DS_Store
 Thumbs.db
 
-# Local T5 build spec copy
-BUILD_T5*.md
+# Specification docs & local copies
+BUILD*.md
+* (1).md
+PREREQUISITES.md
+T3_TEAM_HANDOFF.md
+

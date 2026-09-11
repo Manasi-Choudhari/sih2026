@@ -1,0 +1,77 @@
+name: VAJRA CI Pipeline
+
+on:
+  push:
+    branches: [ "main", "dev", "t*-*" ]
+  pull_request:
+    branches: [ "main", "dev" ]
+
+jobs:
+  lint-and-test:
+    name: Lint, Test & Scenario Acceptance
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: vajra_user
+          POSTGRES_PASSWORD: vajra_password
+          POSTGRES_DB: vajra_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install Python Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest pytest-asyncio httpx python-jose[cryptography] passlib redis
+          if [ -f ml/requirements.txt ]; then pip install -r ml/requirements.txt; fi
+          if [ -f backend/requirements.txt ]; then pip install -r backend/requirements.txt; fi
+
+      - name: Syntax & Lint Validation
+        run: |
+          python -m py_compile infra/auth/*.py infra/rate_limiting/*.py infra/audit/*.py
+          python -c "print('Syntax validation passed successfully.')"
+
+      - name: Run Auth & RBAC Tests (T6 Task 2)
+        env:
+          JWT_SECRET: test_secret_key_ci_environment_32chars
+        run: |
+          python -m pytest infra/auth/tests/ -v
+
+      - name: Run Audit & Rate Limiting Tests (T6 Task 4/5)
+        run: |
+          python -m pytest infra/audit/tests/ -v
+
+      - name: Run Scenario Acceptance Harness in Stub Mode (T6 Task 3)
+        run: |
+          python -m scenarios.acceptance.test_runner --stub
+
+      - name: Verify Docker Compose Syntax
+        run: |
+          docker compose -f infra/docker/docker-compose.yml config

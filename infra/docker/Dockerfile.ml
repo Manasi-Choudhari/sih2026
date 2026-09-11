@@ -21,4 +21,6 @@ COPY ml /app/ml
 
 EXPOSE 8001
 
-CMD ["python", "-c", "import time; print('VAJRA ML Service ready.'); time.sleep(360000)"]
+# Day 1 stub: T3 will replace this with their ML service entry point (e.g. FastAPI app)
+# For now, keeps container alive so docker compose up succeeds for all teammates
+CMD ["python", "-c", "import time; print('VAJRA ML Service ready (stub — awaiting T3 entry point).'); time.sleep(360000)"]

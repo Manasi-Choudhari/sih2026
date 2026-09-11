@@ -1,0 +1,713 @@
+openapi: 3.0.3
+info:
+  title: VAJRA Investigation API (SIH 26183)
+  description: Real-Time Crypto Fraud Attribution System API Contract
+  version: 1.0.0
+servers:
+  - url: http://localhost:8000
+    description: Local development server
+
+paths:
+  /auth/login:
+    post:
+      summary: User Authentication
+      operationId: login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '401':
+          description: Invalid credentials
+
+  /cases:
+    post:
+      summary: Create case from complaint or victim wallet
+      operationId: createCase
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCaseRequest'
+      responses:
+        '201':
+          description: Case created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CaseOverview'
+    get:
+      summary: List investigation queue
+      operationId: getCases
+      parameters:
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [open, tracing, attributed, closed]
+      responses:
+        '200':
+          description: List of cases
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CaseOverview'
+
+  /cases/{id}:
+    get:
+      summary: Case overview and metrics
+      operationId: getCaseById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Case detail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CaseOverview'
+        '404':
+          description: Case not found
+
+  /cases/{id}/graph:
+    get:
+      summary: Graph and path visualization data
+      operationId: getCaseGraph
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Graph nodes and edges for visualization
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CaseGraph'
+        '404':
+          description: Case not found
+
+  /cases/{id}/attribution:
+    get:
+      summary: VASP candidates and evidence tiers
+      operationId: getCaseAttribution
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Attribution result with evidence tiers and 3-number framework
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AttributionResponse'
+        '404':
+          description: Case not found
+
+  /cases/{id}/atlas:
+    get:
+      summary: ATLAS alternatives, contradictions, and robustness assessment
+      operationId: getCaseAtlas
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ATLAS challenge results
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AtlasResult'
+        '404':
+          description: Case not found
+
+  /cases/{id}/evidence:
+    get:
+      summary: Evidence ledger entries
+      operationId: getCaseEvidence
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of tamper-evident ledger entries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EvidenceEntry'
+        '404':
+          description: Case not found
+
+  /cases/{id}/recommendations:
+    get:
+      summary: View recommendations
+      operationId: getCaseRecommendations
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Recommendations for case
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Recommendation'
+    post:
+      summary: Create or approve recommendation
+      operationId: handleCaseRecommendation
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecommendationActionRequest'
+      responses:
+        '200':
+          description: Recommendation updated or created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Recommendation'
+
+  /cases/{id}/report:
+    post:
+      summary: Generate standardized investigation report
+      operationId: generateCaseReport
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Standardized report summary and metadata
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportResponse'
+        '404':
+          description: Case not found
+
+  /cases/{id}/verify:
+    get:
+      summary: Verify hash chain integrity
+      operationId: verifyCaseHashChain
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Verification status PASS or FAIL
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifyResponse'
+
+  /cases/{id}/audit:
+    get:
+      summary: Audit events for case
+      operationId: getCaseAudit
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of audit events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AuditEvent'
+
+  /external/case-update:
+    post:
+      summary: Simulated NCRP/SAHYOG callback
+      operationId: ncrpMockCallback
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExternalCaseUpdate'
+      responses:
+        '200':
+          description: Callback processed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExternalCaseUpdateAck'
+
+components:
+  schemas:
+    LoginRequest:
+      type: object
+      required: [username, password]
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+
+    LoginResponse:
+      type: object
+      required: [access_token, token_type, role]
+      properties:
+        access_token:
+          type: string
+        token_type:
+          type: string
+          default: bearer
+        role:
+          type: string
+          enum: [investigator, supervisor, admin]
+
+    CreateCaseRequest:
+      type: object
+      required: [victim_address, chain]
+      properties:
+        complaint_id:
+          type: string
+        victim_address:
+          type: string
+        chain:
+          type: string
+          enum: [BTC, ETH]
+        reported_amount:
+          type: number
+        currency:
+          type: string
+        fraud_category:
+          type: string
+        victim_ref:
+          type: string
+
+    CaseOverview:
+      type: object
+      required: [case_id, status, created_at, victim_address, chain]
+      properties:
+        case_id:
+          type: string
+        complaint_id:
+          type: string
+        status:
+          type: string
+          enum: [open, tracing, attributed, closed]
+        assigned_investigator:
+          type: string
+        created_at:
+          type: string
+        victim_address:
+          type: string
+        chain:
+          type: string
+        rule_risk_score:
+          type: number
+        attribution_confidence:
+          type: number
+        ml_probability:
+          type: number
+        ml:
+          $ref: '#/components/schemas/MLSignalPayload'
+
+    MLSignalPayload:
+      type: object
+      required: [output_label, is_model_output, model_name, model_version, device, disclaimer]
+      properties:
+        output_label:
+          type: string
+          default: model_output
+        is_model_output:
+          type: boolean
+          default: true
+        model_name:
+          type: string
+        model_version:
+          type: string
+        device:
+          type: string
+        top_features:
+          type: array
+          items:
+            type: object
+            properties:
+              feature:
+                type: string
+              importance:
+                type: number
+        disclaimer:
+          type: string
+
+    CaseGraph:
+      type: object
+      required: [nodes, edges]
+      properties:
+        nodes:
+          type: array
+          items:
+            $ref: '#/components/schemas/GraphNode'
+        edges:
+          type: array
+          items:
+            $ref: '#/components/schemas/GraphEdge'
+
+    GraphNode:
+      type: object
+      required: [id, address, chain, entity_type]
+      properties:
+        id:
+          type: string
+        address:
+          type: string
+        chain:
+          type: string
+        first_seen:
+          type: string
+        last_seen:
+          type: string
+        cluster_id:
+          type: string
+        entity_type:
+          type: string
+        label:
+          type: string
+        is_terminal:
+          type: boolean
+
+    GraphEdge:
+      type: object
+      required: [id, source, target, type, amount, asset]
+      properties:
+        id:
+          type: string
+        source:
+          type: string
+        target:
+          type: string
+        type:
+          type: string
+          enum: [TRANSACTION, CROSS_CHAIN_LINK, LABELED_AS]
+        tx_hash:
+          type: string
+        chain:
+          type: string
+        block_height:
+          type: integer
+        timestamp:
+          type: string
+        amount:
+          type: number
+        asset:
+          type: string
+        is_bridge_leg:
+          type: boolean
+        confidence_of_link:
+          type: number
+        correlation_method:
+          type: string
+        correlation_confidence:
+          type: number
+
+    VASPCandidate:
+      type: object
+      required: [vasp_name, terminal_address, branch_id, evidence_tier, confidence]
+      properties:
+        vasp_name:
+          type: string
+        terminal_address:
+          type: string
+        branch_id:
+          type: string
+        evidence_tier:
+          type: string
+          enum: [Strong, Medium, Weak, Unknown]
+        confidence:
+          type: number
+        hops_from_origin:
+          type: integer
+        value_retained:
+          type: number
+        supporting_evidence:
+          type: array
+          items:
+            type: string
+        contradicting_evidence:
+          type: array
+          items:
+            type: string
+        unknowns:
+          type: array
+          items:
+            type: string
+
+    AttributionResponse:
+      type: object
+      required: [case_id, rule_risk_score, attribution_confidence, ml_probability, candidates, detected_patterns]
+      properties:
+        case_id:
+          type: string
+        rule_risk_score:
+          type: number
+        attribution_confidence:
+          type: number
+        ml_probability:
+          type: number
+        candidates:
+          type: array
+          items:
+            $ref: '#/components/schemas/VASPCandidate'
+        detected_patterns:
+          type: array
+          items:
+            $ref: '#/components/schemas/PatternExplanation'
+        ml_vs_rules_disagreement:
+          type: boolean
+          default: false
+        ml:
+          $ref: '#/components/schemas/MLSignalPayload'
+
+    PatternExplanation:
+      type: object
+      required: [pattern_name, description, confidence, affected_wallets]
+      properties:
+        pattern_name:
+          type: string
+          enum: [peel_chain, rapid_forwarding, fan_out, fan_in, structuring, mixer_boundary, cross_chain_bridge]
+        description:
+          type: string
+        confidence:
+          type: number
+        affected_wallets:
+          type: array
+          items:
+            type: string
+
+    AtlasHypothesis:
+      type: object
+      required: [hypothesis_id, title, explanation, likelihood]
+      properties:
+        hypothesis_id:
+          type: string
+        title:
+          type: string
+        explanation:
+          type: string
+        likelihood:
+          type: string
+          enum: [High, Medium, Low]
+
+    AtlasContradiction:
+      type: object
+      required: [contradiction_id, claim, evidence_against]
+      properties:
+        contradiction_id:
+          type: string
+        claim:
+          type: string
+        evidence_against:
+          type: string
+
+    AtlasResult:
+      type: object
+      required: [case_id, leading_attribution, alternatives, contradictions, missing_data_gaps, robustness_score, recommendation_challenge]
+      properties:
+        case_id:
+          type: string
+        leading_attribution:
+          type: string
+        robustness_score:
+          type: number
+        alternatives:
+          type: array
+          items:
+            $ref: '#/components/schemas/AtlasHypothesis'
+        contradictions:
+          type: array
+          items:
+            $ref: '#/components/schemas/AtlasContradiction'
+        missing_data_gaps:
+          type: array
+          items:
+            type: string
+        recommendation_challenge:
+          type: string
+
+    EvidenceEntry:
+      type: object
+      required: [evidence_id, case_id, type, source, content, content_hash, prev_hash, software_version, timestamp]
+      properties:
+        evidence_id:
+          type: string
+        case_id:
+          type: string
+        type:
+          type: string
+        source:
+          type: string
+        content:
+          type: object
+        content_hash:
+          type: string
+        prev_hash:
+          type: string
+        software_version:
+          type: string
+        timestamp:
+          type: string
+
+    Recommendation:
+      type: object
+      required: [rec_id, case_id, finding, evidence_ids, confidence, action, approval_status]
+      properties:
+        rec_id:
+          type: string
+        case_id:
+          type: string
+        finding:
+          type: string
+        evidence_ids:
+          type: array
+          items:
+            type: string
+        confidence:
+          type: number
+        action:
+          type: string
+        approval_status:
+          type: string
+          enum: [pending, approved, rejected]
+
+    RecommendationActionRequest:
+      type: object
+      required: [rec_id, action]
+      properties:
+        rec_id:
+          type: string
+        action:
+          type: string
+          enum: [approve, reject]
+
+    ReportResponse:
+      type: object
+      required: [report_id, case_id, generated_at, report_hash, software_version, html_content]
+      properties:
+        report_id:
+          type: string
+        case_id:
+          type: string
+        generated_at:
+          type: string
+        report_hash:
+          type: string
+        software_version:
+          type: string
+        html_content:
+          type: string
+
+    VerifyResponse:
+      type: object
+      required: [status, records_evaluated, is_tampered]
+      properties:
+        status:
+          type: string
+          enum: [PASS, FAIL]
+        records_evaluated:
+          type: integer
+        is_tampered:
+          type: boolean
+        details:
+          type: string
+
+    AuditEvent:
+      type: object
+      required: [event_id, actor_id, action, target_id, timestamp]
+      properties:
+        event_id:
+          type: string
+        actor_id:
+          type: string
+        action:
+          type: string
+        target_id:
+          type: string
+        timestamp:
+          type: string
+        details:
+          type: object
+
+    ExternalCaseUpdate:
+      type: object
+      required: [case_id, external_ref, status_update, payload]
+      properties:
+        case_id:
+          type: string
+        external_ref:
+          type: string
+        status_update:
+          type: string
+        source:
+          type: string
+          default: NCRP_MOCK
+        payload:
+          type: object
+
+    ExternalCaseUpdateAck:
+      type: object
+      required: [status, case_id, acknowledged_at, simulation_mode]
+      properties:
+        status:
+          type: string
+        case_id:
+          type: string
+        acknowledged_at:
+          type: string
+        simulation_mode:
+          type: boolean
+          default: true

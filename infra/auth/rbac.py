@@ -4,10 +4,28 @@ Defines roles, permissions, role hierarchy, and route protection guards.
 """
 
 from enum import Enum
-from typing import List, Set, Dict, Optional, Callable
+from typing import List, Set, Dict, Optional, Callable, Any
 from dataclasses import dataclass
 import hashlib
-from .jwt import TokenData, JWTError
+
+
+# ---------------------------------------------------------------------------
+# Inlined from jwt.py to keep rbac.py standalone (no __init__.py required).
+# T1's FastAPI backend imports jwt.py and rbac.py independently.
+# ---------------------------------------------------------------------------
+class JWTError(Exception):
+    """Raised when token validation or decoding fails."""
+    pass
+
+
+@dataclass
+class TokenData:
+    user_id: str
+    username: str
+    role: str
+    exp: int
+    iat: int
+    extra: Dict[str, Any]
 
 
 class Role(str, Enum):

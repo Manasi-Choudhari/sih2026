@@ -22,3 +22,7 @@ htmlcov/
 # OS
 .DS_Store
 Thumbs.db
+
+# Specification docs & local copies
+BUILD*.md
+* (1).md

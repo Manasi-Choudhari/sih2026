@@ -14,8 +14,12 @@ CREATE CONSTRAINT vasp_name IF NOT EXISTS
 FOR (v:VASP)
 REQUIRE v.name IS UNIQUE;
 
-// 3. Label text + source uniqueness (optional or node key constraint where supported)
-// In Neo4j Community, property existence/uniqueness constraints:
-CREATE CONSTRAINT label_composite IF NOT EXISTS
+// 3. Label property indexes (Community Edition compatible)
+// NOTE: Multi-property uniqueness requires Enterprise; using individual indexes instead.
+CREATE INDEX label_source_constraint_idx IF NOT EXISTS
 FOR (l:Label)
-REQUIRE (l.source, l.label_text) IS UNIQUE;
+ON (l.source);
+
+CREATE INDEX label_text_constraint_idx IF NOT EXISTS
+FOR (l:Label)
+ON (l.label_text);

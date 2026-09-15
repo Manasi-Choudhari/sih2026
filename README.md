@@ -1,3 +1,157 @@
+# VAJRA — SIH 26183: Real-Time Crypto Fraud Attribution
+
+> Multi-chain blockchain investigation platform for tracing illicit fund flows, attributing VASP endpoints, and producing tamper-evident evidence.
+
+---
+
+# T2 Blockchain Engineer — Setup & Guide
+
+Owned by **T2 (Blockchain Engineer)**. All code lives under `/blockchain` and scenario chain data under `/scenarios/fixtures/`.
+
+## What This Module Does
+
+| Component | Purpose |
+|---|---|
+| **Chain Detection** | Identifies BTC vs ETH addresses by format/checksum (rejects out-of-scope chains) |
+| **BTC Adapter** | Fetches Bitcoin transactions via Blockchair API with retries, backoff, and cache fallback |
+| **ETH Adapter** | Fetches Ethereum transactions via Etherscan V2 API with retries, backoff, and cache fallback |
+| **Normalization** | Converts raw chain data into a unified `NormalizedTransaction` schema matching Neo4j edge shape |
+| **Graph Indexer** | Writes `:Wallet` nodes and `:TRANSACTION` / `:CROSS_CHAIN_LINK` edges into Neo4j |
+| **Cross-Chain Correlator** | Matches lock/burn ↔ mint/release bridge events (confidence always ≤ 0.85) |
+| **Scenario Fixtures** | 5 deterministic test scenarios with chain data for the offline demo |
+
+## Prerequisites
+
+| Requirement | Notes |
+|---|---|
+| Python **3.10+** | Check: `python --version` |
+| Neo4j (Desktop or Docker) | Bolt port **7687** open |
+| Etherscan API key | Free tier at [etherscan.io](https://etherscan.io/apis) |
+| Blockchair API key (optional) | Free tier at [blockchair.com/api](https://blockchair.com/api) — adapter works without key at lower rate limits |
+
+## Setup
+
+### Step 1 — Install dependencies
+```powershell
+python -m venv .venv
+.\.venv\Scripts\activate
+pip install -r blockchain/requirements.txt
+```
+
+### Step 2 — Configure `.env`
+```powershell
+copy .env.example .env
+```
+
+Fill in your credentials:
+```env
+NEO4J_URI=bolt://localhost:7687
+NEO4J_USER=neo4j
+NEO4J_PASSWORD=your_password
+NEO4J_DATABASE=neo4j
+EXPLORER_API_KEY_ETH=your_etherscan_key
+EXPLORER_API_KEY_BTC=               # optional
+```
+
+### Step 3 — Verify Neo4j connection
+```powershell
+python -c "from dotenv import load_dotenv; load_dotenv(); from blockchain.indexer.worker import GraphIndexer; g = GraphIndexer(); g.connect(); print('Connected'); g.close()"
+```
+
+### Step 4 — Run tests
+```powershell
+python -m pytest tests/ -v
+```
+
+**Pass:** All 6 tests should pass:
+```
+tests/test_blockchain.py::test_chain_detection               PASSED
+tests/test_blockchain.py::test_normalized_transaction_schema  PASSED
+tests/test_blockchain.py::test_cross_chain_correlator_rule    PASSED
+tests/test_blockchain.py::test_adapter_mock_injection         PASSED
+tests/test_scenario_fixtures.py::test_fixtures_exist          PASSED
+tests/test_scenario_fixtures.py::test_fixtures_parse_and_validate_transactions PASSED
+```
+
+## File Map
+
+```text
+blockchain/                          [T2 owned]
+  chain_detection/
+    detect.py                        ← BTC/ETH address format detection
+  adapters/
+    base.py                          ← Abstract adapter interface
+    btc/client.py                    ← Blockchair BTC adapter
+    eth/client.py                    ← Etherscan V2 ETH adapter
+  normalization/
+    normalize.py                     ← NormalizedTransaction + CrossChainLink schemas
+  indexer/
+    worker.py                        ← Neo4j graph writer + pattern query support
+  cross_chain/
+    correlator.py                    ← Bridge lock/mint correlation engine
+  requirements.txt
+
+scenarios/fixtures/                  [shared — T2 owns chain data]
+  scenario_1_direct.json             ← Victim → Hop → VASP (ETH)
+  scenario_2_peel.json               ← 4-hop peel chain (BTC)
+  scenario_3_cross_chain.json        ← BTC lock → ETH mint bridge
+  scenario_4_mixer.json              ← Mixer boundary + fan-out (BTC)
+  scenario_5_conflicting.json        ← Conflicting entity labels (ETH)
+
+tests/
+  test_blockchain.py                 ← Unit tests for detection, schema, correlator
+  test_scenario_fixtures.py          ← Fixture validation tests
+```
+
+## How Other Teammates Use T2's Code
+
+### T1 (Backend) — Trace engine queries
+```python
+from blockchain.indexer.worker import GraphIndexer
+
+indexer = GraphIndexer()
+neighbors = indexer.get_wallet_outgoing_transactions("s1_victim")
+fan_out = indexer.get_fan_out_metrics("s4_mixer")
+timing = indexer.get_inbound_and_outbound_window("s2_peel_1")
+indexer.close()
+```
+
+### T1/T5 — Writing transactions to graph
+```python
+from blockchain.normalization.normalize import NormalizedTransaction
+from blockchain.indexer.worker import GraphIndexer
+
+tx = NormalizedTransaction(
+    tx_hash="0xabc", chain="ETH",
+    from_address="0xsender", to_address="0xreceiver",
+    block_height=100, timestamp="2026-09-10T12:00:00Z",
+    amount=2.5, asset="ETH", direction="out",
+    is_bridge_leg=False, confidence_of_link=1.0,
+)
+indexer = GraphIndexer()
+indexer.write_transaction(tx)
+indexer.close()
+```
+
+### T1 — Chain detection
+```python
+from blockchain.chain_detection.detect import detect_chain
+
+chain = detect_chain("0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045")  # → "ETH"
+chain = detect_chain("bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq")  # → "BTC"
+```
+
+## Hard Rules (Do Not Break)
+
+- Cross-chain links use `:CROSS_CHAIN_LINK`, **never** a fake `:TRANSACTION` edge
+- Cross-chain confidence is **always ≤ 0.85** (lower than same-chain)
+- Live explorer fetching is **never on the demo critical path** — cached fallback only
+- Do not add a 3rd chain (Tron, Monero, etc.)
+- Do not edit files outside `blockchain/` or `scenarios/fixtures/` (chain data only)
+
+---
+---
+
 # T3 AI/ML — Setup & Continue Guide
 
 Start here if you are new to the **VAJRA AI/ML (`/ml`)** module.

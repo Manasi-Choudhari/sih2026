@@ -1,31 +1,57 @@
+# Environment and secrets
+.env
+.env.local
+*.env
+!.env.example
+
 # Python
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
 .Python
+build/
+develop-eggs/
+dist/
+.dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
 env/
 venv/
 .venv/
 
-# Environment
-.env
-!.env.example
-
-# Pytest / IDE
+# Testing & Linting
 .pytest_cache/
 .coverage
 htmlcov/
-.vscode/
-.idea/
+.mypy_cache/
+.ruff_cache/
 
-# OS
+# Node / Frontend
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/.turbo/
+node_modules/
+
+# IDEs and OS
+.idea/
+.vscode/
+*.swp
+*.swo
 .DS_Store
 Thumbs.db
 
-# Specification docs & local copies
-BUILD*.md
-* (1).md
-PREREQUISITES.md
-T3_TEAM_HANDOFF.md
-
+# Project generated artifacts (offline ML artifacts tracked in image packaging, not git)
+ml/artifacts/*.joblib
+ml/artifacts/test_report.json

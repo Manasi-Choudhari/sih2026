@@ -1,0 +1,127 @@
+@import "tailwindcss";
+
+:root {
+  --ink: #0A0A0B;
+  --panel: #141415;
+  --panel-2: #1B1B1D;
+  --line: #2B2B2E;
+  --text: #E7EAEE;
+  --text-muted: #8A93A3;
+  --text-faint: #5A6373;
+  --trace: #49C7BE;
+  --amber: #E3AE3E;
+  --strong: #3FBE8B;
+  --weak: #C56A4B;
+  --unknown: #5C6675;
+  --danger: #D5636A;
+
+  --grad-trace: linear-gradient(135deg, #5FDCD0 0%, #2E8F87 100%);
+  --grad-amber: linear-gradient(135deg, #F0C766 0%, #C98B22 100%);
+  --grad-hero: linear-gradient(90deg, #49C7BE 0%, #E3AE3E 55%, #3FBE8B 100%);
+  --grad-surface: linear-gradient(165deg, #17181A 0%, #101012 100%);
+
+  --font-serif: var(--font-ibm-plex-serif, 'IBM Plex Serif', Georgia, serif);
+  --font-sans: var(--font-ibm-plex-sans, 'IBM Plex Sans', -apple-system, sans-serif);
+  --font-mono: var(--font-ibm-plex-mono, 'IBM Plex Mono', 'SFMono-Regular', monospace);
+}
+
+body {
+  background: var(--ink);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: rgba(73, 199, 190, 0.3);
+}
+
+/* Custom dossier utilities */
+.font-serif-vajra {
+  font-family: var(--font-serif);
+}
+
+.font-mono-vajra {
+  font-family: var(--font-mono);
+}
+
+.bg-vajra-ink {
+  background-color: var(--ink);
+}
+
+.bg-vajra-panel {
+  background-color: var(--panel);
+}
+
+.bg-vajra-panel-2 {
+  background-color: var(--panel-2);
+}
+
+.border-vajra-line {
+  border-color: var(--line);
+}
+
+.text-vajra-light {
+  color: var(--text);
+}
+
+.text-vajra-muted {
+  color: var(--text-muted);
+}
+
+.text-vajra-faint {
+  color: var(--text-faint);
+}
+
+.panel-surface {
+  background: var(--grad-surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  position: relative;
+}
+
+.hero-border::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--grad-hero);
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  z-index: 10;
+}
+
+.trace-gradient-bg {
+  background: var(--grad-trace);
+}
+
+.amber-gradient-bg {
+  background: var(--grad-amber);
+}
+
+.hero-gradient-bg {
+  background: var(--grad-hero);
+}
+
+/* Scrollbar styles for dark terminal aesthetic */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--ink);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-faint);
+}

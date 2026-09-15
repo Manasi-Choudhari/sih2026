@@ -2,9 +2,10 @@
 ATLAS (The Challenge Engine)
 Tries to actively disprove the leading VASP attribution before showing it to the investigator.
 Generates 3-4 competing hypotheses, contradictions, missing-data gaps, and a robustness score.
+Backed by PostgreSQL 'atlas_results' store and dynamic graph analysis.
 """
 
-from typing import List
+from typing import List, Dict, Any, Optional
 from pydantic import BaseModel
 from backend.attribution.candidates import AttributionResponse
 
@@ -35,31 +36,37 @@ class AtlasEngine:
         leading = attr.candidates[0].vasp_name if attr.candidates else "Unknown Entity"
         case_id = attr.case_id
 
-        # Generate competing hypotheses (3-4 alternatives)
+        # Derive hypotheses dynamically from detected patterns and evidence tiers
+        patterns = [p.pattern_name for p in attr.detected_patterns]
+        has_mixer = "mixer_boundary" in patterns
+        has_peel = "peel_chain" in patterns
+        has_bridge = "cross_chain_bridge" in patterns
+        has_conflict = any("Conflict" in c.vasp_name for c in attr.candidates)
+
         alternatives = [
             AtlasHypothesis(
                 hypothesis_id="ALT-1",
                 title="Intermediate OTC / P2P Broker Cashing Out",
-                explanation="Hop 1 could represent a peer-to-peer escrow settlement or OTC broker rather than a direct thief-controlled intermediary.",
-                likelihood="Medium"
+                explanation="Intermediary hop could represent a peer-to-peer escrow settlement or OTC desk rather than a direct perpetrator-controlled wallet.",
+                likelihood="High" if has_peel else "Medium"
             ),
             AtlasHypothesis(
                 hypothesis_id="ALT-2",
-                title="Consolidation into Shared Liquidity Hot-Wallet",
-                explanation="The terminal address might belong to a third-party non-custodial payment processor or swap aggregator rather than an individual customer deposit.",
-                likelihood="Medium"
+                title="Consolidation into Shared Liquidity Omnibus Wallet",
+                explanation="The terminal address may belong to a third-party payment gateway or swap aggregator rather than an individual customer deposit.",
+                likelihood="High" if has_bridge else "Medium"
             ),
             AtlasHypothesis(
                 hypothesis_id="ALT-3",
-                title="Compromised Victim Private Key / Unauthorized Sweep",
-                explanation="Transactions may originate from automated sweeper bots responding to compromised credentials, shifting attribution from deliberate transfer to sweeper-run sweep.",
+                title="Compromised Private Key / Automated Sweeper Bot",
+                explanation="Transactions may originate from automated sweeper bots responding to compromised keys, breaking single-actor attribution.",
                 likelihood="Low"
             ),
             AtlasHypothesis(
                 hypothesis_id="ALT-4",
-                title="Collateralized DeFi Vault / Staking Contract",
-                explanation="Funds could be locked in a yield generation or bridge liquidity pool that resembles an exchange deposit pattern.",
-                likelihood="Low"
+                title="Collateralized DeFi Vault / Smart Contract Sweep",
+                explanation="Funds could be deposited into a liquidity pool or staking contract whose interface mimics an exchange deposit.",
+                likelihood="Medium" if has_mixer else "Low"
             )
         ]
 
@@ -67,37 +74,63 @@ class AtlasEngine:
         contradictions = [
             AtlasContradiction(
                 contradiction_id="CONTRA-1",
-                claim="The final deposit belongs exclusively to the perpetrator",
-                evidence_against="Deposit addresses are frequently recycled or used for multi-user settlements in shared VASP omnibus pools."
+                claim=f"The terminal deposit at {leading} belongs exclusively to the prime suspect",
+                evidence_against="Deposit addresses in non-custodial or shared omnibus arrangements are frequently pooled among multiple depositors."
             ),
             AtlasContradiction(
                 contradiction_id="CONTRA-2",
-                claim="Transaction path represents 100% intentional directionality",
-                evidence_against="Slight temporal delays between hops may indicate independent batch transactions rather than a continuous flight sequence."
+                claim="Transaction sequence represents continuous intentional flight",
+                evidence_against="Intermediary holding periods and multi-input aggregations introduce alternative liquidity provider explanations."
             )
         ]
 
         missing_data = [
-            "Internal VASP sub-account KYC record for terminal deposit",
-            "IP and session access logs at time of transaction broadcast",
-            "Mempool fee-bumping (RBF/CPFP) telemetry from original node"
+            f"Internal sub-account KYC audit logs for {leading}",
+            "Mempool fee-bumping (RBF/CPFP) telemetry from origin node",
+            "IP and session connection metadata at time of deposit"
         ]
 
-        # Robustness calculation
+        # Robustness calculation: rules win over ML, tier penalization
         robustness = 0.86
-        if attr.attribution_confidence < 0.5:
+        if attr.attribution_confidence < 0.5 or has_conflict:
             robustness = 0.42
-        elif attr.ml_vs_rules_disagreement:
-            robustness = 0.68
+        elif attr.ml_vs_rules_disagreement or has_mixer:
+            robustness = 0.62
+        elif has_peel or has_bridge:
+            robustness = 0.74
 
-        return AtlasResult(
+        # Recommendation challenge message
+        if has_mixer:
+            rec_challenge = "Evidentiary break at mixer boundary: do not issue judicial freeze on post-mixer hops without independent corroboration."
+        elif has_conflict:
+            rec_challenge = "Conflicting intelligence tags detected: resolve attribution ambiguity with official VASP confirmation before court submission."
+        else:
+            rec_challenge = f"Verify internal VASP sub-account identity at {leading} before executing statutory asset freezing."
+
+        result = AtlasResult(
             case_id=case_id,
             leading_attribution=leading,
             robustness_score=robustness,
             alternatives=alternatives,
             contradictions=contradictions,
             missing_data_gaps=missing_data,
-            recommendation_challenge="Do not issue an immediate asset-freeze request solely on heuristic proximity; request VASP sub-account identity confirmation first."
+            recommendation_challenge=rec_challenge
         )
+
+        # Attempt to persist to PostgreSQL atlas_results
+        try:
+            from db.postgres.atlas_store import save_atlas_result
+            save_atlas_result(
+                case_id=case_id,
+                robustness_score=robustness,
+                alternatives=[a.model_dump() for a in alternatives],
+                contradictions=[c.model_dump() for c in contradictions],
+                missing_evidence=missing_data,
+                challenger_hypothesis=rec_challenge
+            )
+        except Exception:
+            pass
+
+        return result
 
 atlas_engine = AtlasEngine()

@@ -60,74 +60,88 @@ class TraceResult(BaseModel):
     all_nodes: List[Dict[str, Any]]
     all_edges: List[Dict[str, Any]]
 
-# Deterministic scenario topology fallback when Neo4j is offline
-SCENARIO_TOPOLOGIES = {
-    "s1_victim": {
-        "origin_amount": 2.5,
-        "nodes": {
-            "s1_victim": {"chain": "ETH", "entity_type": "victim", "label": "Victim EOA"},
-            "s1_hop1": {"chain": "ETH", "entity_type": "intermediary", "label": "Intermediary EOA"},
-            "s1_vasp": {"chain": "ETH", "entity_type": "vasp", "label": "DemoExchange Deposit", "is_terminal": True},
-            "s1_cold": {"chain": "ETH", "entity_type": "cold", "label": "Dormant Cold", "is_terminal": True}
-        },
-        "edges": [
-            TraceEdge(tx_hash="s1_tx1", source="s1_victim", target="s1_hop1", amount=2.5, asset="ETH", chain="ETH", confidence_of_link=0.99),
-            TraceEdge(tx_hash="s1_tx2", source="s1_hop1", target="s1_vasp", amount=2.48, asset="ETH", chain="ETH", confidence_of_link=0.99)
-        ]
-    },
-    "s2_peel_0": {
-        "origin_amount": 3.0,
-        "nodes": {
-            "s2_peel_0": {"chain": "BTC", "entity_type": "eoa", "label": "Peel Origin"},
-            "s2_peel_1": {"chain": "BTC", "entity_type": "eoa", "label": "Peel Hop 1"},
-            "s2_peel_2": {"chain": "BTC", "entity_type": "eoa", "label": "Peel Hop 2"},
-            "s2_peel_3": {"chain": "BTC", "entity_type": "eoa", "label": "Peel Hop 3", "is_terminal": True},
-            "s2_normal": {"chain": "BTC", "entity_type": "eoa", "label": "Normal Wallet"}
-        },
-        "edges": [
-            TraceEdge(tx_hash="s2_tx_0", source="s2_peel_0", target="s2_peel_1", amount=2.7, asset="BTC", chain="BTC", confidence_of_link=0.90),
-            TraceEdge(tx_hash="s2_tx_1", source="s2_peel_1", target="s2_peel_2", amount=2.3, asset="BTC", chain="BTC", confidence_of_link=0.90),
-            TraceEdge(tx_hash="s2_tx_2", source="s2_peel_2", target="s2_peel_3", amount=1.9, asset="BTC", chain="BTC", confidence_of_link=0.90)
-        ]
-    },
-    "s3_btc_lock": {
-        "origin_amount": 1.2,
-        "nodes": {
-            "s3_btc_lock": {"chain": "BTC", "entity_type": "bridge_leg", "label": "Bridge Lock Deposit"},
-            "s3_eth_mint": {"chain": "ETH", "entity_type": "bridge_leg", "label": "Bridge Mint Target", "is_terminal": True},
-            "s3_benign": {"chain": "ETH", "entity_type": "eoa", "label": "Benign Account"}
-        },
-        "edges": [
-            TraceEdge(tx_hash="s3_bridge_link", source="s3_btc_lock", target="s3_eth_mint", amount=1.18, asset="ETH", chain="ETH", type="CROSS_CHAIN_LINK", is_bridge_leg=True, confidence_of_link=0.55)
-        ]
-    },
-    "s4_pre_mixer": {
-        "origin_amount": 4.0,
-        "nodes": {
-            "s4_pre_mixer": {"chain": "BTC", "entity_type": "eoa", "label": "Pre-Mixer Ingestion"},
-            "s4_mixer": {"chain": "BTC", "entity_type": "mixer", "label": "Tornado/Blender Mixer", "is_terminal": True},
-            "s4_out_1": {"chain": "BTC", "entity_type": "eoa", "label": "Mixer Fanout 1"},
-            "s4_out_2": {"chain": "BTC", "entity_type": "eoa", "label": "Mixer Fanout 2"},
-            "s4_out_3": {"chain": "BTC", "entity_type": "eoa", "label": "Mixer Fanout 3"}
-        },
-        "edges": [
-            TraceEdge(tx_hash="s4_in", source="s4_pre_mixer", target="s4_mixer", amount=4.0, asset="BTC", chain="BTC", confidence_of_link=0.95),
-            TraceEdge(tx_hash="s4_out_tx_1", source="s4_mixer", target="s4_out_1", amount=0.8, asset="BTC", chain="BTC", confidence_of_link=0.6),
-            TraceEdge(tx_hash="s4_out_tx_2", source="s4_mixer", target="s4_out_2", amount=0.8, asset="BTC", chain="BTC", confidence_of_link=0.6),
-            TraceEdge(tx_hash="s4_out_tx_3", source="s4_mixer", target="s4_out_3", amount=0.8, asset="BTC", chain="BTC", confidence_of_link=0.6)
-        ]
-    },
-    "s5_conflict": {
-        "origin_amount": 1.4,
-        "nodes": {
-            "s5_conflict": {"chain": "ETH", "entity_type": "eoa", "label": "Conflicting Labels EOA"},
-            "s5_clean_label": {"chain": "ETH", "entity_type": "vasp", "label": "Exchange Destination", "is_terminal": True}
-        },
-        "edges": [
-            TraceEdge(tx_hash="s5_tx", source="s5_conflict", target="s5_clean_label", amount=1.4, asset="ETH", chain="ETH", confidence_of_link=0.8)
-        ]
-    }
-}
+def load_seeded_graph():
+    """Dynamically loads graph topology from real scenario seed fixtures (scenarios/fixtures/)."""
+    import json
+    from pathlib import Path
+
+    nodes_map: Dict[str, Dict[str, Any]] = {}
+    edges_map: Dict[str, List[TraceEdge]] = {}
+    origins_map: Dict[str, float] = {}
+
+    fixtures_dir = Path(__file__).resolve().parents[2] / "scenarios" / "fixtures"
+    if not fixtures_dir.exists():
+        return nodes_map, edges_map, origins_map
+
+    for fix_file in sorted(fixtures_dir.glob("scenario_*.json")):
+        try:
+            with open(fix_file, "r", encoding="utf-8") as f:
+                fix_data = json.load(f)
+
+            # 1. Nodes from neo4j.nodes
+            for n in fix_data.get("neo4j", {}).get("nodes", []):
+                props = n.get("properties", {})
+                addr = props.get("address") or props.get("name")
+                if addr:
+                    lbl = n.get("label", "Wallet")
+                    nodes_map[addr] = {
+                        "chain": props.get("chain", "ETH"),
+                        "entity_type": props.get("entity_type", "vasp" if lbl == "VASP" else "eoa"),
+                        "label": props.get("label_text") or props.get("name") or addr,
+                        "is_terminal": bool(lbl == "VASP" or "terminal" in props or "mixer" in addr.lower())
+                    }
+
+            # 2. Edges from neo4j.relationships
+            for r in fix_data.get("neo4j", {}).get("relationships", []):
+                rtype = r.get("type", "TRANSACTION")
+                if rtype in ("TRANSACTION", "CROSS_CHAIN_LINK"):
+                    props = r.get("properties", {})
+                    src = r.get("from")
+                    tgt = r.get("to")
+                    is_bridge = bool(props.get("is_bridge_leg", rtype == "CROSS_CHAIN_LINK"))
+                    edge = TraceEdge(
+                        tx_hash=props.get("tx_hash", f"tx_{src}_{tgt}"),
+                        source=src,
+                        target=tgt,
+                        amount=float(props.get("amount", 1.0)),
+                        asset=props.get("asset", "ETH"),
+                        chain=props.get("chain", "ETH"),
+                        type=rtype,
+                        is_bridge_leg=is_bridge,
+                        confidence_of_link=float(props.get("confidence_of_link", 0.55 if is_bridge else 0.95))
+                    )
+                    edges_map.setdefault(src, []).append(edge)
+
+            # 3. Fallback to flat transactions if any missing
+            for tx in fix_data.get("transactions", []):
+                src = tx.get("from_address")
+                tgt = tx.get("to_address")
+                if src and tgt and src not in edges_map:
+                    edge = TraceEdge(
+                        tx_hash=tx.get("tx_hash", f"tx_{src}_{tgt}"),
+                        source=src,
+                        target=tgt,
+                        amount=float(tx.get("amount", 1.0)),
+                        asset=tx.get("asset", "ETH"),
+                        chain=tx.get("chain", "ETH"),
+                        type="TRANSACTION",
+                        is_bridge_leg=bool(tx.get("is_bridge_leg", False)),
+                        confidence_of_link=float(tx.get("confidence_of_link", 0.95))
+                    )
+                    edges_map.setdefault(src, []).append(edge)
+
+            # 4. Record origin amounts
+            case_info = fix_data.get("case", {})
+            amt = float(case_info.get("reported_amount", 2.5) or 2.5)
+            wallets = fix_data.get("postgres", {}).get("wallets", []) or fix_data.get("wallets", [])
+            if wallets:
+                origins_map[wallets[0]["address"]] = amt
+        except Exception:
+            pass
+
+    return nodes_map, edges_map, origins_map
+
+SEEDED_NODES, SEEDED_EDGES, SEEDED_ORIGINS = load_seeded_graph()
 
 class TraceEngine:
     """Bounded BFS/Priority trace engine."""
@@ -171,22 +185,21 @@ class TraceEngine:
             return []
 
     def get_outgoing(self, address: str, root_hint: str) -> List[TraceEdge]:
-        # First try Neo4j
+        # 1. First try Neo4j live graph
         neo_edges = self._query_neo4j_outgoing(address)
         if neo_edges:
             return neo_edges
             
-        # Fallback to deterministic scenario topology
-        for scenario_root, data in SCENARIO_TOPOLOGIES.items():
-            if address in data["nodes"] or root_hint == scenario_root:
-                return [e for e in data["edges"] if e.source == address]
-        return []
+        # 2. Query real seeded graph from scenario fixtures
+        return SEEDED_EDGES.get(address, [])
 
     def is_vasp(self, address: str) -> bool:
-        return "vasp" in address.lower() or "exchange" in address.lower() or address == "s1_vasp"
+        node_info = SEEDED_NODES.get(address, {})
+        return node_info.get("entity_type") == "vasp" or "vasp" in address.lower() or "exchange" in address.lower() or address == "s1_vasp"
 
     def is_mixer(self, address: str) -> bool:
-        return "mixer" in address.lower() or address == "s4_mixer"
+        node_info = SEEDED_NODES.get(address, {})
+        return node_info.get("entity_type") == "mixer" or "mixer" in address.lower() or address == "s4_mixer"
 
     def trace(self, root: str, case_id: str = "case_demo", origin_amount: float = 2.5) -> TraceResult:
         start_time = time.time()

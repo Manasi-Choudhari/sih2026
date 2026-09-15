@@ -1,7 +1,10 @@
 """
 Standardized PDF/HTML Report Generator for Law Enforcement.
 Produces court-admissible summary with tamper-evident cryptographic hash.
+Persists report metadata to PostgreSQL 'reports' store.
 """
+
+from __future__ import annotations
 
 import hashlib
 from datetime import datetime, timezone
@@ -82,6 +85,19 @@ def generate_report(case_id: str, case_data: Dict[str, Any], attr_data: Dict[str
 """
     report_hash = hashlib.sha256(html.encode("utf-8")).hexdigest()
     
+    # Persist report metadata to Postgres
+    try:
+        from db.postgres.report_store import save_report_metadata
+        save_report_metadata(
+            report_id=report_id,
+            case_id=case_id,
+            report_type="STATUTORY_COURT_REPORT",
+            report_hash=report_hash,
+            created_by="system_investigator"
+        )
+    except Exception:
+        pass
+
     return ReportResponse(
         report_id=report_id,
         case_id=case_id,

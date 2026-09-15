@@ -71,6 +71,59 @@ def get_ml_score(address: str) -> Dict[str, Any]:
             "disclaimer": "Statistical prioritization signal only. Does not decide VASP attribution or prove facts."
         }
 
+def get_provenance_for_address(address: str) -> Dict[str, Any]:
+    """Dynamically resolves label provenance and VASP identity from PostgreSQL or scenario seed fixtures."""
+    # 1. Try PostgreSQL label store if available
+    try:
+        from db.postgres.label_store import resolve_provenance_summary
+        summary = resolve_provenance_summary(address)
+        if summary.get("labels"):
+            return summary
+    except Exception:
+        pass
+
+    # 2. Fallback to real scenario fixtures
+    import json
+    from pathlib import Path
+    fixtures_dir = Path(__file__).resolve().parents[2] / "scenarios" / "fixtures"
+    labels: List[Dict[str, Any]] = []
+    vasp_name: Optional[str] = None
+
+    if fixtures_dir.exists():
+        for fix_file in fixtures_dir.glob("scenario_*.json"):
+            try:
+                with open(fix_file, "r", encoding="utf-8") as f:
+                    data = json.load(f)
+                # Check VASP known addresses
+                for v in data.get("postgres", {}).get("vasps", []) + data.get("vasp_entities", []):
+                    if address in v.get("known_addresses", []):
+                        vasp_name = v.get("name")
+                # Check labels
+                for lbl in data.get("postgres", {}).get("labels", []) + data.get("labels", []):
+                    wid = lbl.get("wallet_id", "")
+                    if address == lbl.get("address") or address in wid:
+                        labels.append(lbl)
+            except Exception:
+                pass
+
+    distinct_entities = {l.get("label_text") for l in labels if l.get("label_text")}
+    has_conflict = len(distinct_entities) > 1
+    top_label = labels[0] if labels else None
+    effective_tier = "Unknown"
+    if top_label:
+        effective_tier = top_label.get("confidence_tier", "Unknown")
+        if has_conflict and effective_tier != "Strong":
+            effective_tier = "Weak"
+
+    return {
+        "address": address,
+        "vasp_name": vasp_name or (top_label.get("label_text") if top_label else None),
+        "has_conflict": has_conflict,
+        "labels": labels,
+        "top_label": top_label,
+        "effective_tier": effective_tier,
+    }
+
 def attribute_trace(trace: TraceResult) -> AttributionResponse:
     candidates: List[VASPCandidate] = []
     
@@ -78,17 +131,39 @@ def attribute_trace(trace: TraceResult) -> AttributionResponse:
         term = path.terminal_address
         reason = path.terminal_reason
         hops = path.hops
-        
-        if "vasp" in term.lower() or reason == "vasp_reached":
-            tier = determine_evidence_tier(
-                hops=hops,
-                source_type="official",
-                has_conflicting_labels=False,
-                has_obfuscation=False,
-                is_stale=False
-            )
+        prov = get_provenance_for_address(term)
+
+        if prov.get("has_conflict"):
+            entities = sorted(list({l.get("label_text") for l in prov["labels"] if l.get("label_text")}))
+            conflict_name = f"Conflicting ({' vs '.join(entities)})" if entities else "Conflicting (Exchange_A vs Exchange_B)"
             candidates.append(VASPCandidate(
-                vasp_name="DemoExchange (VASP)",
+                vasp_name=conflict_name,
+                terminal_address=term,
+                branch_id=path.path_id,
+                evidence_tier="Weak",
+                confidence=0.35,
+                hops_from_origin=hops,
+                value_retained=path.retained_value,
+                supporting_evidence=["Single deposit transaction detected"],
+                contradicting_evidence=[
+                    "Mutually exclusive crowdsourced tags claim address with conflicting entity ownership",
+                    "No official VASP cryptographic signed proof available"
+                ],
+                unknowns=["Operator entity behind cluster"]
+            ))
+        elif prov.get("vasp_name") or "vasp" in term.lower() or reason == "vasp_reached":
+            vname = prov.get("vasp_name") or "DemoExchange"
+            tier = prov.get("effective_tier")
+            if tier not in ("Strong", "Medium", "Weak", "Unknown"):
+                tier = determine_evidence_tier(
+                    hops=hops,
+                    source_type="official",
+                    has_conflicting_labels=False,
+                    has_obfuscation=False,
+                    is_stale=False
+                )
+            candidates.append(VASPCandidate(
+                vasp_name=f"{vname} (VASP)",
                 terminal_address=term,
                 branch_id=path.path_id,
                 evidence_tier=tier,
@@ -97,36 +172,13 @@ def attribute_trace(trace: TraceResult) -> AttributionResponse:
                 value_retained=path.retained_value,
                 supporting_evidence=[
                     f"Direct clean transaction trail ({hops} hops) from victim wallet",
-                    "Official verified deposit address registry matching DemoExchange",
+                    f"Verified deposit address registry matching {vname}",
                     f"Retained amount: {path.retained_value} ETH"
                 ],
                 contradicting_evidence=[],
                 unknowns=["Internal hot-wallet redistribution after deposit"]
             ))
-        elif "conflict" in term.lower() or "s5" in trace.case_id:
-            tier = determine_evidence_tier(
-                hops=hops,
-                source_type="crowdsource",
-                has_conflicting_labels=True,
-                has_obfuscation=False,
-                is_stale=False
-            )
-            candidates.append(VASPCandidate(
-                vasp_name="Conflicting (Exchange_A vs Exchange_B)",
-                terminal_address=term,
-                branch_id=path.path_id,
-                evidence_tier=tier,
-                confidence=0.35,
-                hops_from_origin=hops,
-                value_retained=path.retained_value,
-                supporting_evidence=["Single deposit transaction detected"],
-                contradicting_evidence=[
-                    "Mutually exclusive crowdsourced tags: Exchange_A and Exchange_B both claim address",
-                    "No official VASP cryptographic signed proof available"
-                ],
-                unknowns=["Operator entity behind cluster"]
-            ))
-        elif reason == "evidentiary_break_mixer":
+        elif reason == "evidentiary_break_mixer" or "mixer" in term.lower():
             candidates.append(VASPCandidate(
                 vasp_name="Mixer/Privacy Boundary Reached",
                 terminal_address=term,
@@ -156,20 +208,26 @@ def attribute_trace(trace: TraceResult) -> AttributionResponse:
     # Analyze patterns across all nodes and edges
     patterns = analyze_patterns(trace.all_nodes, trace.all_edges)
 
-    # ML integration
+    # Live ML integration
     ml_dict = get_ml_score(trace.root_address)
     ml_prob = ml_dict.get("ml_probability", 0.5)
 
-    # Compute rule-based risk score
-    rule_score = 0.85 if any(p.pattern_name in ["mixer_boundary", "peel_chain"] for p in patterns) else 0.72
-    if "s1" in trace.case_id:
-        rule_score = 0.88
-    elif "s4" in trace.case_id:
+    # Compute rule-based risk score dynamically from detected patterns and candidates
+    pattern_names = [p.pattern_name for p in patterns]
+    if "mixer_boundary" in pattern_names:
         rule_score = 0.94
-    elif "s5" in trace.case_id:
+    elif "peel_chain" in pattern_names:
+        rule_score = 0.79
+    elif "cross_chain_bridge" in pattern_names:
+        rule_score = 0.65
+    elif any(c.evidence_tier == "Weak" and "Conflict" in c.vasp_name for c in candidates):
         rule_score = 0.45
+    elif any(c.evidence_tier == "Strong" for c in candidates):
+        rule_score = 0.88
+    else:
+        rule_score = 0.72
 
-    # Attribution confidence
+    # Attribution confidence from best candidate
     highest_conf = max([c.confidence for c in candidates]) if candidates else 0.10
 
     # Disagreement detection rule: if delta > 0.25 between rule score and ML prob

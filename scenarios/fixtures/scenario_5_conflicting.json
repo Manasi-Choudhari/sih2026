@@ -14,29 +14,202 @@
   },
   "postgres": {
     "wallets": [
-      {"wallet_id": "w_s5_conf", "address": "s5_conflict", "chain": "ETH", "cluster_id": "c_s5", "entity_type": "eoa"},
-      {"wallet_id": "w_s5_clean", "address": "s5_clean_label", "chain": "ETH", "cluster_id": "c_s5b", "entity_type": "eoa"}
+      {
+        "wallet_id": "w_s5_conf",
+        "address": "s5_conflict",
+        "chain": "ETH",
+        "cluster_id": "c_s5",
+        "entity_type": "eoa"
+      },
+      {
+        "wallet_id": "w_s5_clean",
+        "address": "s5_clean_label",
+        "chain": "ETH",
+        "cluster_id": "c_s5b",
+        "entity_type": "eoa"
+      }
     ],
     "vasps": [],
     "labels": [
-      {"label_id": "lbl_s5_1", "wallet_id": "w_s5_conf", "source": "crowdsource", "label_text": "exchange_A", "confidence_tier": "Weak", "confidence": 0.40},
-      {"label_id": "lbl_s5_2", "wallet_id": "w_s5_conf", "source": "crowdsource", "label_text": "exchange_B", "confidence_tier": "Weak", "confidence": 0.40},
-      {"label_id": "lbl_s5_3", "wallet_id": "w_s5_clean", "source": "official", "label_text": "known_good", "confidence_tier": "Strong", "confidence": 0.90}
+      {
+        "label_id": "lbl_s5_1",
+        "wallet_id": "w_s5_conf",
+        "source": "crowdsource",
+        "label_text": "exchange_A",
+        "confidence_tier": "Weak",
+        "confidence": 0.4
+      },
+      {
+        "label_id": "lbl_s5_2",
+        "wallet_id": "w_s5_conf",
+        "source": "crowdsource",
+        "label_text": "exchange_B",
+        "confidence_tier": "Weak",
+        "confidence": 0.4
+      },
+      {
+        "label_id": "lbl_s5_3",
+        "wallet_id": "w_s5_clean",
+        "source": "official",
+        "label_text": "known_good",
+        "confidence_tier": "Strong",
+        "confidence": 0.9
+      }
     ]
   },
   "neo4j": {
     "nodes": [
-      {"label": "Wallet", "properties": {"address": "s5_conflict", "chain": "ETH", "cluster_id": "c_s5", "entity_type": "eoa", "scenario_id": "scenario_5_conflicting", "case_id": "case_s5", "label_risk": 1, "demo_seed": true}},
-      {"label": "Wallet", "properties": {"address": "s5_clean_label", "chain": "ETH", "cluster_id": "c_s5b", "entity_type": "eoa", "scenario_id": "scenario_5_conflicting", "case_id": "case_s5", "label_risk": 0, "demo_seed": true}},
-      {"label": "Label", "properties": {"source": "crowdsource", "label_text": "exchange_A", "confidence": 0.4, "demo_seed": true}},
-      {"label": "Label", "properties": {"source": "crowdsource", "label_text": "exchange_B", "confidence": 0.4, "demo_seed": true}},
-      {"label": "Label", "properties": {"source": "official", "label_text": "known_good", "confidence": 0.9, "demo_seed": true}}
+      {
+        "label": "Wallet",
+        "properties": {
+          "address": "s5_conflict",
+          "chain": "ETH",
+          "cluster_id": "c_s5",
+          "entity_type": "eoa",
+          "scenario_id": "scenario_5_conflicting",
+          "case_id": "case_s5",
+          "label_risk": 1,
+          "demo_seed": true
+        }
+      },
+      {
+        "label": "Wallet",
+        "properties": {
+          "address": "s5_clean_label",
+          "chain": "ETH",
+          "cluster_id": "c_s5b",
+          "entity_type": "eoa",
+          "scenario_id": "scenario_5_conflicting",
+          "case_id": "case_s5",
+          "label_risk": 0,
+          "demo_seed": true
+        }
+      },
+      {
+        "label": "Label",
+        "properties": {
+          "source": "crowdsource",
+          "label_text": "exchange_A",
+          "confidence": 0.4,
+          "demo_seed": true
+        }
+      },
+      {
+        "label": "Label",
+        "properties": {
+          "source": "crowdsource",
+          "label_text": "exchange_B",
+          "confidence": 0.4,
+          "demo_seed": true
+        }
+      },
+      {
+        "label": "Label",
+        "properties": {
+          "source": "official",
+          "label_text": "known_good",
+          "confidence": 0.9,
+          "demo_seed": true
+        }
+      }
     ],
     "relationships": [
-      {"from": "s5_conflict", "to": "exchange_A", "from_label": "Wallet", "to_label": "Label", "type": "HAS_LABEL", "properties": {"demo_seed": true}},
-      {"from": "s5_conflict", "to": "exchange_B", "from_label": "Wallet", "to_label": "Label", "type": "HAS_LABEL", "properties": {"demo_seed": true}},
-      {"from": "s5_clean_label", "to": "known_good", "from_label": "Wallet", "to_label": "Label", "type": "HAS_LABEL", "properties": {"demo_seed": true}},
-      {"from": "s5_conflict", "to": "s5_clean_label", "type": "TRANSACTION", "properties": {"tx_hash": "s5_tx", "chain": "ETH", "block_height": 500, "amount": 1.4, "asset": "ETH", "direction": "out", "is_bridge_leg": false, "confidence_of_link": 0.80, "demo_seed": true}}
+      {
+        "from": "s5_conflict",
+        "to": "exchange_A",
+        "from_label": "Wallet",
+        "to_label": "Label",
+        "type": "HAS_LABEL",
+        "properties": {
+          "demo_seed": true
+        }
+      },
+      {
+        "from": "s5_conflict",
+        "to": "exchange_B",
+        "from_label": "Wallet",
+        "to_label": "Label",
+        "type": "HAS_LABEL",
+        "properties": {
+          "demo_seed": true
+        }
+      },
+      {
+        "from": "s5_clean_label",
+        "to": "known_good",
+        "from_label": "Wallet",
+        "to_label": "Label",
+        "type": "HAS_LABEL",
+        "properties": {
+          "demo_seed": true
+        }
+      },
+      {
+        "from": "s5_conflict",
+        "to": "s5_clean_label",
+        "type": "TRANSACTION",
+        "properties": {
+          "tx_hash": "s5_tx",
+          "chain": "ETH",
+          "block_height": 500,
+          "amount": 1.4,
+          "asset": "ETH",
+          "direction": "out",
+          "is_bridge_leg": false,
+          "confidence_of_link": 0.8,
+          "demo_seed": true
+        }
+      }
     ]
-  }
+  },
+  "chain": "ETH",
+  "wallets": [
+    {
+      "address": "s5_conflict",
+      "chain": "ETH",
+      "entity_type": "eoa",
+      "cluster_id": "c_s5",
+      "first_seen": "2026-09-10T11:00:00Z",
+      "last_seen": "2026-09-10T12:00:00Z"
+    },
+    {
+      "address": "s5_clean_label",
+      "chain": "ETH",
+      "entity_type": "eoa",
+      "cluster_id": "c_s5_clean",
+      "first_seen": "2026-08-01T00:00:00Z",
+      "last_seen": "2026-09-10T12:00:00Z"
+    }
+  ],
+  "transactions": [
+    {
+      "tx_hash": "s5_tx1",
+      "chain": "ETH",
+      "from_address": "s5_clean_label",
+      "to_address": "s5_conflict",
+      "block_height": 19500500,
+      "timestamp": "2026-09-10T11:30:00Z",
+      "amount": 10.0,
+      "asset": "ETH",
+      "direction": "out",
+      "is_bridge_leg": false,
+      "confidence_of_link": 0.98
+    }
+  ],
+  "vasp_entities": [
+    {
+      "name": "ExchangeAlpha",
+      "known_addresses": [
+        "s5_conflict"
+      ],
+      "last_verified": "2026-09-10T00:00:00Z"
+    },
+    {
+      "name": "ServiceBeta_Gambling",
+      "known_addresses": [
+        "s5_conflict"
+      ],
+      "last_verified": "2025-06-01T00:00:00Z"
+    }
+  ]
 }

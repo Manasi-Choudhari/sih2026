@@ -14,32 +14,256 @@
   },
   "postgres": {
     "wallets": [
-      {"wallet_id": "w_s1_victim", "address": "s1_victim", "chain": "ETH", "cluster_id": "c_s1", "entity_type": "eoa"},
-      {"wallet_id": "w_s1_hop1", "address": "s1_hop1", "chain": "ETH", "cluster_id": "c_s1", "entity_type": "eoa"},
-      {"wallet_id": "w_s1_vasp", "address": "s1_vasp", "chain": "ETH", "cluster_id": "vasp_demo", "entity_type": "vasp"},
-      {"wallet_id": "w_s1_cold", "address": "s1_cold", "chain": "ETH", "cluster_id": "c_cold", "entity_type": "eoa"}
+      {
+        "wallet_id": "w_s1_victim",
+        "address": "s1_victim",
+        "chain": "ETH",
+        "cluster_id": "c_s1",
+        "entity_type": "eoa"
+      },
+      {
+        "wallet_id": "w_s1_hop1",
+        "address": "s1_hop1",
+        "chain": "ETH",
+        "cluster_id": "c_s1",
+        "entity_type": "eoa"
+      },
+      {
+        "wallet_id": "w_s1_vasp",
+        "address": "s1_vasp",
+        "chain": "ETH",
+        "cluster_id": "vasp_demo",
+        "entity_type": "vasp"
+      },
+      {
+        "wallet_id": "w_s1_cold",
+        "address": "s1_cold",
+        "chain": "ETH",
+        "cluster_id": "c_cold",
+        "entity_type": "eoa"
+      }
     ],
     "vasps": [
-      {"vasp_id": "vasp_demo_exchange", "name": "DemoExchange", "known_addresses": ["s1_vasp"]}
+      {
+        "vasp_id": "vasp_demo_exchange",
+        "name": "DemoExchange",
+        "known_addresses": [
+          "s1_vasp"
+        ]
+      }
     ],
     "labels": [
-      {"label_id": "lbl_s1_1", "wallet_id": "w_s1_vasp", "source": "official", "label_text": "DemoExchange Deposit Hotwallet", "confidence_tier": "Strong", "confidence": 0.99}
+      {
+        "label_id": "lbl_s1_1",
+        "wallet_id": "w_s1_vasp",
+        "source": "official",
+        "label_text": "DemoExchange Deposit Hotwallet",
+        "confidence_tier": "Strong",
+        "confidence": 0.99
+      }
     ]
   },
   "neo4j": {
     "nodes": [
-      {"label": "VASP", "properties": {"name": "DemoExchange", "known_addresses": ["s1_vasp"], "demo_seed": true}},
-      {"label": "Wallet", "properties": {"address": "s1_victim", "chain": "ETH", "cluster_id": "c_s1", "entity_type": "eoa", "scenario_id": "scenario_1_direct", "case_id": "case_s1", "label_risk": 1, "demo_seed": true}},
-      {"label": "Wallet", "properties": {"address": "s1_hop1", "chain": "ETH", "cluster_id": "c_s1", "entity_type": "eoa", "scenario_id": "scenario_1_direct", "case_id": "case_s1", "label_risk": 1, "demo_seed": true}},
-      {"label": "Wallet", "properties": {"address": "s1_vasp", "chain": "ETH", "cluster_id": "vasp_demo", "entity_type": "vasp", "scenario_id": "scenario_1_direct", "case_id": "case_s1", "label_risk": 0, "demo_seed": true}},
-      {"label": "Wallet", "properties": {"address": "s1_cold", "chain": "ETH", "cluster_id": "c_cold", "entity_type": "eoa", "scenario_id": "scenario_1_direct", "case_id": "case_s1", "label_risk": 0, "demo_seed": true}},
-      {"label": "Label", "properties": {"source": "official", "label_text": "DemoExchange Deposit Hotwallet", "confidence": 0.99, "demo_seed": true}}
+      {
+        "label": "VASP",
+        "properties": {
+          "name": "DemoExchange",
+          "known_addresses": [
+            "s1_vasp"
+          ],
+          "demo_seed": true
+        }
+      },
+      {
+        "label": "Wallet",
+        "properties": {
+          "address": "s1_victim",
+          "chain": "ETH",
+          "cluster_id": "c_s1",
+          "entity_type": "eoa",
+          "scenario_id": "scenario_1_direct",
+          "case_id": "case_s1",
+          "label_risk": 1,
+          "demo_seed": true
+        }
+      },
+      {
+        "label": "Wallet",
+        "properties": {
+          "address": "s1_hop1",
+          "chain": "ETH",
+          "cluster_id": "c_s1",
+          "entity_type": "eoa",
+          "scenario_id": "scenario_1_direct",
+          "case_id": "case_s1",
+          "label_risk": 1,
+          "demo_seed": true
+        }
+      },
+      {
+        "label": "Wallet",
+        "properties": {
+          "address": "s1_vasp",
+          "chain": "ETH",
+          "cluster_id": "vasp_demo",
+          "entity_type": "vasp",
+          "scenario_id": "scenario_1_direct",
+          "case_id": "case_s1",
+          "label_risk": 0,
+          "demo_seed": true
+        }
+      },
+      {
+        "label": "Wallet",
+        "properties": {
+          "address": "s1_cold",
+          "chain": "ETH",
+          "cluster_id": "c_cold",
+          "entity_type": "eoa",
+          "scenario_id": "scenario_1_direct",
+          "case_id": "case_s1",
+          "label_risk": 0,
+          "demo_seed": true
+        }
+      },
+      {
+        "label": "Label",
+        "properties": {
+          "source": "official",
+          "label_text": "DemoExchange Deposit Hotwallet",
+          "confidence": 0.99,
+          "demo_seed": true
+        }
+      }
     ],
     "relationships": [
-      {"from": "s1_victim", "to": "s1_hop1", "type": "TRANSACTION", "properties": {"tx_hash": "s1_tx1", "chain": "ETH", "block_height": 100, "amount": 2.5, "asset": "ETH", "direction": "out", "is_bridge_leg": false, "confidence_of_link": 0.99, "demo_seed": true}},
-      {"from": "s1_hop1", "to": "s1_vasp", "type": "TRANSACTION", "properties": {"tx_hash": "s1_tx2", "chain": "ETH", "block_height": 101, "amount": 2.48, "asset": "ETH", "direction": "out", "is_bridge_leg": false, "confidence_of_link": 0.99, "demo_seed": true}},
-      {"from": "s1_vasp", "to": "DemoExchange", "from_label": "Wallet", "to_label": "VASP", "type": "LABELED_AS", "properties": {"confidence_tier": "Strong", "demo_seed": true}},
-      {"from": "s1_vasp", "to": "DemoExchange Deposit Hotwallet", "from_label": "Wallet", "to_label": "Label", "type": "HAS_LABEL", "properties": {"demo_seed": true}}
+      {
+        "from": "s1_victim",
+        "to": "s1_hop1",
+        "type": "TRANSACTION",
+        "properties": {
+          "tx_hash": "s1_tx1",
+          "chain": "ETH",
+          "block_height": 100,
+          "amount": 2.5,
+          "asset": "ETH",
+          "direction": "out",
+          "is_bridge_leg": false,
+          "confidence_of_link": 0.99,
+          "demo_seed": true
+        }
+      },
+      {
+        "from": "s1_hop1",
+        "to": "s1_vasp",
+        "type": "TRANSACTION",
+        "properties": {
+          "tx_hash": "s1_tx2",
+          "chain": "ETH",
+          "block_height": 101,
+          "amount": 2.48,
+          "asset": "ETH",
+          "direction": "out",
+          "is_bridge_leg": false,
+          "confidence_of_link": 0.99,
+          "demo_seed": true
+        }
+      },
+      {
+        "from": "s1_vasp",
+        "to": "DemoExchange",
+        "from_label": "Wallet",
+        "to_label": "VASP",
+        "type": "LABELED_AS",
+        "properties": {
+          "confidence_tier": "Strong",
+          "demo_seed": true
+        }
+      },
+      {
+        "from": "s1_vasp",
+        "to": "DemoExchange Deposit Hotwallet",
+        "from_label": "Wallet",
+        "to_label": "Label",
+        "type": "HAS_LABEL",
+        "properties": {
+          "demo_seed": true
+        }
+      }
     ]
-  }
+  },
+  "chain": "ETH",
+  "expected_terminal": "VASP",
+  "wallets": [
+    {
+      "address": "s1_victim",
+      "chain": "ETH",
+      "entity_type": "eoa",
+      "cluster_id": "c_s1",
+      "first_seen": "2026-09-08T10:00:00Z",
+      "last_seen": "2026-09-10T12:00:00Z"
+    },
+    {
+      "address": "s1_hop1",
+      "chain": "ETH",
+      "entity_type": "eoa",
+      "cluster_id": "c_s1",
+      "first_seen": "2026-09-10T12:00:00Z",
+      "last_seen": "2026-09-10T14:30:00Z"
+    },
+    {
+      "address": "s1_vasp",
+      "chain": "ETH",
+      "entity_type": "vasp",
+      "cluster_id": "vasp_demo",
+      "first_seen": "2024-01-01T00:00:00Z",
+      "last_seen": "2026-09-10T15:00:00Z"
+    },
+    {
+      "address": "s1_cold",
+      "chain": "ETH",
+      "entity_type": "eoa",
+      "cluster_id": "c_cold",
+      "first_seen": "2025-01-01T00:00:00Z",
+      "last_seen": "2025-01-01T00:00:00Z"
+    }
+  ],
+  "transactions": [
+    {
+      "tx_hash": "s1_tx1",
+      "chain": "ETH",
+      "from_address": "s1_victim",
+      "to_address": "s1_hop1",
+      "block_height": 19500100,
+      "timestamp": "2026-09-10T12:05:00Z",
+      "amount": 2.5,
+      "asset": "ETH",
+      "direction": "out",
+      "is_bridge_leg": false,
+      "confidence_of_link": 0.99
+    },
+    {
+      "tx_hash": "s1_tx2",
+      "chain": "ETH",
+      "from_address": "s1_hop1",
+      "to_address": "s1_vasp",
+      "block_height": 19500120,
+      "timestamp": "2026-09-10T14:30:00Z",
+      "amount": 2.48,
+      "asset": "ETH",
+      "direction": "out",
+      "is_bridge_leg": false,
+      "confidence_of_link": 0.99
+    }
+  ],
+  "vasp_entities": [
+    {
+      "name": "DemoExchange",
+      "known_addresses": [
+        "s1_vasp"
+      ],
+      "last_verified": "2026-09-10T00:00:00Z"
+    }
+  ]
 }

@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+
+# Environment
+.env
+!.env.example
+
+# Pytest / IDE
+.pytest_cache/
+.coverage
+htmlcov/
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Specification docs & local copies
+BUILD*.md
+* (1).md
+PREREQUISITES.md
+T3_TEAM_HANDOFF.md
+

@@ -1,0 +1,76 @@
+{
+  "version": "1.0.0",
+  "note": "Merged scenario ground-truth labels by T5 (Database Engineer) with T3 ML proposals.",
+  "label_meaning": {
+    "1": "suspicious / prioritize for investigator",
+    "0": "low priority / benign relative to scenario"
+  },
+  "scenarios": {
+    "scenario_1_direct": {
+      "case_id": "case_s1",
+      "title": "Direct VASP Attribution",
+      "chain": "ETH",
+      "victim_wallet": "s1_victim",
+      "origin_tx": "s1_tx1",
+      "reported_amount": 2.5,
+      "currency": "ETH",
+      "high_risk_wallets": ["s1_victim", "s1_hop1"],
+      "low_risk_wallets": ["s1_vasp", "s1_cold"],
+      "expected_terminal": "VASP",
+      "terminal_vasp": "DemoExchange",
+      "expected_tier": "Strong"
+    },
+    "scenario_2_peel": {
+      "case_id": "case_s2",
+      "title": "Peel Chain Obfuscation",
+      "chain": "BTC",
+      "victim_wallet": "s2_peel_0",
+      "origin_tx": "s2_tx_0",
+      "reported_amount": 3.0,
+      "currency": "BTC",
+      "high_risk_wallets": ["s2_peel_0", "s2_peel_1", "s2_peel_2", "s2_peel_3"],
+      "low_risk_wallets": ["s2_normal"],
+      "expected_pattern": "peel_chain"
+    },
+    "scenario_3_cross_chain": {
+      "case_id": "case_s3",
+      "title": "Cross-Chain Bridge Lock/Mint",
+      "chains": ["BTC", "ETH"],
+      "victim_wallet": "s3_btc_lock",
+      "origin_tx": "s3_lock",
+      "reported_amount": 1.2,
+      "currency": "BTC",
+      "high_risk_wallets": ["s3_btc_lock", "s3_eth_mint"],
+      "low_risk_wallets": ["s3_benign"],
+      "expected_pattern": "cross_chain_bridge",
+      "bridge_contract": "demo_bridge",
+      "confidence_note": "bridge links carry lower default confidence than same-chain"
+    },
+    "scenario_4_mixer": {
+      "case_id": "case_s4",
+      "title": "Mixer Boundary Termination",
+      "chain": "BTC",
+      "victim_wallet": "s4_pre_mixer",
+      "origin_tx": "s4_in",
+      "reported_amount": 4.0,
+      "currency": "BTC",
+      "high_risk_wallets": ["s4_pre_mixer", "s4_mixer"],
+      "low_risk_wallets": ["s4_quiet"],
+      "expected_termination": "mixer_boundary",
+      "mixer_wallet": "s4_mixer"
+    },
+    "scenario_5_conflicting": {
+      "case_id": "case_s5",
+      "title": "Conflicting Provenance Labels",
+      "chain": "ETH",
+      "victim_wallet": "s5_conflict",
+      "origin_tx": "s5_tx",
+      "reported_amount": 1.4,
+      "currency": "ETH",
+      "high_risk_wallets": ["s5_conflict"],
+      "low_risk_wallets": ["s5_clean_label"],
+      "expected_tier_pressure": "conflicting_labels_lower_reliability"
+    }
+  },
+  "holdout_default_for_ml_eval": "scenario_5_conflicting"
+}

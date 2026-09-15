@@ -1,0 +1,94 @@
+{
+  "scenario_id": "scenario_3_cross_chain",
+  "name": "Cross-Chain Bridge Hopping (BTC to ETH)",
+  "description": "Cross-chain fund movements via bridge deposit lock/burn on BTC and corresponding mint/release on ETH.",
+  "chains": ["BTC", "ETH"],
+  "expected_pattern": "cross_chain_bridge",
+  "confidence_note": "bridge links carry lower default confidence than same-chain",
+  "wallets": [
+    {
+      "address": "s3_btc_lock",
+      "chain": "BTC",
+      "entity_type": "bridge_leg",
+      "cluster_id": "c_bridge",
+      "first_seen": "2026-09-10T05:00:00Z",
+      "last_seen": "2026-09-10T06:00:00Z"
+    },
+    {
+      "address": "s3_bridge_custody",
+      "chain": "BTC",
+      "entity_type": "bridge_contract",
+      "cluster_id": "c_bridge",
+      "first_seen": "2024-01-01T00:00:00Z",
+      "last_seen": "2026-09-10T06:00:00Z"
+    },
+    {
+      "address": "s3_eth_mint",
+      "chain": "ETH",
+      "entity_type": "bridge_leg",
+      "cluster_id": "c_bridge",
+      "first_seen": "2026-09-10T06:30:00Z",
+      "last_seen": "2026-09-10T07:00:00Z"
+    },
+    {
+      "address": "s3_benign",
+      "chain": "ETH",
+      "entity_type": "eoa",
+      "cluster_id": "c_b3",
+      "first_seen": "2026-08-20T00:00:00Z",
+      "last_seen": "2026-08-20T00:00:00Z"
+    }
+  ],
+  "transactions": [
+    {
+      "tx_hash": "s3_lock",
+      "chain": "BTC",
+      "from_address": "s3_btc_lock",
+      "to_address": "s3_bridge_custody",
+      "block_height": 860300,
+      "timestamp": "2026-09-10T05:30:00Z",
+      "amount": 1.2,
+      "asset": "BTC",
+      "direction": "out",
+      "is_bridge_leg": true,
+      "confidence_of_link": 0.95
+    },
+    {
+      "tx_hash": "s3_mint",
+      "chain": "ETH",
+      "from_address": "0x0000000000000000000000000000000000000000",
+      "to_address": "s3_eth_mint",
+      "block_height": 19500301,
+      "timestamp": "2026-09-10T06:45:00Z",
+      "amount": 1.18,
+      "asset": "WBTC",
+      "direction": "in",
+      "is_bridge_leg": true,
+      "confidence_of_link": 0.95
+    },
+    {
+      "tx_hash": "s3_ben",
+      "chain": "ETH",
+      "from_address": "s3_benign",
+      "to_address": "s3_benign",
+      "block_height": 19400010,
+      "timestamp": "2026-08-20T00:00:00Z",
+      "amount": 0.04,
+      "asset": "ETH",
+      "direction": "out",
+      "is_bridge_leg": false,
+      "confidence_of_link": 0.9
+    }
+  ],
+  "cross_chain_links": [
+    {
+      "source_wallet": "s3_btc_lock",
+      "dest_wallet": "s3_eth_mint",
+      "source_chain_tx": "s3_lock",
+      "dest_chain_tx": "s3_mint",
+      "bridge_contract": "s3_bridge_custody",
+      "correlation_method": "lock_mint_pairing",
+      "correlation_confidence": 0.75
+    }
+  ]
+}

@@ -1,0 +1,141 @@
+{
+  "scenario_id": "scenario_4_mixer",
+  "name": "Mixer Boundary Termination",
+  "description": "Rapid forwarding into a privacy mixer service boundary resulting in evidentiary discontinuity and massive fan-out.",
+  "chain": "BTC",
+  "expected_termination": "mixer_boundary",
+  "wallets": [
+    {
+      "address": "s4_pre_mixer",
+      "chain": "BTC",
+      "entity_type": "eoa",
+      "cluster_id": "c_m4",
+      "first_seen": "2026-09-09T00:00:00Z",
+      "last_seen": "2026-09-10T12:00:00Z"
+    },
+    {
+      "address": "s4_mixer",
+      "chain": "BTC",
+      "entity_type": "mixer",
+      "cluster_id": "mixer_cluster",
+      "first_seen": "2023-01-01T00:00:00Z",
+      "last_seen": "2026-09-10T12:00:00Z"
+    },
+    {
+      "address": "s4_quiet",
+      "chain": "BTC",
+      "entity_type": "eoa",
+      "cluster_id": "c_q4",
+      "first_seen": "2026-08-01T00:00:00Z",
+      "last_seen": "2026-08-01T00:00:00Z"
+    },
+    {
+      "address": "s4_out_1",
+      "chain": "BTC",
+      "entity_type": "eoa",
+      "cluster_id": "c_mout",
+      "first_seen": "2026-09-10T12:05:00Z",
+      "last_seen": "2026-09-10T12:05:00Z"
+    },
+    {
+      "address": "s4_out_2",
+      "chain": "BTC",
+      "entity_type": "eoa",
+      "cluster_id": "c_mout",
+      "first_seen": "2026-09-10T12:05:00Z",
+      "last_seen": "2026-09-10T12:05:00Z"
+    },
+    {
+      "address": "s4_out_3",
+      "chain": "BTC",
+      "entity_type": "eoa",
+      "cluster_id": "c_mout",
+      "first_seen": "2026-09-10T12:05:00Z",
+      "last_seen": "2026-09-10T12:05:00Z"
+    },
+    {
+      "address": "s4_out_4",
+      "chain": "BTC",
+      "entity_type": "eoa",
+      "cluster_id": "c_mout",
+      "first_seen": "2026-09-10T12:05:00Z",
+      "last_seen": "2026-09-10T12:05:00Z"
+    }
+  ],
+  "transactions": [
+    {
+      "tx_hash": "s4_in",
+      "chain": "BTC",
+      "from_address": "s4_pre_mixer",
+      "to_address": "s4_mixer",
+      "block_height": 860400,
+      "timestamp": "2026-09-10T12:00:00Z",
+      "amount": 4.0,
+      "asset": "BTC",
+      "direction": "out",
+      "is_bridge_leg": false,
+      "confidence_of_link": 0.95
+    },
+    {
+      "tx_hash": "s4_out_tx_1",
+      "chain": "BTC",
+      "from_address": "s4_mixer",
+      "to_address": "s4_out_1",
+      "block_height": 860401,
+      "timestamp": "2026-09-10T12:05:00Z",
+      "amount": 0.8,
+      "asset": "BTC",
+      "direction": "out",
+      "is_bridge_leg": false,
+      "confidence_of_link": 0.6
+    },
+    {
+      "tx_hash": "s4_out_tx_2",
+      "chain": "BTC",
+      "from_address": "s4_mixer",
+      "to_address": "s4_out_2",
+      "block_height": 860401,
+      "timestamp": "2026-09-10T12:05:00Z",
+      "amount": 0.8,
+      "asset": "BTC",
+      "direction": "out",
+      "is_bridge_leg": false,
+      "confidence_of_link": 0.6
+    },
+    {
+      "tx_hash": "s4_out_tx_3",
+      "chain": "BTC",
+      "from_address": "s4_mixer",
+      "to_address": "s4_out_3",
+      "block_height": 860401,
+      "timestamp": "2026-09-10T12:05:00Z",
+      "amount": 0.8,
+      "asset": "BTC",
+      "direction": "out",
+      "is_bridge_leg": false,
+      "confidence_of_link": 0.6
+    },
+    {
+      "tx_hash": "s4_out_tx_4",
+      "chain": "BTC",
+      "from_address": "s4_mixer",
+      "to_address": "s4_out_4",
+      "block_height": 860401,
+      "timestamp": "2026-09-10T12:05:00Z",
+      "amount": 0.8,
+      "asset": "BTC",
+      "direction": "out",
+      "is_bridge_leg": false,
+      "confidence_of_link": 0.6
+    }
+  ],
+  "labels": [
+    {
+      "address": "s4_mixer",
+      "source": "OFAC_MOCK",
+      "label_text": "Tornado / Wasabi Style Mixer Pool",
+      "confidence": 0.99,
+      "confidence_tier": "Strong"
+    }
+  ]
+}

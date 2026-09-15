@@ -1,0 +1,86 @@
+{
+  "scenario_id": "scenario_1_direct",
+  "name": "Direct VASP Attribution",
+  "description": "Victim wallet funds hop through intermediary address directly into a regulated exchange deposit wallet.",
+  "chain": "ETH",
+  "expected_terminal": "VASP",
+  "wallets": [
+    {
+      "address": "s1_victim",
+      "chain": "ETH",
+      "entity_type": "eoa",
+      "cluster_id": "c_s1",
+      "first_seen": "2026-09-08T10:00:00Z",
+      "last_seen": "2026-09-10T12:00:00Z"
+    },
+    {
+      "address": "s1_hop1",
+      "chain": "ETH",
+      "entity_type": "eoa",
+      "cluster_id": "c_s1",
+      "first_seen": "2026-09-10T12:00:00Z",
+      "last_seen": "2026-09-10T14:30:00Z"
+    },
+    {
+      "address": "s1_vasp",
+      "chain": "ETH",
+      "entity_type": "vasp",
+      "cluster_id": "vasp_demo",
+      "first_seen": "2024-01-01T00:00:00Z",
+      "last_seen": "2026-09-10T15:00:00Z"
+    },
+    {
+      "address": "s1_cold",
+      "chain": "ETH",
+      "entity_type": "eoa",
+      "cluster_id": "c_cold",
+      "first_seen": "2025-01-01T00:00:00Z",
+      "last_seen": "2025-01-01T00:00:00Z"
+    }
+  ],
+  "transactions": [
+    {
+      "tx_hash": "s1_tx1",
+      "chain": "ETH",
+      "from_address": "s1_victim",
+      "to_address": "s1_hop1",
+      "block_height": 19500100,
+      "timestamp": "2026-09-10T12:05:00Z",
+      "amount": 2.5,
+      "asset": "ETH",
+      "direction": "out",
+      "is_bridge_leg": false,
+      "confidence_of_link": 0.99
+    },
+    {
+      "tx_hash": "s1_tx2",
+      "chain": "ETH",
+      "from_address": "s1_hop1",
+      "to_address": "s1_vasp",
+      "block_height": 19500120,
+      "timestamp": "2026-09-10T14:30:00Z",
+      "amount": 2.48,
+      "asset": "ETH",
+      "direction": "out",
+      "is_bridge_leg": false,
+      "confidence_of_link": 0.99
+    }
+  ],
+  "vasp_entities": [
+    {
+      "name": "DemoExchange",
+      "known_addresses": ["s1_vasp"],
+      "last_verified": "2026-09-10T00:00:00Z"
+    }
+  ],
+  "labels": [
+    {
+      "address": "s1_vasp",
+      "vasp_name": "DemoExchange",
+      "source": "official",
+      "label_text": "DemoExchange Deposit",
+      "confidence": 0.99,
+      "confidence_tier": "Strong"
+    }
+  ]
+}

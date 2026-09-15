@@ -1,0 +1,70 @@
+{
+  "scenario_id": "scenario_5_conflicting",
+  "name": "Conflicting Labels and Evidence Tier Degradation",
+  "description": "Destination address holds conflicting high-confidence and low-confidence entity labels requiring confidence downgrade.",
+  "chain": "ETH",
+  "expected_tier_pressure": "conflicting_labels_lower_reliability",
+  "wallets": [
+    {
+      "address": "s5_conflict",
+      "chain": "ETH",
+      "entity_type": "eoa",
+      "cluster_id": "c_s5",
+      "first_seen": "2026-09-10T11:00:00Z",
+      "last_seen": "2026-09-10T12:00:00Z"
+    },
+    {
+      "address": "s5_clean_label",
+      "chain": "ETH",
+      "entity_type": "eoa",
+      "cluster_id": "c_s5_clean",
+      "first_seen": "2026-08-01T00:00:00Z",
+      "last_seen": "2026-09-10T12:00:00Z"
+    }
+  ],
+  "transactions": [
+    {
+      "tx_hash": "s5_tx1",
+      "chain": "ETH",
+      "from_address": "s5_clean_label",
+      "to_address": "s5_conflict",
+      "block_height": 19500500,
+      "timestamp": "2026-09-10T11:30:00Z",
+      "amount": 10.0,
+      "asset": "ETH",
+      "direction": "out",
+      "is_bridge_leg": false,
+      "confidence_of_link": 0.98
+    }
+  ],
+  "vasp_entities": [
+    {
+      "name": "ExchangeAlpha",
+      "known_addresses": ["s5_conflict"],
+      "last_verified": "2026-09-10T00:00:00Z"
+    },
+    {
+      "name": "ServiceBeta_Gambling",
+      "known_addresses": ["s5_conflict"],
+      "last_verified": "2025-06-01T00:00:00Z"
+    }
+  ],
+  "labels": [
+    {
+      "address": "s5_conflict",
+      "vasp_name": "ExchangeAlpha",
+      "source": "crowdsourced",
+      "label_text": "ExchangeAlpha Hot Wallet",
+      "confidence": 0.70,
+      "confidence_tier": "Medium"
+    },
+    {
+      "address": "s5_conflict",
+      "vasp_name": "ServiceBeta_Gambling",
+      "source": "forum_leak",
+      "label_text": "Unlicensed Gambling Escrow",
+      "confidence": 0.40,
+      "confidence_tier": "Weak"
+    }
+  ]
+}

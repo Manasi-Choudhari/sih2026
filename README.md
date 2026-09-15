@@ -384,6 +384,7 @@ Keep this **separate** from rule risk score and attribution confidence.
 You’re ready to continue from **Section 4** and the next items in **Section 7**.
 
 ---
+<<<<<<< HEAD
 ---
 
 # T1 Backend & Investigation Lead — Setup & Continue Guide
@@ -601,4 +602,71 @@ ml_result = score_wallet_from_neo4j(wallet_address)
 - [ ] Read `BUILD_T1_backend_investigation_lead.md` before adding new routes or modifying contracts
 
 You’re ready to continue from **Section 4** and work on the next priorities in **Section 7**.
+
+---
+
+## 11. T6 DevOps / Security + QA-Demo Lead (`/infra`, `/scenarios/acceptance`)
+
+The T6 module provides the cross-cutting infrastructure, security, audit logging, rate limiting, and end-to-end scenario validation harness required by `BUILD.md` and `BUILD_T6_devops_security_qa.md`.
+
+### Strict File Tree Structure (100% BUILD.md Compliant)
+```text
+/infra
+  /docker/                            docker-compose.yml, Dockerfile.backend, Dockerfile.frontend, Dockerfile.ml
+  /auth/                              jwt.py, rbac.py
+  /rate_limiting/                     middleware.py
+  /audit/                             audit_middleware.py
+  /demo/                              offline_bundle.sh, reset.sh, fallback.md
+  ci.yml
+
+/scenarios
+  /acceptance/                        test_runner.py
+```
+
+### Key Capabilities
+
+1. **Multi-Service Docker Stack (`infra/docker/`)**:
+   - Spins up `Postgres 16`, `Neo4j 5.18` (APOC plugin enabled), `Redis 7`, `MinIO`, `backend` (FastAPI), `ml` (XGBoost/Anomaly), and `frontend` (Next.js).
+   - Fully isolated network (`vajra_network`) with health checks.
+   - Run stack:
+     ```bash
+     docker compose -f infra/docker/docker-compose.yml up -d
+     ```
+
+2. **JWT Auth & Role-Based Access Control (`infra/auth/`)**:
+   - `jwt.py`: Cryptographic HS256 JWT creation, decoding, and expiration enforcement.
+   - `rbac.py`: Role definitions (`investigator`, `supervisor`, `admin`), permission matrices, and FastAPI route protection dependencies (`require_role`, `require_permission`).
+   - Inlined contracts ensure standalone execution without requiring Python package glue (`__init__.py`).
+   - Demo test credentials:
+     - Investigator: `inv_sharma` / `investigator123`
+     - Supervisor: `sup_verma` / `supervisor123`
+     - Admin: `admin_vajra` / `admin123`
+
+3. **Rate Limiting & Circuit Breaker (`infra/rate_limiting/middleware.py`)**:
+   - In-memory sliding-window rate limiter with Redis backend support.
+   - Circuit breaker with degraded mode fallback for external explorer APIs (Etherscan/Blockchair).
+
+4. **Ordered Audit Trail Logging (`infra/audit/audit_middleware.py`)**:
+   - Implements the PostgreSQL `AuditEvent` schema for tracking all state-changing actions (case creation, recommendation approval, report generation, verify calls, unauthorized attempts).
+   - Fast case-specific audit trail retrieval (`audit_event_store.get_events_for_case(case_id)`).
+
+5. **Scenario Acceptance & Adversarial Test Harness (`scenarios/acceptance/test_runner.py`)**:
+   - Evaluates all 5 mandatory synthetic scenarios (`--stub` or `--live`).
+   - Executes the complete 6-point Task 9 Adversarial Test Suite (`--adversarial`):
+     - `ADV-01`: Poisoned / stale / conflicting label degradation to Weak/Unknown.
+     - `ADV-02`: Mixer & privacy boundary clean termination (`mixer_boundary`).
+     - `ADV-03`: Fan-out explosion capping (terminates as pattern event above threshold).
+     - `ADV-04`: ML-vs-rule disagreement (deterministic rules take strict precedence; 3 scores unmerged).
+     - `ADV-05`: Hash-chained evidence tampering detection (verify returns `FAIL`).
+     - `ADV-06`: RBAC unauthorized action attempt blocking & security audit logging.
+   - Run full verification:
+     ```bash
+     python scenarios/acceptance/test_runner.py --all
+     ```
+
+6. **Offline Demo Reliability & Reset (`infra/demo/`)**:
+   - `reset.sh`: Clean one-command state restoration between demo judge runs.
+   - `offline_bundle.sh`: Offline asset packaging script (no internet critical path).
+   - `fallback.md`: Technical fallback documentation and judge Q&A defense.
+
 

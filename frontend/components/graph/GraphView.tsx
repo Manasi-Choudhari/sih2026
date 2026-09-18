@@ -246,6 +246,17 @@ export default function GraphView({ graphData, compact = false }: GraphViewProps
     }
   };
 
+  if (!graphData.nodes || graphData.nodes.length === 0) {
+    return (
+      <div className="h-full w-full flex items-center justify-center rounded-lg border border-[#2B2B2E] bg-[#0A0A0B] p-6 text-center">
+        <div className="space-y-1">
+          <p className="text-sm font-medium text-[#E7EAEE]">No trace graph available</p>
+          <p className="text-xs text-[#5A6373]">Backend is currently offline or no trace hops have been seeded for this case.</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="h-full w-full relative rounded-lg border border-[#2B2B2E] bg-[#0A0A0B] overflow-hidden">
       <ReactFlow

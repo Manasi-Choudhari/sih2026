@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 import { IBM_Plex_Serif, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
-import { QUEUE_CASES } from "@/lib/scenarios/fixtures";
+import { mockApiClient } from "@/lib/api/client";
 
 const ibmPlexSerif = IBM_Plex_Serif({
   weight: ["400", "500", "600", "700"],
@@ -36,17 +36,20 @@ export const metadata: Metadata = {
   description: "Evidence-tiered VASP attribution and cryptographic tamper-evident ledger (SIH 26183)",
 };
 
-const WORKSPACE_NAV = [
-  { href: "/queue", label: "Case queue", icon: Inbox },
-  { href: "/queue", label: "Recent activity", icon: Clock },
-  { href: "/cases/CASE-2026-0417/report", label: "Reports", icon: FileText },
-] as const;
-
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const openCases = await mockApiClient.listCases();
+  const firstCaseId = openCases[0]?.case_id;
+
+  const workspaceNav = [
+    { href: "/queue", label: "Case queue", icon: Inbox },
+    { href: "/queue", label: "Recent activity", icon: Clock },
+    { href: firstCaseId ? `/cases/${firstCaseId}/report` : "/queue", label: "Reports", icon: FileText },
+  ] as const;
+
   return (
     <html
       lang="en"
@@ -115,7 +118,7 @@ export default function RootLayout({
                     Workspace
                   </p>
                   <nav className="space-y-0.5">
-                    {WORKSPACE_NAV.map(({ href, label, icon: Icon }) => (
+                    {workspaceNav.map(({ href, label, icon: Icon }) => (
                       <Link
                         key={label}
                         href={href}
@@ -128,11 +131,11 @@ export default function RootLayout({
                   </nav>
                 </div>
 
-                {/* Scenario Visual Shell: Open Cases · 5 */}
+                {/* Open Cases */}
                 <div>
                   <div className="px-2 mb-1.5 flex items-center justify-between">
                     <p className="text-[11px] font-medium uppercase tracking-wider text-[#5A6373]">
-                      Open Cases · 5
+                      Open Cases · {openCases.length}
                     </p>
                     <Link
                       href="/queue"
@@ -143,38 +146,45 @@ export default function RootLayout({
                   </div>
 
                   <div className="space-y-1">
-                    {QUEUE_CASES.map((c) => {
-                      const dotColor =
-                        c.tier_dot === "Strong"
-                          ? "#3FBE8B"
-                          : c.tier_dot === "Medium"
-                          ? "#E3AE3E"
-                          : c.tier_dot === "Weak"
-                          ? "#C56A4B"
-                          : "#5C6675";
+                    {openCases.length === 0 ? (
+                      <div className="px-2.5 py-4 text-center border border-dashed border-[#2B2B2E] rounded-md space-y-1">
+                        <p className="text-xs text-[#8A93A3] font-medium">No open cases</p>
+                        <p className="text-[10px] text-[#5A6373]">Backend unseeded or offline</p>
+                      </div>
+                    ) : (
+                      openCases.map((c) => {
+                        const dotColor =
+                          c.tier_dot === "Strong"
+                            ? "#3FBE8B"
+                            : c.tier_dot === "Medium"
+                            ? "#E3AE3E"
+                            : c.tier_dot === "Weak"
+                            ? "#C56A4B"
+                            : "#5C6675";
 
-                      return (
-                        <Link
-                          key={c.case_id}
-                          href={`/cases/${c.case_id}/overview`}
-                          className="group flex flex-col gap-0.5 px-2.5 py-2 rounded-md border border-transparent hover:border-[#2B2B2E] hover:bg-[#1B1B1D] transition-all"
-                        >
-                          <div className="flex items-center justify-between text-xs font-mono-vajra text-[#8A93A3] group-hover:text-[#E7EAEE]">
-                            <span>{c.case_id}</span>
-                            <span
-                              className="w-1.5 h-1.5 rounded-full"
-                              style={{ backgroundColor: dotColor }}
-                            />
-                          </div>
-                          <div className="flex items-center justify-between text-[11px] text-[#5A6373]">
-                            <span className="truncate pr-1">{c.name}</span>
-                            <span className="font-mono-vajra shrink-0 text-[#8A93A3]">
-                              {c.amount_inr}
-                            </span>
-                          </div>
-                        </Link>
-                      );
-                    })}
+                        return (
+                          <Link
+                            key={c.case_id}
+                            href={`/cases/${c.case_id}/overview`}
+                            className="group flex flex-col gap-0.5 px-2.5 py-2 rounded-md border border-transparent hover:border-[#2B2B2E] hover:bg-[#1B1B1D] transition-all"
+                          >
+                            <div className="flex items-center justify-between text-xs font-mono-vajra text-[#8A93A3] group-hover:text-[#E7EAEE]">
+                              <span>{c.case_id}</span>
+                              <span
+                                className="w-1.5 h-1.5 rounded-full"
+                                style={{ backgroundColor: dotColor }}
+                              />
+                            </div>
+                            <div className="flex items-center justify-between text-[11px] text-[#5A6373]">
+                              <span className="truncate pr-1">{c.name}</span>
+                              <span className="font-mono-vajra shrink-0 text-[#8A93A3]">
+                                {c.amount_inr}
+                              </span>
+                            </div>
+                          </Link>
+                        );
+                      })
+                    )}
                   </div>
                 </div>
               </div>
@@ -183,7 +193,9 @@ export default function RootLayout({
               <div className="pt-4 border-t border-[#2B2B2E] px-2 space-y-1 text-[11px] text-[#5A6373]">
                 <div className="flex items-center justify-between">
                   <span>Engine status:</span>
-                  <span className="text-[#3FBE8B] font-mono-vajra">ACTIVE</span>
+                  <span className={openCases.length > 0 ? "text-[#3FBE8B] font-mono-vajra" : "text-[#8A93A3] font-mono-vajra"}>
+                    {openCases.length > 0 ? "ONLINE" : "STANDBY"}
+                  </span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span>Model:</span>

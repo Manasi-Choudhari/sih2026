@@ -104,65 +104,78 @@ export default function QueueView({ initialCases }: QueueViewProps) {
               </tr>
             </thead>
             <tbody className="divide-y divide-[#2B2B2E]">
-              {filtered.map((item) => {
-                const dotColor =
-                  item.tier_dot === "Strong"
-                    ? "#3FBE8B"
-                    : item.tier_dot === "Medium"
-                    ? "#E3AE3E"
-                    : item.tier_dot === "Weak"
-                    ? "#C56A4B"
-                    : "#5C6675";
+              {filtered.length === 0 ? (
+                <tr>
+                  <td colSpan={6} className="px-4 py-12 text-center text-xs text-[#8A93A3]">
+                    <div className="max-w-md mx-auto space-y-2">
+                      <p className="text-sm font-semibold text-[#E7EAEE]">No complaints found in investigation queue</p>
+                      <p className="text-[11px] text-[#5A6373]">
+                        The queue is currently empty. Start the FastAPI backend (<code className="text-[#49C7BE]">localhost:8000</code>) to access seeded cases, or use the <strong>New Intake Case</strong> button above to create one.
+                      </p>
+                    </div>
+                  </td>
+                </tr>
+              ) : (
+                filtered.map((item) => {
+                  const dotColor =
+                    item.tier_dot === "Strong"
+                      ? "#3FBE8B"
+                      : item.tier_dot === "Medium"
+                      ? "#E3AE3E"
+                      : item.tier_dot === "Weak"
+                      ? "#C56A4B"
+                      : "#5C6675";
 
-                return (
-                  <tr key={item.case_id} className="hover:bg-[#1B1B1D] transition-colors">
-                    <td className="px-4 py-3.5 font-mono-vajra font-semibold text-[#E7EAEE]">
-                      <Link
-                        href={`/cases/${item.case_id}/overview`}
-                        className="hover:text-[#49C7BE] hover:underline"
-                      >
-                        {item.case_id}
-                      </Link>
-                      <div className="text-[10px] text-[#5A6373] font-normal">{item.complaint_id}</div>
-                    </td>
-                    <td className="px-4 py-3.5">
-                      <div className="flex items-center gap-2">
-                        <span
-                          className="w-2 h-2 rounded-full shrink-0"
-                          style={{ backgroundColor: dotColor }}
-                        />
-                        <span className="capitalize text-[#E7EAEE] font-medium">{item.status.replace("_", " ")}</span>
-                        <span className="font-mono-vajra text-[10px] text-[#5A6373]">({item.tier_dot})</span>
-                      </div>
-                    </td>
-                    <td className="px-4 py-3.5">
-                      <p className="text-[#E7EAEE] font-medium">{item.name}</p>
-                      <p className="text-[11px] text-[#5A6373]">{item.pattern_type}</p>
-                    </td>
-                    <td className="px-4 py-3.5 font-mono-vajra font-bold text-[#E7EAEE]">
-                      {item.amount_inr}
-                    </td>
-                    <td className="px-4 py-3.5 font-mono-vajra text-[#8A93A3]">
-                      <span className="px-1.5 py-0.5 rounded border border-[#2B2B2E] bg-[#0A0A0B] mr-1.5 text-[10px] text-[#49C7BE]">
-                        {item.chain}
-                      </span>
-                      {item.crypto_amount}
-                    </td>
-                    <td className="px-4 py-3.5 text-[#8A93A3] whitespace-nowrap">
-                      {item.reported_ago}
-                    </td>
-                    <td className="px-4 py-3.5 text-right">
-                      <Link
-                        href={`/cases/${item.case_id}/overview`}
-                        className="inline-flex items-center gap-1 px-3 py-1.5 rounded border border-[#2B2B2E] bg-[#141415] hover:bg-[#2B2B2E] text-xs text-[#49C7BE] font-medium transition-colors"
-                      >
-                        <span>Investigate</span>
-                        <ArrowRight className="h-3 w-3" />
-                      </Link>
-                    </td>
-                  </tr>
-                );
-              })}
+                  return (
+                    <tr key={item.case_id} className="hover:bg-[#1B1B1D] transition-colors">
+                      <td className="px-4 py-3.5 font-mono-vajra font-semibold text-[#E7EAEE]">
+                        <Link
+                          href={`/cases/${item.case_id}/overview`}
+                          className="hover:text-[#49C7BE] hover:underline"
+                        >
+                          {item.case_id}
+                        </Link>
+                        <div className="text-[10px] text-[#5A6373] font-normal">{item.complaint_id}</div>
+                      </td>
+                      <td className="px-4 py-3.5">
+                        <div className="flex items-center gap-2">
+                          <span
+                            className="w-2 h-2 rounded-full shrink-0"
+                            style={{ backgroundColor: dotColor }}
+                          />
+                          <span className="capitalize text-[#E7EAEE] font-medium">{item.status.replace("_", " ")}</span>
+                          <span className="font-mono-vajra text-[10px] text-[#5A6373]">({item.tier_dot})</span>
+                        </div>
+                      </td>
+                      <td className="px-4 py-3.5">
+                        <p className="text-[#E7EAEE] font-medium">{item.name}</p>
+                        <p className="text-[11px] text-[#5A6373]">{item.pattern_type}</p>
+                      </td>
+                      <td className="px-4 py-3.5 font-mono-vajra font-bold text-[#E7EAEE]">
+                        {item.amount_inr}
+                      </td>
+                      <td className="px-4 py-3.5 font-mono-vajra text-[#8A93A3]">
+                        <span className="px-1.5 py-0.5 rounded border border-[#2B2B2E] bg-[#0A0A0B] mr-1.5 text-[10px] text-[#49C7BE]">
+                          {item.chain}
+                        </span>
+                        {item.crypto_amount}
+                      </td>
+                      <td className="px-4 py-3.5 text-[#8A93A3] whitespace-nowrap">
+                        {item.reported_ago}
+                      </td>
+                      <td className="px-4 py-3.5 text-right">
+                        <Link
+                          href={`/cases/${item.case_id}/overview`}
+                          className="inline-flex items-center gap-1 px-3 py-1.5 rounded border border-[#2B2B2E] bg-[#141415] hover:bg-[#2B2B2E] text-xs text-[#49C7BE] font-medium transition-colors"
+                        >
+                          <span>Investigate</span>
+                          <ArrowRight className="h-3 w-3" />
+                        </Link>
+                      </td>
+                    </tr>
+                  );
+                })
+              )}
             </tbody>
           </table>
         </div>

@@ -43,8 +43,8 @@ async function safeFetch<T>(endpoint: string, options?: RequestInit): Promise<T 
         Accept: "application/json",
         ...(options?.headers || {}),
       },
-      // Short timeout to avoid hanging if backend is not started
-      signal: AbortSignal.timeout(3000),
+      // Timeout allowing ML inference and graph traversal to complete cleanly
+      signal: AbortSignal.timeout(15000),
     });
     if (!res.ok) return null;
     return (await res.json()) as T;

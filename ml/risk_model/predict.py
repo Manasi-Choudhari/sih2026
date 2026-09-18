@@ -35,10 +35,16 @@ def _anomaly_path() -> Path:
     return ARTIFACT_DIR / "anomaly_isolation_forest_latest.joblib"
 
 
+_CACHED_RISK_MODEL: RiskModel | None = None
+_CACHED_ANOMALY_MODEL: AnomalyDetector | None = None
+
+
 def score_wallet(raw_features: dict[str, Any]) -> dict[str, Any]:
+    global _CACHED_RISK_MODEL
     feats = feat_pipeline.features_from_row(raw_features)
-    model = RiskModel.load(_risk_path())
-    return model.predict_one(feats).to_api_dict()
+    if _CACHED_RISK_MODEL is None:
+        _CACHED_RISK_MODEL = RiskModel.load(_risk_path())
+    return _CACHED_RISK_MODEL.predict_one(feats).to_api_dict()
 
 
 def score_wallet_from_neo4j(address: str) -> dict[str, Any]:

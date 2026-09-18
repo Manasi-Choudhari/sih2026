@@ -11,13 +11,30 @@ export default function LoginPage() {
   const [password, setPassword] = useState("••••••••");
   const [loading, setLoading] = useState(false);
 
-  function handleLogin(e: React.FormEvent) {
+  async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
-    setTimeout(() => {
+    try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+      const res = await fetch(`${apiUrl}/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (typeof window !== "undefined") {
+          localStorage.setItem("vajra_token", data.access_token || "");
+          localStorage.setItem("vajra_role", data.role || role);
+          localStorage.setItem("vajra_user", username);
+        }
+      }
+    } catch {
+      // Graceful fallback if backend is momentarily offline
+    } finally {
       setLoading(false);
       router.push("/queue");
-    }, 600);
+    }
   }
 
   return (

@@ -94,16 +94,21 @@ export default async function RootLayout({
 
             {/* Topbar right items */}
             <div className="flex items-center gap-4 text-xs text-[#8A93A3]">
-              <span className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-[#2B2B2E] text-[#8A93A3]">
+              <Link
+                href="/login"
+                className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-[#2B2B2E] text-[#8A93A3] hover:border-[#49C7BE] hover:text-[#E7EAEE] transition-colors"
+                title="Switch Role / Login"
+              >
                 <span className="w-2 h-2 rounded-full bg-[#3FBE8B]" />
                 Role: Investigator
-              </span>
-              <div
-                title="R. Sharma (Senior Cyber Analyst)"
-                className="w-7 h-7 rounded-full bg-[#1B1B1D] border border-[#2B2B2E] flex items-center justify-center font-mono-vajra text-xs text-[#E7EAEE] font-medium"
+              </Link>
+              <Link
+                href="/login"
+                title="R. Sharma (Senior Cyber Analyst) — Click to Switch User"
+                className="w-7 h-7 rounded-full bg-[#1B1B1D] border border-[#2B2B2E] hover:border-[#49C7BE] flex items-center justify-center font-mono-vajra text-xs text-[#E7EAEE] font-medium transition-colors"
               >
                 RS
-              </div>
+              </Link>
             </div>
           </header>
 

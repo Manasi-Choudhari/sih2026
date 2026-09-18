@@ -443,20 +443,20 @@ async function createCase(payload: IntakePayload): Promise<QueueCaseItem> {
     }),
   });
 
-  const newId = backendResult?.case_id || `CASE-${Date.now().toString().slice(-6)}`;
+  const newId = backendResult?.case_id || `case_${Date.now().toString().slice(-6)}`;
   return {
     case_id: newId,
     scenario_id: newId,
-    name: `Intake: ${payload.victim_wallet.slice(0, 10)}…`,
+    name: `Case ${newId}: ${payload.victim_wallet.slice(0, 12)}…`,
     chain: payload.chain,
     status: "open",
     tier_dot: "Medium",
     fraud_category: payload.fraud_category ?? "Reported Cyber Fraud",
     amount_inr: `₹${payload.reported_amount.toLocaleString("en-IN")}`,
     crypto_amount: `${payload.reported_amount / 100000} ${payload.currency}`,
-    pattern_type: "Trace initiating",
+    pattern_type: "Trace Completed",
     reported_ago: "Just now",
-    complaint_id: payload.complaint_id || `NCRP-${Date.now().toString().slice(-5)}`,
+    complaint_id: backendResult?.complaint_id || payload.complaint_id || `CMP-${newId}`,
   };
 }
 

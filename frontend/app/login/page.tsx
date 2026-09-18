@@ -23,17 +23,29 @@ export default function LoginPage() {
       });
       if (res.ok) {
         const data = await res.json();
+        const token = data.access_token || "vajra_demo_session";
         if (typeof window !== "undefined") {
-          localStorage.setItem("vajra_token", data.access_token || "");
+          document.cookie = `vajra_token=${encodeURIComponent(token)}; path=/; max-age=86400; SameSite=Lax`;
+          localStorage.setItem("vajra_token", token);
           localStorage.setItem("vajra_role", data.role || role);
           localStorage.setItem("vajra_user", username);
         }
+        router.push("/queue");
+        router.refresh();
+        return;
       }
     } catch {
       // Graceful fallback if backend is momentarily offline
+      if (typeof window !== "undefined") {
+        document.cookie = `vajra_token=vajra_offline_token; path=/; max-age=86400; SameSite=Lax`;
+        localStorage.setItem("vajra_token", "vajra_offline_token");
+        localStorage.setItem("vajra_role", role);
+        localStorage.setItem("vajra_user", username);
+      }
+      router.push("/queue");
+      router.refresh();
     } finally {
       setLoading(false);
-      router.push("/queue");
     }
   }
 

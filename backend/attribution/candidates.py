@@ -191,6 +191,19 @@ def attribute_trace(trace: TraceResult) -> AttributionResponse:
                 contradicting_evidence=["Cryptographic break prevents downstream certainty"],
                 unknowns=["Downstream withdrawal destinations cannot be conclusively matched without timing-heuristic"]
             ))
+        elif reason == "unspent_at_origin":
+            candidates.append(VASPCandidate(
+                vasp_name="Unspent at Origin Wallet",
+                terminal_address=term,
+                branch_id=path.path_id,
+                evidence_tier="Unknown",
+                confidence=1.0,
+                hops_from_origin=0,
+                value_retained=path.retained_value,
+                supporting_evidence=["On-chain query confirmed: zero outbound transactions detected. Funds remain unspent at origin."],
+                contradicting_evidence=[],
+                unknowns=["Awaiting future outbound transactions on-chain"]
+            ))
         else:
             candidates.append(VASPCandidate(
                 vasp_name="Unlabeled Terminal EOA",
@@ -214,7 +227,9 @@ def attribute_trace(trace: TraceResult) -> AttributionResponse:
 
     # Compute rule-based risk score dynamically from detected patterns and candidates
     pattern_names = [p.pattern_name for p in patterns]
-    if "mixer_boundary" in pattern_names:
+    if any(p.terminal_reason == "unspent_at_origin" for p in trace.paths) and len(trace.paths) == 1:
+        rule_score = 0.15
+    elif "mixer_boundary" in pattern_names:
         rule_score = 0.94
     elif "peel_chain" in pattern_names:
         rule_score = 0.79

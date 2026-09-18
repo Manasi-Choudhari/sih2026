@@ -15,6 +15,7 @@ from backend.recommendation.engine import recommendation_store, Recommendation
 from backend.information_gap.ranking import rank_next_actions, ActionRecommendation
 from backend.reporting.report_generator import generate_report, ReportResponse
 from backend.external.ncrp_mock import process_mock_callback, ExternalCaseUpdate, ExternalCaseUpdateAck
+from infra.auth.jwt import create_access_token, decode_access_token
 
 router = APIRouter()
 
@@ -35,10 +36,19 @@ class RecommendationActionRequest(BaseModel):
 # 1. Auth
 @router.post("/auth/login", response_model=LoginResponse)
 def login(req: LoginRequest):
+    role = "supervisor" if "admin" in req.username.lower() or "super" in req.username.lower() else "investigator"
+    token = create_access_token(
+        data={
+            "sub": req.username,
+            "username": req.username,
+            "role": role,
+        },
+        expires_minutes=480
+    )
     return LoginResponse(
-        access_token="vajra_session_token_investigator_demo",
+        access_token=token,
         token_type="bearer",
-        role="supervisor" if "admin" in req.username.lower() or "super" in req.username.lower() else "investigator"
+        role=role
     )
 
 # 2. Case Management

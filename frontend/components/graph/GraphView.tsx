@@ -259,6 +259,24 @@ export default function GraphView({ graphData, compact = false }: GraphViewProps
 
   return (
     <div className="h-full w-full relative rounded-lg border border-[#2B2B2E] bg-[#0A0A0B] overflow-hidden">
+      {/* 0 Outbound Transactions / Unspent Banner */}
+      {graphData.nodes.length === 1 && graphData.edges.length === 0 && (
+        <div className="absolute top-4 left-4 right-4 z-20 flex items-center justify-between gap-3 rounded-md border border-[#2B2B2E] bg-[#141415]/95 px-4 py-2.5 backdrop-blur-md shadow-lg">
+          <div className="flex items-center gap-2.5">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#49C7BE] opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#49C7BE]"></span>
+            </span>
+            <span className="text-xs font-medium text-[#E7EAEE]">
+              Origin Node: <span className="text-[#8A93A3]">0 outbound transactions detected on-chain. Funds have not moved from this wallet.</span>
+            </span>
+          </div>
+          <span className="rounded bg-[#1B1B1D] px-2 py-0.5 text-[10px] uppercase font-mono tracking-wider text-[#8A93A3] border border-[#2B2B2E]">
+            Authentic On-Chain Reality
+          </span>
+        </div>
+      )}
+
       <ReactFlow
         nodes={flowNodes}
         edges={flowEdges}

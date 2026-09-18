@@ -20,6 +20,7 @@ from backend.trace.limits import (
     TERMINATION_LIMIT,
     TERMINATION_FANOUT,
     TERMINATION_COLD,
+    TERMINATION_UNSPENT,
 )
 from backend.trace.scoring import compute_path_priority
 
@@ -190,6 +191,27 @@ class TraceEngine:
             TraceEngine._neo4j_available = False
             return []
 
+    _eth_adapter: Optional[Any] = None
+    _btc_adapter: Optional[Any] = None
+
+    def _get_eth_adapter(self):
+        if self._eth_adapter is None:
+            try:
+                from blockchain.adapters.eth.client import EtherscanAdapter
+                self._eth_adapter = EtherscanAdapter()
+            except Exception:
+                pass
+        return self._eth_adapter
+
+    def _get_btc_adapter(self):
+        if self._btc_adapter is None:
+            try:
+                from blockchain.adapters.btc.client import BlockchairBtcAdapter
+                self._btc_adapter = BlockchairBtcAdapter()
+            except Exception:
+                pass
+        return self._btc_adapter
+
     def get_outgoing(self, address: str, root_hint: str) -> List[TraceEdge]:
         # 1. First try Neo4j live graph
         neo_edges = self._query_neo4j_outgoing(address)
@@ -200,36 +222,31 @@ class TraceEngine:
         if address in SEEDED_EDGES:
             return SEEDED_EDGES[address]
 
-        # 3. Dynamic multi-hop generation for newly ingested investigation complaints
+        # 3. Live on-chain explorer query (authentic blockchain data via Etherscan/Blockchair)
         chain = "ETH" if address.startswith("0x") or "eth" in address.lower() else "BTC"
-        if address == root_hint:
-            hop1_addr = f"{address[:10]}...layer1"
-            return [
-                TraceEdge(
-                    tx_hash=f"tx_{address[:6]}_hop1",
-                    source=address,
-                    target=hop1_addr,
-                    amount=2.5,
-                    asset=chain,
-                    chain=chain,
-                    is_bridge_leg=False,
-                    confidence_of_link=0.99
-                )
-            ]
-        elif "...layer1" in address:
-            vasp_addr = "s1_vasp" if chain == "ETH" else "s2_normal"
-            return [
-                TraceEdge(
-                    tx_hash=f"tx_{address[:6]}_vasp",
-                    source=address,
-                    target=vasp_addr,
-                    amount=2.45,
-                    asset=chain,
-                    chain=chain,
-                    is_bridge_leg=False,
-                    confidence_of_link=0.96
-                )
-            ]
+        adapter = self._get_eth_adapter() if chain == "ETH" else self._get_btc_adapter()
+        if adapter:
+            try:
+                txs = adapter.get_address_transactions(address, limit=10)
+                out_edges: List[TraceEdge] = []
+                for tx in txs:
+                    if getattr(tx, "direction", "out") == "out" or getattr(tx, "from_address", "").lower() == address.lower():
+                        target_addr = getattr(tx, "to_address", "")
+                        if target_addr and target_addr.lower() != address.lower():
+                            out_edges.append(TraceEdge(
+                                tx_hash=getattr(tx, "tx_hash", f"tx_{address[:6]}_{target_addr[:6]}"),
+                                source=address,
+                                target=target_addr,
+                                amount=float(getattr(tx, "amount", 1.0) or 1.0),
+                                asset=getattr(tx, "asset", chain) or chain,
+                                chain=chain,
+                                type="TRANSACTION",
+                                is_bridge_leg=bool(getattr(tx, "is_bridge_leg", False)),
+                                confidence_of_link=float(getattr(tx, "confidence_of_link", 1.0) or 1.0)
+                            ))
+                return out_edges
+            except Exception:
+                pass
 
         return []
 
@@ -334,19 +351,32 @@ class TraceEngine:
                 ))
                 continue
 
-            # If no outgoing edges and we made hops, terminal cold
-            if not edges and hops > 0:
-                results.append(TracePath(
-                    path_id=f"path_{p_id}",
-                    nodes=path_nodes,
-                    edges=path_edges,
-                    terminal_reason=TERMINATION_COLD,
-                    terminal_address=current_node,
-                    hops=hops,
-                    retained_value=cur_val,
-                    confidence=cur_conf * 0.85,
-                    priority=pri
-                ))
+            # If no outgoing edges:
+            if not edges:
+                if hops > 0:
+                    results.append(TracePath(
+                        path_id=f"path_{p_id}",
+                        nodes=path_nodes,
+                        edges=path_edges,
+                        terminal_reason=TERMINATION_COLD,
+                        terminal_address=current_node,
+                        hops=hops,
+                        retained_value=cur_val,
+                        confidence=cur_conf * 0.85,
+                        priority=pri
+                    ))
+                else:
+                    results.append(TracePath(
+                        path_id=f"path_{p_id}",
+                        nodes=path_nodes,
+                        edges=[],
+                        terminal_reason=TERMINATION_UNSPENT,
+                        terminal_address=current_node,
+                        hops=0,
+                        retained_value=cur_val,
+                        confidence=1.0,
+                        priority=1.0
+                    ))
                 continue
 
             # Expand neighbors

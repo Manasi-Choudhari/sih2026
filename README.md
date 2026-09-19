@@ -2,6 +2,9 @@
 
 > Multi-chain blockchain investigation platform for tracing illicit fund flows, attributing VASP endpoints, and producing tamper-evident evidence.
 
+📖 **Complete Project Documentation & Integration Manual**:  
+See [PROJECT_MASTER_INTEGRATION_GUIDE.md](file:///d:/SIH2026/Project/sih2026/PROJECT_MASTER_INTEGRATION_GUIDE.md) for full architectural integration, role login credentials, all frontend routes, backend API endpoints, and the National Crypto Fraud Portal (NCRP / CFCFRMS / 1930) automated ingestion specification.
+
 ---
 
 # T2 Blockchain Engineer — Setup & Guide

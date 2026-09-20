@@ -57,7 +57,7 @@ export default function ThreeNumberCard({ metrics }: ThreeNumberCardProps) {
         <div
           className={[
             "bg-[#141415] rounded-lg p-4 border transition-colors relative",
-            disagrees ? "border-[#D5636A] shadow-[0_0_12px_rgba(213,99,106,0.15)]" : "border-[#2B2B2E]",
+            disagrees ? "border-[#D5636A] bg-[#D5636A]/5" : "border-[#2B2B2E]",
           ].join(" ")}
         >
           <div className="text-xs text-[#8A93A3] mb-1.5 font-medium flex items-center justify-between">

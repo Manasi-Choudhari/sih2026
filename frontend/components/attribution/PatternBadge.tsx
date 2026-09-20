@@ -27,7 +27,7 @@ function PatternPill({ match }: { match: PatternMatch }) {
         className="flex w-full items-center justify-between gap-2 px-3 py-2 text-left"
       >
         <span className="inline-flex items-center gap-2 text-xs font-semibold text-[#E7EAEE]">
-          <Icon className="h-3.5 w-3.5 text-[#49C7BE]" strokeWidth={2.2} />
+          <Icon className="h-3.5 w-3.5 text-[#60A5FA]" strokeWidth={2.2} />
           {match.label}
           {match.branch_id && (
             <span className="font-mono-vajra text-[10px] font-normal text-[#5A6373]">

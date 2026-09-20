@@ -76,7 +76,9 @@ export default async function RootLayout({
           <header className="h-14 border-b border-[#2B2B2E] bg-[#141415] px-6 flex items-center justify-between gap-6 shrink-0">
             <div className="flex items-center gap-8">
               <Link href="/queue" className="flex items-center gap-2.5">
-                <span className="w-5 h-5 rounded-[4px] trace-gradient-bg flex-shrink-0 shadow-[0_0_8px_rgba(73,199,190,0.4)]" />
+                <span className="w-5 h-5 rounded-[4px] bg-[#2563EB] flex-shrink-0 flex items-center justify-center font-bold text-[10px] text-white">
+                  V
+                </span>
                 <span className="font-serif-vajra font-semibold text-lg tracking-wide text-[#E7EAEE]">
                   VAJRA
                 </span>
@@ -90,7 +92,7 @@ export default async function RootLayout({
                 <input
                   type="text"
                   placeholder="Search wallet address, case ID, or VASP name"
-                  className="w-full bg-[#0A0A0B] border border-[#2B2B2E] rounded-md px-3 py-1.5 text-xs text-[#E7EAEE] placeholder-[#5A6373] focus:outline-none focus:border-[#49C7BE] transition-colors"
+                  className="w-full bg-[#0A0A0B] border border-[#2B2B2E] rounded-md px-3 py-1.5 text-xs text-[#E7EAEE] placeholder-[#5A6373] focus:outline-none focus:border-[#3B82F6] transition-colors"
                 />
               </div>
             </div>
@@ -131,7 +133,7 @@ export default async function RootLayout({
                     </p>
                     <Link
                       href="/queue"
-                      className="text-[10px] text-[#49C7BE] hover:underline"
+                      className="text-[10px] text-[#60A5FA] hover:underline"
                     >
                       View All
                     </Link>

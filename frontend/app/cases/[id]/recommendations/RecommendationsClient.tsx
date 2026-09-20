@@ -51,7 +51,7 @@ export default function RecommendationsClient({
       {/* Main Finding Card */}
       <div className="rounded-lg border border-[#2B2B2E] bg-[#141415] p-6 space-y-5">
         <div>
-          <span className="text-[11px] font-mono-vajra uppercase tracking-wider text-[#49C7BE]">
+          <span className="text-[11px] font-mono-vajra uppercase tracking-wider text-[#60A5FA]">
             Automated Next-Best Action
           </span>
           <h2 className="font-serif-vajra text-lg font-semibold text-[#E7EAEE] mt-1">
@@ -71,7 +71,7 @@ export default function RecommendationsClient({
           </div>
           <div className="p-3.5 rounded bg-[#0A0A0B] border border-[#2B2B2E] space-y-1">
             <span className="text-[#5A6373] uppercase font-mono-vajra text-[10.5px]">Target Wallet / Custody Leg</span>
-            <p className="font-mono-vajra text-xs text-[#49C7BE] truncate">{recommendation.target_address}</p>
+            <p className="font-mono-vajra text-xs text-[#60A5FA] truncate">{recommendation.target_address}</p>
           </div>
         </div>
 
@@ -113,7 +113,7 @@ export default function RecommendationsClient({
             </div>
             <Link
               href={`/cases/${caseId}/report`}
-              className="px-3 py-1.5 rounded bg-[#3FBE8B] text-[#0A0A0B] font-semibold text-xs hover:opacity-90"
+              className="px-3 py-1.5 rounded bg-[#16A34A] hover:bg-[#15803D] text-white font-semibold text-xs transition-colors"
             >
               Export Signed Notice
             </Link>
@@ -129,7 +129,7 @@ export default function RecommendationsClient({
             <button
               type="button"
               onClick={() => setModalOpen(true)}
-              className="px-4 py-2 rounded trace-gradient-bg text-[#08201E] text-xs font-semibold hover:opacity-90 shrink-0"
+              className="px-4 py-2 rounded bg-[#2563EB] hover:bg-[#1D4ED8] text-white text-xs font-semibold shrink-0 transition-colors"
             >
               Authorize & Issue Notice
             </button>

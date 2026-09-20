@@ -55,7 +55,7 @@ export default function LedgerList({ records }: LedgerListProps) {
                   </td>
                   <td
                     className={`px-4 py-3 font-mono-vajra ${
-                      isGenesis ? "text-[#49C7BE] font-bold" : "text-[#5A6373]"
+                      isGenesis ? "text-[#60A5FA] font-bold" : "text-[#5A6373]"
                     }`}
                     title={record.previous_hash}
                   >

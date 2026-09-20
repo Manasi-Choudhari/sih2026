@@ -99,7 +99,7 @@ export default function ApprovalModal({
                   value={passcode}
                   onChange={(e) => setPasscode(e.target.value)}
                   placeholder="Enter passcode (e.g. admin or VAJRA-SUPERVISOR-2026)"
-                  className="w-full bg-[#0A0A0B] border border-[#2B2B2E] rounded-md px-3.5 py-2 text-xs font-mono-vajra text-[#E7EAEE] placeholder-[#5A6373] focus:outline-none focus:border-[#49C7BE]"
+                  className="w-full bg-[#0A0A0B] border border-[#2B2B2E] rounded-md px-3.5 py-2 text-xs font-mono-vajra text-[#E7EAEE] placeholder-[#5A6373] focus:outline-none focus:border-[#3B82F6]"
                   autoFocus
                 />
                 <Lock className="absolute right-3 top-2.5 h-4 w-4 text-[#5A6373]" />
@@ -126,7 +126,7 @@ export default function ApprovalModal({
               <button
                 type="submit"
                 disabled={loading || !passcode}
-                className="flex items-center gap-2 px-4 py-2 rounded bg-gradient-to-r from-[#49C7BE] to-[#3FBE8B] text-[#0A0A0B] text-xs font-semibold hover:opacity-90 transition-opacity disabled:opacity-40"
+                className="flex items-center gap-2 px-4 py-2 rounded bg-[#2563EB] hover:bg-[#1D4ED8] text-white text-xs font-semibold transition-colors disabled:opacity-40"
               >
                 <ShieldCheck className="h-4 w-4" />
                 <span>{loading ? "Authenticating…" : "Authorize & Sign"}</span>

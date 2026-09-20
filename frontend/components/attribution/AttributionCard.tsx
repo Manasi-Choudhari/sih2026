@@ -126,7 +126,7 @@ export default function AttributionCard({ candidate }: AttributionCardProps) {
           <button
             type="button"
             onClick={() => setLabelsOpen(!labelsOpen)}
-            className="text-[11px] font-mono-vajra text-[#49C7BE] hover:underline"
+            className="text-[11px] font-mono-vajra text-[#60A5FA] hover:underline"
           >
             {labelsOpen ? "▲ Hide label provenance sources" : `▼ View ${candidate.labels.length} label provenance sources`}
           </button>

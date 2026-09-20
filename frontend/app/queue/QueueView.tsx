@@ -79,8 +79,8 @@ export default function QueueView({ initialCases }: QueueViewProps) {
             <h1 className="font-serif-vajra text-2xl md:text-3xl font-bold text-[#E7EAEE]">
               Investigation Queue
             </h1>
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full border border-[#3FBE8B]/30 bg-[#3FBE8B]/10 text-[11px] font-mono-vajra text-[#3FBE8B]">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#3FBE8B] animate-pulse" />
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full border border-[#3B82F6]/30 bg-[#3B82F6]/10 text-[11px] font-mono-vajra text-[#60A5FA]">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#3B82F6]" />
               NCRP Gateway Live
             </span>
           </div>
@@ -92,16 +92,16 @@ export default function QueueView({ initialCases }: QueueViewProps) {
         <div className="flex items-center gap-2.5">
           <Link
             href="/ncrp"
-            className="flex items-center gap-2 px-3.5 py-2 rounded-md border border-[#E3AE3E]/50 bg-[#E3AE3E]/10 hover:bg-[#E3AE3E]/20 text-[#E3AE3E] text-xs font-medium transition-all shadow-[0_0_12px_rgba(227,174,62,0.15)]"
+            className="flex items-center gap-2 px-3.5 py-2 rounded-md border border-[#2B2B2E] bg-[#141415] hover:bg-[#1B1B1D] text-[#E7EAEE] text-xs font-medium transition-colors"
           >
-            <Globe className="h-4 w-4" />
+            <Globe className="h-4 w-4 text-[#60A5FA]" />
             <span>Lodge on NCRP Portal (1930)</span>
           </Link>
 
           <button
             type="button"
             onClick={() => setIntakeOpen(true)}
-            className="flex items-center gap-2 px-4 py-2 rounded-md trace-gradient-bg text-[#08201E] text-xs font-semibold hover:opacity-90 transition-opacity shadow-[0_0_12px_rgba(73,199,190,0.3)]"
+            className="flex items-center gap-2 px-4 py-2 rounded-md bg-[#2563EB] hover:bg-[#1D4ED8] text-white text-xs font-semibold transition-colors"
           >
             <Plus className="h-4 w-4" />
             <span>New Case Intake</span>
@@ -112,7 +112,7 @@ export default function QueueView({ initialCases }: QueueViewProps) {
       {/* Live NCRP Gateway Banner */}
       <div className="flex items-center justify-between px-4 py-2.5 rounded-lg border border-[#2B2B2E] bg-[#141415]/80 text-xs">
         <div className="flex items-center gap-2.5 text-[#8A93A3]">
-          <ShieldCheck className="h-4 w-4 text-[#49C7BE]" />
+          <ShieldCheck className="h-4 w-4 text-[#3B82F6]" />
           <span>
             <strong className="text-[#E7EAEE]">I4C / CFCFRMS Zero-Second Pipeline:</strong> All complaints lodged via the National Portal (or 1930 Helpline) are auto-triaged, traced through multi-hop chains, and assigned to this queue with instant freeze recommendations.
           </span>
@@ -131,7 +131,7 @@ export default function QueueView({ initialCases }: QueueViewProps) {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Filter by Case ID, name, or fraud typology…"
-            className="w-full pl-9 pr-3 py-2 rounded-md bg-[#141415] border border-[#2B2B2E] text-xs text-[#E7EAEE] placeholder-[#5A6373] focus:outline-none focus:border-[#49C7BE]"
+            className="w-full pl-9 pr-3 py-2 rounded-md bg-[#141415] border border-[#2B2B2E] text-xs text-[#E7EAEE] placeholder-[#5A6373] focus:outline-none focus:border-[#3B82F6]"
           />
         </div>
 
@@ -164,7 +164,7 @@ export default function QueueView({ initialCases }: QueueViewProps) {
                     <div className="max-w-md mx-auto space-y-2">
                       <p className="text-sm font-semibold text-[#E7EAEE]">No complaints found in investigation queue</p>
                       <p className="text-[11px] text-[#5A6373]">
-                        The queue is currently empty. Start the FastAPI backend (<code className="text-[#49C7BE]">localhost:8000</code>) to access seeded cases, or use the <strong>New Intake Case</strong> button above to create one.
+                        The queue is currently empty. Start the FastAPI backend (<code className="text-[#60A5FA]">localhost:8000</code>) to access seeded cases, or use the <strong>New Intake Case</strong> button above to create one.
                       </p>
                     </div>
                   </td>
@@ -185,7 +185,7 @@ export default function QueueView({ initialCases }: QueueViewProps) {
                       <td className="px-4 py-3.5 font-mono-vajra font-semibold text-[#E7EAEE]">
                         <Link
                           href={`/cases/${item.case_id}/overview`}
-                          className="hover:text-[#49C7BE] hover:underline"
+                          className="hover:text-[#60A5FA] hover:underline"
                         >
                           {item.case_id}
                         </Link>
@@ -209,7 +209,7 @@ export default function QueueView({ initialCases }: QueueViewProps) {
                         {item.amount_inr}
                       </td>
                       <td className="px-4 py-3.5 font-mono-vajra text-[#8A93A3]">
-                        <span className="px-1.5 py-0.5 rounded border border-[#2B2B2E] bg-[#0A0A0B] mr-1.5 text-[10px] text-[#49C7BE]">
+                        <span className="px-1.5 py-0.5 rounded border border-[#2B2B2E] bg-[#0A0A0B] mr-1.5 text-[10px] text-[#60A5FA]">
                           {item.chain}
                         </span>
                         {item.crypto_amount}
@@ -220,7 +220,7 @@ export default function QueueView({ initialCases }: QueueViewProps) {
                       <td className="px-4 py-3.5 text-right">
                         <Link
                           href={`/cases/${item.case_id}/overview`}
-                          className="inline-flex items-center gap-1 px-3 py-1.5 rounded border border-[#2B2B2E] bg-[#141415] hover:bg-[#2B2B2E] text-xs text-[#49C7BE] font-medium transition-colors"
+                          className="inline-flex items-center gap-1 px-3 py-1.5 rounded border border-[#2B2B2E] bg-[#141415] hover:bg-[#2B2B2E] text-xs text-[#60A5FA] font-medium transition-colors"
                         >
                           <span>Investigate</span>
                           <ArrowRight className="h-3 w-3" />
@@ -261,7 +261,7 @@ export default function QueueView({ initialCases }: QueueViewProps) {
                   placeholder="0x... (ETH) or bc1q... (BTC)"
                   value={newWallet}
                   onChange={(e) => setNewWallet(e.target.value)}
-                  className="w-full bg-[#0A0A0B] border border-[#2B2B2E] rounded p-2 text-xs font-mono-vajra text-[#E7EAEE] focus:outline-none focus:border-[#49C7BE]"
+                  className="w-full bg-[#0A0A0B] border border-[#2B2B2E] rounded p-2 text-xs font-mono-vajra text-[#E7EAEE] focus:outline-none focus:border-[#3B82F6]"
                 />
               </div>
 
@@ -271,7 +271,7 @@ export default function QueueView({ initialCases }: QueueViewProps) {
                   <select
                     value={newChain}
                     onChange={(e) => setNewChain(e.target.value as "BTC" | "ETH")}
-                    className="w-full bg-[#0A0A0B] border border-[#2B2B2E] rounded p-2 text-xs text-[#E7EAEE] focus:outline-none focus:border-[#49C7BE]"
+                    className="w-full bg-[#0A0A0B] border border-[#2B2B2E] rounded p-2 text-xs text-[#E7EAEE] focus:outline-none focus:border-[#3B82F6]"
                   >
                     <option value="ETH">Ethereum (ETH)</option>
                     <option value="BTC">Bitcoin (BTC)</option>
@@ -283,7 +283,7 @@ export default function QueueView({ initialCases }: QueueViewProps) {
                     type="number"
                     value={newAmount}
                     onChange={(e) => setNewAmount(e.target.value)}
-                    className="w-full bg-[#0A0A0B] border border-[#2B2B2E] rounded p-2 text-xs font-mono-vajra text-[#E7EAEE] focus:outline-none focus:border-[#49C7BE]"
+                    className="w-full bg-[#0A0A0B] border border-[#2B2B2E] rounded p-2 text-xs font-mono-vajra text-[#E7EAEE] focus:outline-none focus:border-[#3B82F6]"
                   />
                 </div>
               </div>
@@ -303,7 +303,7 @@ export default function QueueView({ initialCases }: QueueViewProps) {
                 <button
                   type="submit"
                   disabled={creating || !newWallet}
-                  className="px-4 py-1.5 rounded trace-gradient-bg text-[#08201E] font-semibold disabled:opacity-50"
+                  className="px-4 py-1.5 rounded bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-semibold disabled:opacity-50 transition-colors"
                 >
                   {creating ? "Tracing Graph…" : "Begin Trace Engine"}
                 </button>

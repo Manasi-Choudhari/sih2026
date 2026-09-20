@@ -81,7 +81,7 @@ function TraceNodeComponent({ data }: NodeProps) {
   return (
     <div
       className={[
-        "min-w-[190px] max-w-[220px] rounded-lg border px-3 py-2.5 shadow-xl transition-all hover:border-[#49C7BE]",
+        "min-w-[190px] max-w-[220px] rounded-lg border px-3 py-2.5 shadow-xl transition-all hover:border-[#3B82F6]",
         style.border,
         style.bg,
       ].join(" ")}
@@ -205,10 +205,10 @@ function buildFlowEdges(edges: TraceEdge[]): Edge[] {
       type: "smoothstep",
       animated: false,
       style: {
-        stroke: "#49C7BE",
+        stroke: "#3B82F6",
         strokeWidth: 2,
       },
-      markerEnd: { type: MarkerType.ArrowClosed, color: "#49C7BE" },
+      markerEnd: { type: MarkerType.ArrowClosed, color: "#3B82F6" },
       label: `${edge.amount} ${edge.asset}`,
       labelStyle: { fill: "#8A93A3", fontSize: 10, fontWeight: 500, fontFamily: "var(--font-ibm-plex-mono)" },
       labelBgStyle: { fill: "#141415", fillOpacity: 0.9 },
@@ -263,10 +263,7 @@ export default function GraphView({ graphData, compact = false }: GraphViewProps
       {graphData.nodes.length === 1 && graphData.edges.length === 0 && (
         <div className="absolute top-4 left-4 right-4 z-20 flex items-center justify-between gap-3 rounded-md border border-[#2B2B2E] bg-[#141415]/95 px-4 py-2.5 backdrop-blur-md shadow-lg">
           <div className="flex items-center gap-2.5">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#49C7BE] opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#49C7BE]"></span>
-            </span>
+            <span className="inline-block h-2 w-2 rounded-full bg-[#3B82F6]" />
             <span className="text-xs font-medium text-[#E7EAEE]">
               Origin Node: <span className="text-[#8A93A3]">0 outbound transactions detected on-chain. Funds have not moved from this wallet.</span>
             </span>
@@ -308,7 +305,7 @@ export default function GraphView({ graphData, compact = false }: GraphViewProps
                 case "bridge_contract":
                   return "#E3AE3E";
                 default:
-                  return "#49C7BE";
+                  return "#3B82F6";
               }
             }}
           />
@@ -328,7 +325,7 @@ export default function GraphView({ graphData, compact = false }: GraphViewProps
       {/* Legend Footer */}
       <div className="absolute bottom-0 left-0 right-0 z-20 flex flex-wrap items-center gap-5 border-t border-[#2B2B2E] bg-[#141415]/90 px-4 py-2 text-[11.5px] text-[#8A93A3] backdrop-blur-sm">
         <span className="flex items-center gap-1.5">
-          <span className="inline-block h-0.5 w-4 bg-[#49C7BE]" />
+          <span className="inline-block h-0.5 w-4 bg-[#3B82F6]" />
           Same-chain hop
         </span>
         <span className="flex items-center gap-1.5">

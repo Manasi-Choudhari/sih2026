@@ -17,7 +17,7 @@ export default function AtlasPanel({ atlas, leadingCandidateName }: AtlasPanelPr
       {/* Current Leading Claim */}
       <div className="flex items-center justify-between p-3.5 rounded-lg bg-[#141415] border border-[#2B2B2E]">
         <div className="flex items-center gap-2">
-          <Target className="h-4 w-4 text-[#49C7BE]" />
+          <Target className="h-4 w-4 text-[#3B82F6]" />
           <span className="text-xs text-[#5A6373] uppercase tracking-wider">Hypothesis under test:</span>
           <span className="font-serif-vajra text-sm font-semibold text-[#E7EAEE]">
             {leadingCandidateName ?? "No definitive VASP candidate"}
@@ -95,7 +95,7 @@ export default function AtlasPanel({ atlas, leadingCandidateName }: AtlasPanelPr
             </div>
             <div className="text-xs text-[#E7EAEE] space-y-1">
               <p>{miss}</p>
-              <p className="text-[11.5px] text-[#49C7BE]">
+              <p className="text-[11.5px] text-[#60A5FA]">
                 Recommended next action: subpoena target entity transaction logs.
               </p>
             </div>

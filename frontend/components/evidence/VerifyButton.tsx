@@ -30,16 +30,16 @@ export default function VerifyButton({ caseId }: VerifyButtonProps) {
           type="button"
           onClick={() => handleVerify(false)}
           disabled={loading}
-          className="flex items-center gap-2 px-4 py-2 rounded-md bg-[#1B1B1D] border border-[#2B2B2E] text-xs font-semibold text-[#E7EAEE] hover:bg-[#2B2B2E] hover:border-[#49C7BE] transition-all disabled:opacity-50"
+          className="flex items-center gap-2 px-4 py-2 rounded-md bg-[#1B1B1D] border border-[#2B2B2E] text-xs font-semibold text-[#E7EAEE] hover:bg-[#2B2B2E] hover:border-[#3B82F6] transition-all disabled:opacity-50"
         >
           {loading ? (
             <>
-              <Loader2 className="h-3.5 w-3.5 animate-spin text-[#49C7BE]" />
+              <Loader2 className="h-3.5 w-3.5 animate-spin text-[#3B82F6]" />
               <span>Recomputing hash chain…</span>
             </>
           ) : (
             <>
-              <RefreshCw className="h-3.5 w-3.5 text-[#49C7BE]" />
+              <RefreshCw className="h-3.5 w-3.5 text-[#3B82F6]" />
               <span>Verify Cryptographic Ledger</span>
             </>
           )}
@@ -59,7 +59,7 @@ export default function VerifyButton({ caseId }: VerifyButtonProps) {
       {/* Loading state indicator */}
       {loading && (
         <div className="flex items-center gap-2 text-xs text-[#8A93A3] font-mono-vajra pt-1">
-          <div className="w-3.5 h-3.5 rounded-full border-2 border-[#2B2B2E] border-t-[#49C7BE] animate-spin" />
+          <div className="w-3.5 h-3.5 rounded-full border-2 border-[#2B2B2E] border-t-[#3B82F6] animate-spin" />
           <span>Recomputing cryptographic SHA-256 state from GENESIS block…</span>
         </div>
       )}

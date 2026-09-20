@@ -53,12 +53,14 @@ export default function LoginPage() {
     <div className="min-h-[80vh] flex items-center justify-center p-4">
       <div className="w-full max-w-md rounded-2xl border border-[#2B2B2E] bg-[#141415] p-8 shadow-2xl space-y-6 relative overflow-hidden">
         {/* Accent Bar */}
-        <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#49C7BE] via-[#E3AE3E] to-[#3FBE8B]" />
+        <div className="absolute top-0 left-0 right-0 h-1 bg-[#2563EB]" />
 
         {/* Brand Header */}
         <div className="text-center space-y-2">
           <div className="inline-flex items-center gap-2.5">
-            <span className="w-5 h-5 rounded-[4px] trace-gradient-bg shadow-[0_0_10px_rgba(73,199,190,0.5)]" />
+            <span className="w-5 h-5 rounded-[4px] bg-[#2563EB] flex items-center justify-center text-white font-bold text-[10px]" >
+              V
+            </span>
             <span className="font-serif-vajra text-2xl font-bold tracking-wider text-[#E7EAEE]">
               VAJRA
             </span>
@@ -83,7 +85,7 @@ export default function LoginPage() {
               }}
               className={`py-1.5 rounded text-center capitalize font-medium transition-all ${
                 role === r
-                  ? "bg-[#1B1B1D] text-[#49C7BE] shadow border border-[#2B2B2E]"
+                  ? "bg-[#1E293B] text-[#60A5FA] border border-[#3B82F6]/40"
                   : "text-[#8A93A3] hover:text-[#E7EAEE]"
               }`}
             >
@@ -102,7 +104,7 @@ export default function LoginPage() {
                 required
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="w-full bg-[#0A0A0B] border border-[#2B2B2E] rounded-md px-3.5 py-2.5 pl-9 text-xs font-mono-vajra text-[#E7EAEE] focus:outline-none focus:border-[#49C7BE]"
+                className="w-full bg-[#0A0A0B] border border-[#2B2B2E] rounded-md px-3.5 py-2.5 pl-9 text-xs font-mono-vajra text-[#E7EAEE] focus:outline-none focus:border-[#3B82F6]"
               />
               <User className="absolute left-3 top-2.5 h-4 w-4 text-[#5A6373]" />
             </div>
@@ -116,7 +118,7 @@ export default function LoginPage() {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-[#0A0A0B] border border-[#2B2B2E] rounded-md px-3.5 py-2.5 pl-9 text-xs font-mono-vajra text-[#E7EAEE] focus:outline-none focus:border-[#49C7BE]"
+                className="w-full bg-[#0A0A0B] border border-[#2B2B2E] rounded-md px-3.5 py-2.5 pl-9 text-xs font-mono-vajra text-[#E7EAEE] focus:outline-none focus:border-[#3B82F6]"
               />
               <Lock className="absolute left-3 top-2.5 h-4 w-4 text-[#5A6373]" />
             </div>
@@ -139,7 +141,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-2.5 px-4 rounded-md trace-gradient-bg text-[#08201E] text-xs font-bold uppercase tracking-wider hover:opacity-90 transition-opacity shadow-[0_0_15px_rgba(73,199,190,0.3)] disabled:opacity-50"
+            className="w-full py-2.5 px-4 rounded-md bg-[#2563EB] hover:bg-[#1D4ED8] text-white text-xs font-semibold uppercase tracking-wider transition-colors disabled:opacity-50"
           >
             {loading ? "Authenticating Session…" : "Enter Investigation Console"}
           </button>

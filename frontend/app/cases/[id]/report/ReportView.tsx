@@ -71,7 +71,7 @@ export default function ReportView({
           <button
             type="button"
             onClick={handleDownloadPdf}
-            className="flex items-center gap-2 px-4 py-2 rounded-md trace-gradient-bg text-[#08201E] text-xs font-semibold hover:opacity-90 transition-all shadow-md active:scale-95"
+            className="flex items-center gap-2 px-4 py-2 rounded-md bg-[#2563EB] hover:bg-[#1D4ED8] text-white text-xs font-semibold transition-all active:scale-95"
           >
             <Download className="h-3.5 w-3.5" />
             <span>Export Verified PDF</span>
@@ -85,7 +85,7 @@ export default function ReportView({
         <div className="border-b border-[#2B2B2E] pb-6 flex items-start justify-between">
           <div>
             <div className="flex items-center gap-2">
-              <span className="w-4 h-4 rounded-[3px] trace-gradient-bg inline-block" />
+              <span className="w-4 h-4 rounded-[3px] bg-[#2563EB] inline-block" />
               <h2 className="font-serif-vajra text-xl font-bold text-[#E7EAEE] tracking-wide">
                 PROJECT VAJRA — CYBER FORENSICS
               </h2>
@@ -104,7 +104,7 @@ export default function ReportView({
 
         {/* Executive Summary */}
         <div className="space-y-2 text-xs">
-          <h3 className="font-serif-vajra text-sm font-semibold uppercase tracking-wider text-[#49C7BE]">
+          <h3 className="font-serif-vajra text-sm font-semibold uppercase tracking-wider text-[#60A5FA]">
             1. Executive Incident Summary
           </h3>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 p-3.5 rounded bg-[#0A0A0B] border border-[#2B2B2E]">
@@ -129,7 +129,7 @@ export default function ReportView({
 
         {/* Three-Number Confidence Framework */}
         <div className="space-y-2 text-xs">
-          <h3 className="font-serif-vajra text-sm font-semibold uppercase tracking-wider text-[#49C7BE]">
+          <h3 className="font-serif-vajra text-sm font-semibold uppercase tracking-wider text-[#60A5FA]">
             2. Multi-Tier Confidence Framework
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -153,7 +153,7 @@ export default function ReportView({
 
         {/* Attribution & Evidence Findings */}
         <div className="space-y-2 text-xs">
-          <h3 className="font-serif-vajra text-sm font-semibold uppercase tracking-wider text-[#49C7BE]">
+          <h3 className="font-serif-vajra text-sm font-semibold uppercase tracking-wider text-[#60A5FA]">
             3. Final VASP Attribution Findings
           </h3>
           <div className="p-4 rounded bg-[#0A0A0B] border border-[#2B2B2E] space-y-3">
@@ -184,7 +184,7 @@ export default function ReportView({
 
         {/* Cryptographic Ledger Immutability Seal */}
         <div className="space-y-2 text-xs">
-          <h3 className="font-serif-vajra text-sm font-semibold uppercase tracking-wider text-[#49C7BE]">
+          <h3 className="font-serif-vajra text-sm font-semibold uppercase tracking-wider text-[#60A5FA]">
             4. Cryptographic Proof of Integrity
           </h3>
           <div className="p-4 rounded bg-[#0A0A0B] border border-[#2B2B2E] flex flex-col sm:flex-row sm:items-center justify-between gap-4 font-mono-vajra text-xs">

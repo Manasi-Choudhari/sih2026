@@ -8,7 +8,7 @@ import {
   Building2,
   FileCheck2,
   Send,
-  Sparkles,
+  Layers,
   ArrowRight,
   RefreshCw,
   ExternalLink,
@@ -238,15 +238,15 @@ export default function NcrpPortalPage() {
 
           <div className="flex flex-col items-start md:items-end gap-1.5 text-xs text-[#8A93A3] border-t md:border-t-0 md:border-l border-[#2B2B2E] pt-3 md:pt-0 md:pl-6">
             <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-[#3FBE8B] animate-pulse" />
+              <span className="w-2 h-2 rounded-full bg-[#3B82F6]" />
               <span className="text-[#E7EAEE] font-mono-vajra font-medium">VAJRA API Gateway: ONLINE</span>
             </div>
             <p className="text-[11px] text-[#5A6373]">
-              Direct Ingestion Endpoint: <code className="text-[#49C7BE]">/api/v1/external/ncrp/webhook</code>
+              Direct Ingestion Endpoint: <code className="text-[#60A5FA]">/api/v1/external/ncrp/webhook</code>
             </p>
             <Link
               href="/queue"
-              className="inline-flex items-center gap-1.5 text-xs text-[#49C7BE] hover:underline mt-1 font-medium"
+              className="inline-flex items-center gap-1.5 text-xs text-[#60A5FA] hover:underline mt-1 font-medium"
             >
               <span>Switch to VAJRA Officer Queue</span>
               <ArrowRight className="h-3.5 w-3.5" />
@@ -259,7 +259,7 @@ export default function NcrpPortalPage() {
       <div className="rounded-xl border border-[#2B2B2E] bg-[#141415] p-5 space-y-3">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-2">
-            <Sparkles className="h-4 w-4 text-[#49C7BE]" />
+            <Layers className="h-4 w-4 text-[#3B82F6]" />
             <h2 className="text-sm font-semibold text-[#E7EAEE]">
               Investigation Lodging Mode & Typology Presets
             </h2>
@@ -270,8 +270,8 @@ export default function NcrpPortalPage() {
               onClick={handleNewManualComplaint}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md border text-xs font-semibold transition-all ${
                 activePreset === "manual"
-                  ? "border-[#49C7BE] bg-[#49C7BE] text-[#08201E] shadow-[0_0_12px_rgba(73,199,190,0.4)]"
-                  : "border-[#49C7BE]/50 bg-[#49C7BE]/10 text-[#49C7BE] hover:bg-[#49C7BE]/20"
+                  ? "border-[#2563EB] bg-[#2563EB] text-white"
+                  : "border-[#3B82F6]/40 bg-[#3B82F6]/10 text-[#60A5FA] hover:bg-[#3B82F6]/20"
               }`}
             >
               <span>➕ New Complaint / Manual Entry</span>
@@ -289,7 +289,7 @@ export default function NcrpPortalPage() {
                 onClick={() => applyPreset(key)}
                 className={`text-left p-3 rounded-lg border transition-all ${
                   isSelected
-                    ? "border-[#49C7BE] bg-[#49C7BE]/10 shadow-[0_0_12px_rgba(73,199,190,0.15)]"
+                    ? "border-[#3B82F6] bg-[#1E3A8A]/25"
                     : "border-[#2B2B2E] bg-[#1B1B1D] hover:border-[#5A6373] text-[#8A93A3]"
                 }`}
               >
@@ -297,7 +297,7 @@ export default function NcrpPortalPage() {
                   <span className="font-mono-vajra text-[11px] font-bold text-[#E7EAEE] uppercase">
                     {key.replace("_", " ")}
                   </span>
-                  <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#0A0A0B] border border-[#2B2B2E] text-[#49C7BE] font-mono-vajra">
+                  <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#0A0A0B] border border-[#2B2B2E] text-[#60A5FA] font-mono-vajra">
                     {p.crypto_asset}
                   </span>
                 </div>
@@ -315,15 +315,15 @@ export default function NcrpPortalPage() {
             onClick={handleNewManualComplaint}
             className={`text-left p-3 rounded-lg border transition-all ${
               activePreset === "manual"
-                ? "border-[#49C7BE] bg-[#49C7BE]/15 shadow-[0_0_12px_rgba(73,199,190,0.25)] ring-1 ring-[#49C7BE]"
-                : "border-dashed border-[#5A6373] bg-[#141415] hover:border-[#49C7BE] text-[#8A93A3]"
+                ? "border-[#3B82F6] bg-[#1E3A8A]/25 ring-1 ring-[#3B82F6]"
+                : "border-dashed border-[#5A6373] bg-[#141415] hover:border-[#3B82F6] text-[#8A93A3]"
             }`}
           >
             <div className="flex items-center justify-between mb-1">
-              <span className="font-mono-vajra text-[11px] font-bold text-[#49C7BE] uppercase">
+              <span className="font-mono-vajra text-[11px] font-bold text-[#60A5FA] uppercase">
                 MANUAL
               </span>
-              <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#49C7BE]/20 text-[#49C7BE] font-mono-vajra">
+              <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#3B82F6]/20 text-[#60A5FA] font-mono-vajra">
                 BLANK
               </span>
             </div>
@@ -363,7 +363,7 @@ export default function NcrpPortalPage() {
               </button>
               <Link
                 href={`/cases/${submissionResult.case_id}/overview`}
-                className="flex items-center gap-2 px-4 py-1.5 rounded-md trace-gradient-bg text-[#08201E] text-xs font-semibold hover:opacity-90 transition-opacity shadow-[0_0_12px_rgba(73,199,190,0.3)]"
+                className="flex items-center gap-2 px-4 py-1.5 rounded-md bg-[#2563EB] hover:bg-[#1D4ED8] text-white text-xs font-semibold transition-colors"
               >
                 <span>Open Case in VAJRA</span>
                 <ArrowRight className="h-4 w-4" />
@@ -375,7 +375,7 @@ export default function NcrpPortalPage() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-3 text-xs">
             <div className="p-3 rounded-lg bg-[#141415] border border-[#2B2B2E]">
               <span className="text-[10px] text-[#5A6373] uppercase font-mono-vajra">Complaint Ack No</span>
-              <p className="text-sm font-bold text-[#49C7BE] font-mono-vajra mt-0.5">
+              <p className="text-sm font-bold text-[#60A5FA] font-mono-vajra mt-0.5">
                 {submissionResult.complaint_ack_no}
               </p>
             </div>
@@ -427,13 +427,13 @@ export default function NcrpPortalPage() {
               <div className="p-3 rounded bg-[#1B1B1D] border border-[#2B2B2E]">
                 <div className="flex items-center justify-between text-[#8A93A3] text-[11px]">
                   <span>Attribution Confidence</span>
-                  <span className="font-mono-vajra text-[#49C7BE]">
+                  <span className="font-mono-vajra text-[#60A5FA]">
                     {((submissionResult.attribution_confidence || 0.92) * 100).toFixed(0)}%
                   </span>
                 </div>
                 <div className="w-full bg-[#0A0A0B] h-1.5 rounded-full mt-2 overflow-hidden">
                   <div
-                    className="bg-[#49C7BE] h-full rounded-full"
+                    className="bg-[#2563EB] h-full rounded-full"
                     style={{ width: `${(submissionResult.attribution_confidence || 0.92) * 100}%` }}
                   />
                 </div>
@@ -461,7 +461,7 @@ export default function NcrpPortalPage() {
               </span>
               <Link
                 href="/queue"
-                className="text-[#49C7BE] hover:underline font-medium inline-flex items-center gap-1"
+                className="text-[#60A5FA] hover:underline font-medium inline-flex items-center gap-1"
               >
                 <span>View All Complaints in Queue</span>
                 <ArrowRight className="h-3.5 w-3.5" />
@@ -491,17 +491,17 @@ export default function NcrpPortalPage() {
 
         {/* Manual Mode Notification Banner */}
         {activePreset === "manual" && (
-          <div className="p-3.5 rounded-lg border border-[#49C7BE]/40 bg-[#49C7BE]/10 text-xs text-[#E7EAEE] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="p-3.5 rounded-lg border border-[#3B82F6]/30 bg-[#3B82F6]/10 text-xs text-[#E7EAEE] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div className="flex items-center gap-2">
-              <Sparkles className="h-4 w-4 text-[#49C7BE] shrink-0" />
+              <FileCheck2 className="h-4 w-4 text-[#3B82F6] shrink-0" />
               <span>
-                <strong>Manual Complaint Filing Mode Active:</strong> Form fields are cleared. Enter custom suspect and victim wallet coordinates. For Ethereum addresses, VAJRA will utilize the configured <code className="text-[#49C7BE]">EXPLORER_API_KEY_ETH</code> to fetch live on-chain transactions and construct the investigation graph.
+                <strong>Manual Complaint Filing Mode Active:</strong> Form fields are cleared. Enter custom suspect and victim wallet coordinates. For Ethereum addresses, VAJRA will utilize the configured <code className="text-[#60A5FA]">EXPLORER_API_KEY_ETH</code> to fetch live on-chain transactions and construct the investigation graph.
               </span>
             </div>
             <button
               type="button"
               onClick={() => applyPreset("scenario_1")}
-              className="text-[11px] text-[#49C7BE] hover:underline font-mono-vajra shrink-0"
+              className="text-[11px] text-[#60A5FA] hover:underline font-mono-vajra shrink-0"
             >
               Load Preset S1
             </button>
@@ -510,7 +510,7 @@ export default function NcrpPortalPage() {
 
         {/* Section 1: Complainant Details */}
         <div className="space-y-4">
-          <h3 className="text-xs font-semibold uppercase tracking-wider font-mono-vajra text-[#49C7BE]">
+          <h3 className="text-xs font-semibold uppercase tracking-wider font-mono-vajra text-[#60A5FA]">
             Part 1: Complainant & Jurisdictional Police Station
           </h3>
 
@@ -523,7 +523,7 @@ export default function NcrpPortalPage() {
                 placeholder="e.g. Vikramaditya Rao or Anonymous Citizen"
                 value={complainantName}
                 onChange={(e) => setComplainantName(e.target.value)}
-                className="w-full bg-[#0A0A0B] border border-[#2B2B2E] rounded-md p-2.5 text-xs text-[#E7EAEE] focus:outline-none focus:border-[#49C7BE]"
+                className="w-full bg-[#0A0A0B] border border-[#2B2B2E] rounded-md p-2.5 text-xs text-[#E7EAEE] focus:outline-none focus:border-[#3B82F6]"
               />
             </div>
 
@@ -535,7 +535,7 @@ export default function NcrpPortalPage() {
                 placeholder="e.g. +91-98710****4"
                 value={contactMasked}
                 onChange={(e) => setContactMasked(e.target.value)}
-                className="w-full bg-[#0A0A0B] border border-[#2B2B2E] rounded-md p-2.5 text-xs font-mono-vajra text-[#E7EAEE] focus:outline-none focus:border-[#49C7BE]"
+                className="w-full bg-[#0A0A0B] border border-[#2B2B2E] rounded-md p-2.5 text-xs font-mono-vajra text-[#E7EAEE] focus:outline-none focus:border-[#3B82F6]"
               />
             </div>
 
@@ -547,7 +547,7 @@ export default function NcrpPortalPage() {
                 placeholder="e.g. Cyber Crime Unit Delhi / Mumbai / Bengaluru"
                 value={policeStation}
                 onChange={(e) => setPoliceStation(e.target.value)}
-                className="w-full bg-[#0A0A0B] border border-[#2B2B2E] rounded-md p-2.5 text-xs text-[#E7EAEE] focus:outline-none focus:border-[#49C7BE]"
+                className="w-full bg-[#0A0A0B] border border-[#2B2B2E] rounded-md p-2.5 text-xs text-[#E7EAEE] focus:outline-none focus:border-[#3B82F6]"
               />
             </div>
           </div>
@@ -555,7 +555,7 @@ export default function NcrpPortalPage() {
 
         {/* Section 2: Incident Modus Operandi */}
         <div className="space-y-4 pt-4 border-t border-[#2B2B2E]">
-          <h3 className="text-xs font-semibold uppercase tracking-wider font-mono-vajra text-[#49C7BE]">
+          <h3 className="text-xs font-semibold uppercase tracking-wider font-mono-vajra text-[#60A5FA]">
             Part 2: Cyber Fraud Classification
           </h3>
 
@@ -565,7 +565,7 @@ export default function NcrpPortalPage() {
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                className="w-full bg-[#0A0A0B] border border-[#2B2B2E] rounded-md p-2.5 text-xs text-[#E7EAEE] focus:outline-none focus:border-[#49C7BE]"
+                className="w-full bg-[#0A0A0B] border border-[#2B2B2E] rounded-md p-2.5 text-xs text-[#E7EAEE] focus:outline-none focus:border-[#3B82F6]"
               >
                 <option value="Phishing / Seed Drain">Phishing / Seed Drain</option>
                 <option value="Investment / Ponzi Fraud">Investment / Ponzi Fraud</option>
@@ -584,7 +584,7 @@ export default function NcrpPortalPage() {
                 placeholder="e.g. 650000"
                 value={reportedLossInr}
                 onChange={(e) => setReportedLossInr(e.target.value)}
-                className="w-full bg-[#0A0A0B] border border-[#2B2B2E] rounded-md p-2.5 text-xs font-mono-vajra text-[#E7EAEE] focus:outline-none focus:border-[#49C7BE]"
+                className="w-full bg-[#0A0A0B] border border-[#2B2B2E] rounded-md p-2.5 text-xs font-mono-vajra text-[#E7EAEE] focus:outline-none focus:border-[#3B82F6]"
               />
             </div>
           </div>
@@ -596,14 +596,14 @@ export default function NcrpPortalPage() {
               placeholder="Provide context regarding fraud lure, communications, or deceptive links..."
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full bg-[#0A0A0B] border border-[#2B2B2E] rounded-md p-2.5 text-xs text-[#E7EAEE] focus:outline-none focus:border-[#49C7BE]"
+              className="w-full bg-[#0A0A0B] border border-[#2B2B2E] rounded-md p-2.5 text-xs text-[#E7EAEE] focus:outline-none focus:border-[#3B82F6]"
             />
           </div>
         </div>
 
         {/* Section 3: Blockchain Evidence Coordinates */}
         <div className="space-y-4 pt-4 border-t border-[#2B2B2E]">
-          <h3 className="text-xs font-semibold uppercase tracking-wider font-mono-vajra text-[#49C7BE]">
+          <h3 className="text-xs font-semibold uppercase tracking-wider font-mono-vajra text-[#60A5FA]">
             Part 3: Blockchain Coordinates (Auto-Traced by VAJRA Engine)
           </h3>
 
@@ -613,7 +613,7 @@ export default function NcrpPortalPage() {
               <select
                 value={cryptoAsset}
                 onChange={(e) => setCryptoAsset(e.target.value as any)}
-                className="w-full bg-[#0A0A0B] border border-[#2B2B2E] rounded-md p-2.5 text-xs text-[#E7EAEE] focus:outline-none focus:border-[#49C7BE]"
+                className="w-full bg-[#0A0A0B] border border-[#2B2B2E] rounded-md p-2.5 text-xs text-[#E7EAEE] focus:outline-none focus:border-[#3B82F6]"
               >
                 <option value="ETH">Ethereum (ETH / ERC-20)</option>
                 <option value="BTC">Bitcoin (BTC / UTXO)</option>
@@ -630,7 +630,7 @@ export default function NcrpPortalPage() {
                 placeholder="e.g. 2.5"
                 value={cryptoAmount}
                 onChange={(e) => setCryptoAmount(e.target.value)}
-                className="w-full bg-[#0A0A0B] border border-[#2B2B2E] rounded-md p-2.5 text-xs font-mono-vajra text-[#E7EAEE] focus:outline-none focus:border-[#49C7BE]"
+                className="w-full bg-[#0A0A0B] border border-[#2B2B2E] rounded-md p-2.5 text-xs font-mono-vajra text-[#E7EAEE] focus:outline-none focus:border-[#3B82F6]"
               />
             </div>
           </div>
@@ -645,7 +645,7 @@ export default function NcrpPortalPage() {
               placeholder="e.g. 0x71C67930752b516538b1d97767F296aD55836882 or any Ethereum/Bitcoin address"
               value={suspectWallet}
               onChange={(e) => setSuspectWallet(e.target.value)}
-              className="w-full bg-[#0A0A0B] border border-[#2B2B2E] rounded-md p-2.5 text-xs font-mono-vajra text-[#49C7BE] focus:outline-none focus:border-[#49C7BE]"
+              className="w-full bg-[#0A0A0B] border border-[#2B2B2E] rounded-md p-2.5 text-xs font-mono-vajra text-[#E7EAEE] focus:outline-none focus:border-[#3B82F6]"
             />
           </div>
 
@@ -657,7 +657,7 @@ export default function NcrpPortalPage() {
                 placeholder="e.g. 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045"
                 value={victimWallet}
                 onChange={(e) => setVictimWallet(e.target.value)}
-                className="w-full bg-[#0A0A0B] border border-[#2B2B2E] rounded-md p-2.5 text-xs font-mono-vajra text-[#E7EAEE] focus:outline-none focus:border-[#49C7BE]"
+                className="w-full bg-[#0A0A0B] border border-[#2B2B2E] rounded-md p-2.5 text-xs font-mono-vajra text-[#E7EAEE] focus:outline-none focus:border-[#3B82F6]"
               />
             </div>
 
@@ -668,7 +668,7 @@ export default function NcrpPortalPage() {
                 placeholder="e.g. 0xd81ea91807e318f5c50040524799cec1174a284266e43b2247ac58976d00195b"
                 value={txHash}
                 onChange={(e) => setTxHash(e.target.value)}
-                className="w-full bg-[#0A0A0B] border border-[#2B2B2E] rounded-md p-2.5 text-xs font-mono-vajra text-[#E7EAEE] focus:outline-none focus:border-[#49C7BE]"
+                className="w-full bg-[#0A0A0B] border border-[#2B2B2E] rounded-md p-2.5 text-xs font-mono-vajra text-[#E7EAEE] focus:outline-none focus:border-[#3B82F6]"
               />
             </div>
           </div>
@@ -684,7 +684,7 @@ export default function NcrpPortalPage() {
           <button
             type="submit"
             disabled={submitting}
-            className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-2.5 rounded-md trace-gradient-bg text-[#08201E] text-xs font-bold hover:opacity-90 transition-opacity shadow-[0_0_16px_rgba(73,199,190,0.3)] disabled:opacity-50"
+            className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-2.5 rounded-md bg-[#2563EB] hover:bg-[#1D4ED8] text-white text-xs font-bold transition-colors disabled:opacity-50"
           >
             {submitting ? (
               <>

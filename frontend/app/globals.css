@@ -8,17 +8,18 @@
   --text: #E7EAEE;
   --text-muted: #8A93A3;
   --text-faint: #5A6373;
-  --trace: #49C7BE;
+  --trace: #2563EB;
+  --trace-accent: #60A5FA;
   --amber: #E3AE3E;
   --strong: #3FBE8B;
   --weak: #C56A4B;
   --unknown: #5C6675;
   --danger: #D5636A;
 
-  --grad-trace: linear-gradient(135deg, #5FDCD0 0%, #2E8F87 100%);
-  --grad-amber: linear-gradient(135deg, #F0C766 0%, #C98B22 100%);
-  --grad-hero: linear-gradient(90deg, #49C7BE 0%, #E3AE3E 55%, #3FBE8B 100%);
-  --grad-surface: linear-gradient(165deg, #17181A 0%, #101012 100%);
+  --grad-trace: #2563EB;
+  --grad-amber: #D97706;
+  --grad-hero: #2B2B2E;
+  --grad-surface: #141415;
 
   --font-serif: var(--font-ibm-plex-serif, 'IBM Plex Serif', Georgia, serif);
   --font-sans: var(--font-ibm-plex-sans, 'IBM Plex Sans', -apple-system, sans-serif);
@@ -35,7 +36,7 @@ body {
 }
 
 ::selection {
-  background: rgba(73, 199, 190, 0.3);
+  background: rgba(37, 99, 235, 0.35);
 }
 
 /* Custom dossier utilities */
@@ -76,35 +77,31 @@ body {
 }
 
 .panel-surface {
-  background: var(--grad-surface);
+  background: var(--panel);
   border: 1px solid var(--line);
   border-radius: 8px;
   position: relative;
 }
 
-.hero-border::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: var(--grad-hero);
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
-  z-index: 10;
+.hero-border {
+  border: 1px solid var(--line);
 }
 
 .trace-gradient-bg {
-  background: var(--grad-trace);
+  background-color: #2563EB;
+  color: #FFFFFF;
+}
+
+.trace-gradient-bg:hover {
+  background-color: #1D4ED8;
 }
 
 .amber-gradient-bg {
-  background: var(--grad-amber);
+  background-color: #E3AE3E;
 }
 
 .hero-gradient-bg {
-  background: var(--grad-hero);
+  background-color: #2563EB;
 }
 
 /* Scrollbar styles for dark terminal aesthetic */

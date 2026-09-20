@@ -27,7 +27,7 @@ export default function PathDetail({ selectedNode, selectedEdge, onClose }: Path
         {/* Header */}
         <div className="flex items-center justify-between border-b border-[#2B2B2E] pb-3">
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-[#49C7BE]" />
+            <span className="w-2 h-2 rounded-full bg-[#3B82F6]" />
             <h3 className="font-serif-vajra text-sm font-semibold text-[#E7EAEE]">
               {selectedNode ? "Node Inspection" : "Hop Inspection"}
             </h3>
@@ -51,7 +51,7 @@ export default function PathDetail({ selectedNode, selectedEdge, onClose }: Path
                 <button
                   type="button"
                   onClick={() => copyText(selectedNode.address)}
-                  className="text-[#8A93A3] hover:text-[#49C7BE] shrink-0"
+                  className="text-[#8A93A3] hover:text-[#60A5FA] shrink-0"
                   title="Copy address"
                 >
                   {copied ? <Check className="h-3.5 w-3.5 text-[#3FBE8B]" /> : <Copy className="h-3.5 w-3.5" />}
@@ -92,7 +92,7 @@ export default function PathDetail({ selectedNode, selectedEdge, onClose }: Path
             {selectedNode.amount !== undefined && (
               <div className="p-2.5 rounded bg-[#0A0A0B] border border-[#2B2B2E]">
                 <p className="text-[11px] text-[#5A6373]">Cumulative Hop Value</p>
-                <p className="mt-0.5 font-mono-vajra text-sm font-semibold text-[#49C7BE]">
+                <p className="mt-0.5 font-mono-vajra text-sm font-semibold text-[#60A5FA]">
                   {selectedNode.amount} {selectedNode.chain}
                 </p>
               </div>

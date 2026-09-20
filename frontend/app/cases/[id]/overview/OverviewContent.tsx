@@ -83,7 +83,7 @@ export default function OverviewContent({
             <button
               type="button"
               onClick={() => setModalOpen(true)}
-              className="flex items-center gap-2 px-4 py-2 rounded-md trace-gradient-bg text-[#08201E] text-xs font-semibold hover:opacity-90 transition-opacity shadow-[0_0_12px_rgba(73,199,190,0.3)]"
+              className="flex items-center gap-2 px-4 py-2 rounded-md bg-[#2563EB] hover:bg-[#1D4ED8] text-white text-xs font-semibold transition-colors"
             >
               <span>Approve recommendation</span>
             </button>
@@ -96,8 +96,8 @@ export default function OverviewContent({
         <ThreeNumberCard metrics={summary.metrics} />
       </section>
 
-      {/* 3. Trace Path Hero (Dedicated full-width section with signature gradient accent) */}
-      <section className="relative rounded-lg border border-[#2B2B2E] bg-[#141415] hero-border overflow-hidden">
+      {/* 3. Trace Path Hero (Dedicated full-width section with signature clean accent) */}
+      <section className="relative rounded-lg border border-[#2B2B2E] bg-[#141415] overflow-hidden">
         <div className="flex items-center justify-between p-4 border-b border-[#2B2B2E] bg-[#141415]">
           <div>
             <h2 className="text-sm font-semibold text-[#E7EAEE]">Trace path</h2>
@@ -136,7 +136,7 @@ export default function OverviewContent({
             </div>
             <Link
               href={`/cases/${summary.case_id}/attribution`}
-              className="text-xs text-[#49C7BE] hover:underline"
+              className="text-xs text-[#60A5FA] hover:underline"
             >
               Deep view →
             </Link>
@@ -200,7 +200,7 @@ export default function OverviewContent({
                 className={[
                   "px-4 py-2.5 text-xs font-medium border-b-2 whitespace-nowrap transition-colors",
                   active
-                    ? "border-[#49C7BE] text-[#E7EAEE]"
+                    ? "border-[#3B82F6] text-[#E7EAEE]"
                     : "border-transparent text-[#8A93A3] hover:text-[#E7EAEE]",
                 ].join(" ")}
               >
@@ -283,7 +283,7 @@ export default function OverviewContent({
                   <button
                     type="button"
                     onClick={() => setModalOpen(true)}
-                    className="px-4 py-2 rounded trace-gradient-bg text-[#08201E] text-xs font-semibold hover:opacity-90"
+                    className="px-4 py-2 rounded bg-[#2563EB] hover:bg-[#1D4ED8] text-white text-xs font-semibold transition-colors"
                   >
                     Authorize Recommendation (Supervisor Gate)
                   </button>

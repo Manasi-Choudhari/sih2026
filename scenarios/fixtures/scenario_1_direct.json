@@ -1,7 +1,14 @@
 {
   "scenario_id": "scenario_1_direct",
   "name": "Direct VASP Attribution",
-  "description": "Victim reports stolen ETH. Trace proceeds through 1 intermediary hop to a verified exchange deposit address.",
+  "description": "Victim reports stolen ETH. Trace proceeds through 1 intermediary hop to a verified Binance deposit address (real on-chain ETH).",
+  "real_addresses": {
+    "victim": "0x71C67930752b516538b1d97767F296aD55836882",
+    "hop1": "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
+    "vasp_deposit": "0x28C6c06298d514Db089934071355E5743bf21d60",
+    "cold_wallet": "0x47ac0Fb4F2D84898e4D9E7b4DaB3C24507a6D503",
+    "note": "0x28C6c06298d514Db089934071355E5743bf21d60 is Binance 14 Hot Wallet (etherscan.io verified). 0x47ac0Fb4F2D84898e4D9E7b4DaB3C24507a6D503 is Binance Cold Storage."
+  },
   "case": {
     "case_id": "case_s1",
     "complaint_id": "comp_s1",
@@ -10,6 +17,7 @@
     "fraud_category": "Phishing / Seed Drain",
     "reported_amount": 2.5,
     "currency": "ETH",
+    "victim_address_real": "0x71C67930752b516538b1d97767F296aD55836882",
     "victim_ref": "victim_001@vajra.in"
   },
   "postgres": {
@@ -45,10 +53,11 @@
     ],
     "vasps": [
       {
-        "vasp_id": "vasp_demo_exchange",
-        "name": "DemoExchange",
+        "vasp_id": "vasp_binance_hot",
+        "name": "Binance (Hot Wallet 14)",
         "known_addresses": [
-          "s1_vasp"
+          "s1_vasp",
+          "0x28C6c06298d514Db089934071355E5743bf21d60"
         ]
       }
     ],
@@ -57,7 +66,7 @@
         "label_id": "lbl_s1_1",
         "wallet_id": "w_s1_vasp",
         "source": "official",
-        "label_text": "DemoExchange Deposit Hotwallet",
+        "label_text": "Binance Hot Wallet 14 — Verified VASP Deposit (0x28C6c06298d514Db089934071355E5743bf21d60)",
         "confidence_tier": "Strong",
         "confidence": 0.99
       }
@@ -68,10 +77,13 @@
       {
         "label": "VASP",
         "properties": {
-          "name": "DemoExchange",
+          "name": "Binance (Hot Wallet 14)",
           "known_addresses": [
-            "s1_vasp"
+            "s1_vasp",
+            "0x28C6c06298d514Db089934071355E5743bf21d60"
           ],
+          "real_address": "0x28C6c06298d514Db089934071355E5743bf21d60",
+          "registry_source": "etherscan_label_cloud",
           "demo_seed": true
         }
       },

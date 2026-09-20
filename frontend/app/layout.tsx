@@ -5,6 +5,7 @@ import {
   Clock,
   FileText,
   ShieldAlert,
+  Globe,
 } from "lucide-react";
 import { IBM_Plex_Serif, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
@@ -47,6 +48,7 @@ export default async function RootLayout({
 
   const workspaceNav = [
     { href: "/queue", label: "Case queue", icon: Inbox },
+    { href: "/ncrp", label: "NCRP 1930 Portal", icon: Globe },
     { href: "/queue", label: "Recent activity", icon: Clock },
     { href: firstCaseId ? `/cases/${firstCaseId}/report` : "/queue", label: "Reports", icon: FileText },
   ] as const;

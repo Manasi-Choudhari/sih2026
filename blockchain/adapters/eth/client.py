@@ -10,6 +10,8 @@ import time
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 import requests
+from dotenv import load_dotenv
+load_dotenv()
 
 from blockchain.adapters.base import BaseAdapter
 from blockchain.normalization.normalize import NormalizedTransaction

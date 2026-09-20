@@ -3,6 +3,12 @@
 .env.local
 .env.*.local
 *.env
+env
+!env/
+*.log
+backend/case_management/dynamic_cases.json
+!docs/
+!README*
 !.env.example
 
 # Python

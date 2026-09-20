@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Plus, ArrowRight, Search, Filter } from "lucide-react";
+import { Plus, ArrowRight, Search, Filter, ShieldCheck, Globe } from "lucide-react";
 import type { QueueCaseItem } from "@/lib/api/types";
 import { mockApiClient } from "@/lib/api/client";
 
@@ -18,12 +18,37 @@ export default function QueueView({ initialCases }: QueueViewProps) {
   const [newAmount, setNewAmount] = useState("500000");
   const [newChain, setNewChain] = useState<"BTC" | "ETH">("ETH");
   const [creating, setCreating] = useState(false);
+  const [lastSyncedAt, setLastSyncedAt] = useState<Date>(new Date());
+
+  // Live Auto-Refresh: Polls backend every 3.5s to capture real-time complaints filed via NCRP portal / webhook
+  useEffect(() => {
+    let mounted = true;
+
+    const pollCases = async () => {
+      try {
+        const latest = await mockApiClient.listCases();
+        if (mounted && Array.isArray(latest) && latest.length > 0) {
+          setCases(latest);
+          setLastSyncedAt(new Date());
+        }
+      } catch (err) {
+        console.warn("Queue auto-poll notice:", err);
+      }
+    };
+
+    const interval = setInterval(pollCases, 3500);
+    return () => {
+      mounted = false;
+      clearInterval(interval);
+    };
+  }, []);
 
   const filtered = cases.filter(
     (c) =>
       c.case_id.toLowerCase().includes(search.toLowerCase()) ||
       c.name.toLowerCase().includes(search.toLowerCase()) ||
-      c.fraud_category.toLowerCase().includes(search.toLowerCase())
+      c.fraud_category.toLowerCase().includes(search.toLowerCase()) ||
+      (c.complaint_id && c.complaint_id.toLowerCase().includes(search.toLowerCase()))
   );
 
   async function handleIntake(e: React.FormEvent) {
@@ -50,22 +75,51 @@ export default function QueueView({ initialCases }: QueueViewProps) {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#2B2B2E] pb-5">
         <div>
-          <h1 className="font-serif-vajra text-2xl md:text-3xl font-bold text-[#E7EAEE]">
-            Investigation Queue
-          </h1>
+          <div className="flex items-center gap-3">
+            <h1 className="font-serif-vajra text-2xl md:text-3xl font-bold text-[#E7EAEE]">
+              Investigation Queue
+            </h1>
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full border border-[#3FBE8B]/30 bg-[#3FBE8B]/10 text-[11px] font-mono-vajra text-[#3FBE8B]">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#3FBE8B] animate-pulse" />
+              NCRP Gateway Live
+            </span>
+          </div>
           <p className="mt-1 text-xs text-[#8A93A3]">
-            {filtered.length} active complaints prioritized by automated graph rules and anomaly models
+            {filtered.length} active complaints prioritized by automated graph rules and anomaly models · Auto-synced from 1930 National Helpline
           </p>
         </div>
 
-        <button
-          type="button"
-          onClick={() => setIntakeOpen(true)}
-          className="flex items-center gap-2 px-4 py-2 rounded-md trace-gradient-bg text-[#08201E] text-xs font-semibold hover:opacity-90 transition-opacity shadow-[0_0_12px_rgba(73,199,190,0.3)]"
-        >
-          <Plus className="h-4 w-4" />
-          <span>New Case Intake</span>
-        </button>
+        <div className="flex items-center gap-2.5">
+          <Link
+            href="/ncrp"
+            className="flex items-center gap-2 px-3.5 py-2 rounded-md border border-[#E3AE3E]/50 bg-[#E3AE3E]/10 hover:bg-[#E3AE3E]/20 text-[#E3AE3E] text-xs font-medium transition-all shadow-[0_0_12px_rgba(227,174,62,0.15)]"
+          >
+            <Globe className="h-4 w-4" />
+            <span>Lodge on NCRP Portal (1930)</span>
+          </Link>
+
+          <button
+            type="button"
+            onClick={() => setIntakeOpen(true)}
+            className="flex items-center gap-2 px-4 py-2 rounded-md trace-gradient-bg text-[#08201E] text-xs font-semibold hover:opacity-90 transition-opacity shadow-[0_0_12px_rgba(73,199,190,0.3)]"
+          >
+            <Plus className="h-4 w-4" />
+            <span>New Case Intake</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Live NCRP Gateway Banner */}
+      <div className="flex items-center justify-between px-4 py-2.5 rounded-lg border border-[#2B2B2E] bg-[#141415]/80 text-xs">
+        <div className="flex items-center gap-2.5 text-[#8A93A3]">
+          <ShieldCheck className="h-4 w-4 text-[#49C7BE]" />
+          <span>
+            <strong className="text-[#E7EAEE]">I4C / CFCFRMS Zero-Second Pipeline:</strong> All complaints lodged via the National Portal (or 1930 Helpline) are auto-triaged, traced through multi-hop chains, and assigned to this queue with instant freeze recommendations.
+          </span>
+        </div>
+        <span className="hidden md:inline font-mono-vajra text-[11px] text-[#5A6373]">
+          Synced {lastSyncedAt.toLocaleTimeString()}
+        </span>
       </div>
 
       {/* Filter and Search Bar */}

@@ -278,6 +278,7 @@ export default function GraphView({ graphData, compact = false }: GraphViewProps
       )}
 
       <ReactFlow
+        key={graphData.case_id || "vajra-graph"}
         nodes={flowNodes}
         edges={flowEdges}
         nodeTypes={nodeTypes}

@@ -2,6 +2,9 @@
 Main FastAPI entry point for VAJRA Investigation Platform.
 """
 
+from dotenv import load_dotenv
+load_dotenv()
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from backend.api.routes.api_v1 import router as api_router

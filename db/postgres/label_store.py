@@ -18,11 +18,10 @@ def get_connection():
     """Obtain a PostgreSQL connection."""
     import psycopg
 
-    database_url = os.getenv(
-        "DATABASE_URL",
-        "postgresql://vajra_user:vajra_password@localhost:5432/vajra_db",
-    )
-    return psycopg.connect(database_url)
+    database_url = os.getenv("DATABASE_URL")
+    if not database_url:
+        raise ConnectionError("PostgreSQL not configured (DATABASE_URL not set)")
+    return psycopg.connect(database_url, connect_timeout=1)
 
 
 def add_label(

@@ -65,7 +65,7 @@ Built for the **Smart India Hackathon 2026** under **Problem Statement ID: 26183
 - [🧭 End-to-End Investigation Lifecycle](#-end-to-end-investigation-lifecycle)
 - [🚀 Quickstart & Local Setup Guide](#-quickstart--local-setup-guide)
 - [🧪 Evaluation Scenarios & Testing Wallets](#-evaluation-scenarios--testing-wallets)
-- [🎬 Live Demonstration Assets & Recording Playbook](#-live-demonstration-assets--recording-playbook)
+- [🎬 Live Demonstration Assets & Proof of Concept](#-live-demonstration-assets--proof-of-concept)
 - [📡 Backend API Reference](#-backend-api-reference)
 - [🗺️ Frontend Navigation & Route Directory](#-frontend-navigation--route-directory)
 - [⚖️ Statutory Compliance & Judicial Framework](#-statutory-compliance--judicial-framework)
@@ -528,7 +528,7 @@ npm run dev
 
 ## 🧪 Evaluation Scenarios & Testing Wallets
 
-For live hackathon evaluations, use the pre-configured blockchain coordinates documented in [`TESTING_WALLETS.md`](TESTING_WALLETS.md):
+For live hackathon evaluations and platform verification, use the pre-configured blockchain coordinates:
 
 | Scenario | Typology / Category | Chain | Suspect Wallet Address | Target Attribution | Key Evaluator Takeaway |
 |:---:|---|:---:|---|---|---|
@@ -541,15 +541,13 @@ For live hackathon evaluations, use the pre-configured blockchain coordinates do
 
 ---
 
-## 🎬 Live Demonstration Assets & Recording Playbook
+## 🎬 Live Demonstration Assets & Proof of Concept
 
-We provide a complete demonstration asset package aligned with hackathon judging criteria:
+The platform evaluation suite includes:
 - 📹 **Full HD 1080p Video Recording**: [`docs/demo_recording.mp4`](docs/demo_recording.mp4)
 - 🎞️ **High-Resolution Animated WebP**: [`docs/demo_recording.webp`](docs/demo_recording.webp)
-- 📜 **Official Demo Narration Script**: [`DEMO_SCRIPT.md`](DEMO_SCRIPT.md) *(2m 45s proof-of-value arc)*
-- 🎬 **Shot-by-Shot Matrix**: [`SHOT_PLAN.md`](SHOT_PLAN.md) *(13 visual beats and screen cues)*
-- ✅ **Judge Rubric Pre-Recording Checklist**: [`RECORDING_CHECKLIST.md`](RECORDING_CHECKLIST.md)
-- 📖 **Master System Integration Manual**: [`PROJECT_MASTER_INTEGRATION_GUIDE.md`](PROJECT_MASTER_INTEGRATION_GUIDE.md)
+- 📸 **High-Fidelity Interface Captures**: Accessible in the [`docs/screenshots/`](docs/screenshots/) directory.
+- ⚖️ **Standardized Section 91 Cr.P.C. PDF Generation**: Direct 1-click client-side export from `/cases/[id]/report`.
 
 ---
 
@@ -669,11 +667,6 @@ sih2026/
 │   ├── demo_recording.webp              # High-res animated WebP capture
 │   └── screenshots/                     # Core product UI captures (01 to 07)
 │
-├── DEMO_SCRIPT.md                       # Official Hackathon demo narration script
-├── SHOT_PLAN.md                         # Camera & shot-by-shot recording matrix
-├── RECORDING_CHECKLIST.md               # Judge rubric & pre-recording checklist
-├── TESTING_WALLETS.md                   # Complete test wallet & tx hash directory
-├── PROJECT_MASTER_INTEGRATION_GUIDE.md  # Comprehensive system integration manual
 ├── run_backend.cmd                      # Windows daemon supervisor for FastAPI
 └── seed_neo4j_only.py                   # Standalone Neo4j graph fixture seeder
 ```

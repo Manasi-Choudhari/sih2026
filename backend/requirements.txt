@@ -1,0 +1,7 @@
+fastapi>=0.110.0,<1.0.0
+uvicorn[standard]>=0.28.0,<1.0.0
+pydantic>=2.6.0,<3.0.0
+neo4j>=5.14,<7.0
+python-dotenv>=1.0,<2.0
+pyyaml>=6.0,<7.0
+requests>=2.31,<3.0

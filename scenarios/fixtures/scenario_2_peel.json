@@ -1,0 +1,277 @@
+{
+  "scenario_id": "scenario_2_peel",
+  "name": "Peel Chain Obfuscation",
+  "description": "Stolen BTC is peeled off in small increments across a sequence of change addresses.",
+  "case": {
+    "case_id": "case_s2",
+    "complaint_id": "comp_s2",
+    "status": "IN_PROGRESS",
+    "assigned_investigator": "inv_priya",
+    "fraud_category": "Ransomware / Extortion",
+    "reported_amount": 3.0,
+    "currency": "BTC",
+    "victim_ref": "hospital_admin@health.gov.in"
+  },
+  "postgres": {
+    "wallets": [
+      {
+        "wallet_id": "w_s2_0",
+        "address": "s2_peel_0",
+        "chain": "BTC",
+        "cluster_id": "c_peel",
+        "entity_type": "eoa"
+      },
+      {
+        "wallet_id": "w_s2_1",
+        "address": "s2_peel_1",
+        "chain": "BTC",
+        "cluster_id": "c_peel",
+        "entity_type": "eoa"
+      },
+      {
+        "wallet_id": "w_s2_2",
+        "address": "s2_peel_2",
+        "chain": "BTC",
+        "cluster_id": "c_peel",
+        "entity_type": "eoa"
+      },
+      {
+        "wallet_id": "w_s2_3",
+        "address": "s2_peel_3",
+        "chain": "BTC",
+        "cluster_id": "c_peel",
+        "entity_type": "eoa"
+      },
+      {
+        "wallet_id": "w_s2_norm",
+        "address": "s2_normal",
+        "chain": "BTC",
+        "cluster_id": "c_norm",
+        "entity_type": "eoa"
+      }
+    ],
+    "vasps": [],
+    "labels": []
+  },
+  "neo4j": {
+    "nodes": [
+      {
+        "label": "Wallet",
+        "properties": {
+          "address": "s2_peel_0",
+          "chain": "BTC",
+          "cluster_id": "c_peel",
+          "entity_type": "eoa",
+          "scenario_id": "scenario_2_peel",
+          "case_id": "case_s2",
+          "label_risk": 1,
+          "peel_hint": 0.85,
+          "demo_seed": true
+        }
+      },
+      {
+        "label": "Wallet",
+        "properties": {
+          "address": "s2_peel_1",
+          "chain": "BTC",
+          "cluster_id": "c_peel",
+          "entity_type": "eoa",
+          "scenario_id": "scenario_2_peel",
+          "case_id": "case_s2",
+          "label_risk": 1,
+          "peel_hint": 0.86,
+          "demo_seed": true
+        }
+      },
+      {
+        "label": "Wallet",
+        "properties": {
+          "address": "s2_peel_2",
+          "chain": "BTC",
+          "cluster_id": "c_peel",
+          "entity_type": "eoa",
+          "scenario_id": "scenario_2_peel",
+          "case_id": "case_s2",
+          "label_risk": 1,
+          "peel_hint": 0.87,
+          "demo_seed": true
+        }
+      },
+      {
+        "label": "Wallet",
+        "properties": {
+          "address": "s2_peel_3",
+          "chain": "BTC",
+          "cluster_id": "c_peel",
+          "entity_type": "eoa",
+          "scenario_id": "scenario_2_peel",
+          "case_id": "case_s2",
+          "label_risk": 1,
+          "peel_hint": 0.88,
+          "demo_seed": true
+        }
+      },
+      {
+        "label": "Wallet",
+        "properties": {
+          "address": "s2_normal",
+          "chain": "BTC",
+          "cluster_id": "c_norm",
+          "entity_type": "eoa",
+          "scenario_id": "scenario_2_peel",
+          "case_id": "case_s2",
+          "label_risk": 0,
+          "demo_seed": true
+        }
+      }
+    ],
+    "relationships": [
+      {
+        "from": "s2_peel_0",
+        "to": "s2_peel_1",
+        "type": "TRANSACTION",
+        "properties": {
+          "tx_hash": "s2_tx_0",
+          "chain": "BTC",
+          "block_height": 200,
+          "amount": 2.6,
+          "asset": "BTC",
+          "direction": "out",
+          "is_bridge_leg": false,
+          "confidence_of_link": 0.9,
+          "demo_seed": true
+        }
+      },
+      {
+        "from": "s2_peel_1",
+        "to": "s2_peel_2",
+        "type": "TRANSACTION",
+        "properties": {
+          "tx_hash": "s2_tx_1",
+          "chain": "BTC",
+          "block_height": 201,
+          "amount": 2.2,
+          "asset": "BTC",
+          "direction": "out",
+          "is_bridge_leg": false,
+          "confidence_of_link": 0.9,
+          "demo_seed": true
+        }
+      },
+      {
+        "from": "s2_peel_2",
+        "to": "s2_peel_3",
+        "type": "TRANSACTION",
+        "properties": {
+          "tx_hash": "s2_tx_2",
+          "chain": "BTC",
+          "block_height": 202,
+          "amount": 1.8,
+          "asset": "BTC",
+          "direction": "out",
+          "is_bridge_leg": false,
+          "confidence_of_link": 0.9,
+          "demo_seed": true
+        }
+      }
+    ]
+  },
+  "chain": "BTC",
+  "expected_pattern": "peel_chain",
+  "wallets": [
+    {
+      "address": "s2_peel_0",
+      "chain": "BTC",
+      "entity_type": "eoa",
+      "cluster_id": "c_peel",
+      "first_seen": "2026-09-10T08:00:00Z",
+      "last_seen": "2026-09-10T12:00:00Z"
+    },
+    {
+      "address": "s2_peel_1",
+      "chain": "BTC",
+      "entity_type": "eoa",
+      "cluster_id": "c_peel",
+      "first_seen": "2026-09-10T09:00:00Z",
+      "last_seen": "2026-09-10T12:00:00Z"
+    },
+    {
+      "address": "s2_peel_2",
+      "chain": "BTC",
+      "entity_type": "eoa",
+      "cluster_id": "c_peel",
+      "first_seen": "2026-09-10T10:00:00Z",
+      "last_seen": "2026-09-10T12:00:00Z"
+    },
+    {
+      "address": "s2_peel_3",
+      "chain": "BTC",
+      "entity_type": "eoa",
+      "cluster_id": "c_peel",
+      "first_seen": "2026-09-10T11:00:00Z",
+      "last_seen": "2026-09-10T12:00:00Z"
+    },
+    {
+      "address": "s2_normal",
+      "chain": "BTC",
+      "entity_type": "eoa",
+      "cluster_id": "c_norm",
+      "first_seen": "2026-09-01T00:00:00Z",
+      "last_seen": "2026-09-10T12:00:00Z"
+    }
+  ],
+  "transactions": [
+    {
+      "tx_hash": "s2_tx_0",
+      "chain": "BTC",
+      "from_address": "s2_peel_0",
+      "to_address": "s2_peel_1",
+      "block_height": 860200,
+      "timestamp": "2026-09-10T09:10:00Z",
+      "amount": 2.7,
+      "asset": "BTC",
+      "direction": "out",
+      "is_bridge_leg": false,
+      "confidence_of_link": 0.95
+    },
+    {
+      "tx_hash": "s2_tx_1",
+      "chain": "BTC",
+      "from_address": "s2_peel_1",
+      "to_address": "s2_peel_2",
+      "block_height": 860210,
+      "timestamp": "2026-09-10T10:15:00Z",
+      "amount": 2.3,
+      "asset": "BTC",
+      "direction": "out",
+      "is_bridge_leg": false,
+      "confidence_of_link": 0.95
+    },
+    {
+      "tx_hash": "s2_tx_2",
+      "chain": "BTC",
+      "from_address": "s2_peel_2",
+      "to_address": "s2_peel_3",
+      "block_height": 860220,
+      "timestamp": "2026-09-10T11:20:00Z",
+      "amount": 1.9,
+      "asset": "BTC",
+      "direction": "out",
+      "is_bridge_leg": false,
+      "confidence_of_link": 0.95
+    },
+    {
+      "tx_hash": "s2_norm_tx",
+      "chain": "BTC",
+      "from_address": "s2_normal",
+      "to_address": "s2_normal",
+      "block_height": 860050,
+      "timestamp": "2026-09-01T00:00:00Z",
+      "amount": 0.15,
+      "asset": "BTC",
+      "direction": "out",
+      "is_bridge_leg": false,
+      "confidence_of_link": 0.8
+    }
+  ]
+}

@@ -1,0 +1,419 @@
+{
+  "scenario_id": "scenario_4_mixer",
+  "name": "Mixer Boundary Termination",
+  "description": "Funds forwarded directly into a known mixing service, triggering trace termination at the mixer boundary.",
+  "case": {
+    "case_id": "case_s4",
+    "complaint_id": "comp_s4",
+    "status": "IN_PROGRESS",
+    "assigned_investigator": "inv_priya",
+    "fraud_category": "Pig Butchering / Romance Scam",
+    "reported_amount": 4.0,
+    "currency": "BTC",
+    "victim_ref": "retired_officer@delhi.in"
+  },
+  "postgres": {
+    "wallets": [
+      {
+        "wallet_id": "w_s4_pre",
+        "address": "s4_pre_mixer",
+        "chain": "BTC",
+        "cluster_id": "c_m4",
+        "entity_type": "eoa"
+      },
+      {
+        "wallet_id": "w_s4_mix",
+        "address": "s4_mixer",
+        "chain": "BTC",
+        "cluster_id": "mixer_cluster",
+        "entity_type": "mixer"
+      },
+      {
+        "wallet_id": "w_s4_quiet",
+        "address": "s4_quiet",
+        "chain": "BTC",
+        "cluster_id": "c_q4",
+        "entity_type": "eoa"
+      },
+      {
+        "wallet_id": "w_s4_o1",
+        "address": "s4_out_1",
+        "chain": "BTC",
+        "cluster_id": "c_mout",
+        "entity_type": "eoa"
+      },
+      {
+        "wallet_id": "w_s4_o2",
+        "address": "s4_out_2",
+        "chain": "BTC",
+        "cluster_id": "c_mout",
+        "entity_type": "eoa"
+      },
+      {
+        "wallet_id": "w_s4_o3",
+        "address": "s4_out_3",
+        "chain": "BTC",
+        "cluster_id": "c_mout",
+        "entity_type": "eoa"
+      },
+      {
+        "wallet_id": "w_s4_o4",
+        "address": "s4_out_4",
+        "chain": "BTC",
+        "cluster_id": "c_mout",
+        "entity_type": "eoa"
+      },
+      {
+        "wallet_id": "w_s4_o5",
+        "address": "s4_out_5",
+        "chain": "BTC",
+        "cluster_id": "c_mout",
+        "entity_type": "eoa"
+      }
+    ],
+    "vasps": [],
+    "labels": [
+      {
+        "label_id": "lbl_s4_mixer",
+        "wallet_id": "w_s4_mix",
+        "source": "ofac_sanctions",
+        "label_text": "Tornado/Blender Mixer Pool",
+        "confidence_tier": "Strong",
+        "confidence": 0.99
+      }
+    ]
+  },
+  "neo4j": {
+    "nodes": [
+      {
+        "label": "Wallet",
+        "properties": {
+          "address": "s4_mixer",
+          "chain": "BTC",
+          "cluster_id": "mixer_cluster",
+          "entity_type": "mixer",
+          "scenario_id": "scenario_4_mixer",
+          "case_id": "case_s4",
+          "label_risk": 1,
+          "demo_seed": true
+        }
+      },
+      {
+        "label": "Wallet",
+        "properties": {
+          "address": "s4_pre_mixer",
+          "chain": "BTC",
+          "cluster_id": "c_m4",
+          "entity_type": "eoa",
+          "scenario_id": "scenario_4_mixer",
+          "case_id": "case_s4",
+          "label_risk": 1,
+          "demo_seed": true
+        }
+      },
+      {
+        "label": "Wallet",
+        "properties": {
+          "address": "s4_quiet",
+          "chain": "BTC",
+          "cluster_id": "c_q4",
+          "entity_type": "eoa",
+          "scenario_id": "scenario_4_mixer",
+          "case_id": "case_s4",
+          "label_risk": 0,
+          "demo_seed": true
+        }
+      },
+      {
+        "label": "Wallet",
+        "properties": {
+          "address": "s4_out_1",
+          "chain": "BTC",
+          "cluster_id": "c_mout",
+          "entity_type": "eoa",
+          "scenario_id": "scenario_4_mixer",
+          "case_id": "case_s4",
+          "label_risk": 1,
+          "demo_seed": true
+        }
+      },
+      {
+        "label": "Wallet",
+        "properties": {
+          "address": "s4_out_2",
+          "chain": "BTC",
+          "cluster_id": "c_mout",
+          "entity_type": "eoa",
+          "scenario_id": "scenario_4_mixer",
+          "case_id": "case_s4",
+          "label_risk": 1,
+          "demo_seed": true
+        }
+      },
+      {
+        "label": "Wallet",
+        "properties": {
+          "address": "s4_out_3",
+          "chain": "BTC",
+          "cluster_id": "c_mout",
+          "entity_type": "eoa",
+          "scenario_id": "scenario_4_mixer",
+          "case_id": "case_s4",
+          "label_risk": 1,
+          "demo_seed": true
+        }
+      },
+      {
+        "label": "Wallet",
+        "properties": {
+          "address": "s4_out_4",
+          "chain": "BTC",
+          "cluster_id": "c_mout",
+          "entity_type": "eoa",
+          "scenario_id": "scenario_4_mixer",
+          "case_id": "case_s4",
+          "label_risk": 1,
+          "demo_seed": true
+        }
+      },
+      {
+        "label": "Wallet",
+        "properties": {
+          "address": "s4_out_5",
+          "chain": "BTC",
+          "cluster_id": "c_mout",
+          "entity_type": "eoa",
+          "scenario_id": "scenario_4_mixer",
+          "case_id": "case_s4",
+          "label_risk": 1,
+          "demo_seed": true
+        }
+      }
+    ],
+    "relationships": [
+      {
+        "from": "s4_pre_mixer",
+        "to": "s4_mixer",
+        "type": "TRANSACTION",
+        "properties": {
+          "tx_hash": "s4_in",
+          "chain": "BTC",
+          "block_height": 400,
+          "amount": 4.0,
+          "asset": "BTC",
+          "direction": "out",
+          "is_bridge_leg": false,
+          "confidence_of_link": 0.95,
+          "demo_seed": true
+        }
+      },
+      {
+        "from": "s4_mixer",
+        "to": "s4_out_1",
+        "type": "TRANSACTION",
+        "properties": {
+          "tx_hash": "s4_out_tx_1",
+          "chain": "BTC",
+          "block_height": 401,
+          "amount": 0.8,
+          "asset": "BTC",
+          "direction": "out",
+          "is_bridge_leg": false,
+          "confidence_of_link": 0.6,
+          "demo_seed": true
+        }
+      },
+      {
+        "from": "s4_mixer",
+        "to": "s4_out_2",
+        "type": "TRANSACTION",
+        "properties": {
+          "tx_hash": "s4_out_tx_2",
+          "chain": "BTC",
+          "block_height": 401,
+          "amount": 0.8,
+          "asset": "BTC",
+          "direction": "out",
+          "is_bridge_leg": false,
+          "confidence_of_link": 0.6,
+          "demo_seed": true
+        }
+      },
+      {
+        "from": "s4_mixer",
+        "to": "s4_out_3",
+        "type": "TRANSACTION",
+        "properties": {
+          "tx_hash": "s4_out_tx_3",
+          "chain": "BTC",
+          "block_height": 401,
+          "amount": 0.8,
+          "asset": "BTC",
+          "direction": "out",
+          "is_bridge_leg": false,
+          "confidence_of_link": 0.6,
+          "demo_seed": true
+        }
+      },
+      {
+        "from": "s4_mixer",
+        "to": "s4_out_4",
+        "type": "TRANSACTION",
+        "properties": {
+          "tx_hash": "s4_out_tx_4",
+          "chain": "BTC",
+          "block_height": 401,
+          "amount": 0.8,
+          "asset": "BTC",
+          "direction": "out",
+          "is_bridge_leg": false,
+          "confidence_of_link": 0.6,
+          "demo_seed": true
+        }
+      },
+      {
+        "from": "s4_mixer",
+        "to": "s4_out_5",
+        "type": "TRANSACTION",
+        "properties": {
+          "tx_hash": "s4_out_tx_5",
+          "chain": "BTC",
+          "block_height": 401,
+          "amount": 0.8,
+          "asset": "BTC",
+          "direction": "out",
+          "is_bridge_leg": false,
+          "confidence_of_link": 0.6,
+          "demo_seed": true
+        }
+      }
+    ]
+  },
+  "chain": "BTC",
+  "expected_termination": "mixer_boundary",
+  "wallets": [
+    {
+      "address": "s4_pre_mixer",
+      "chain": "BTC",
+      "entity_type": "eoa",
+      "cluster_id": "c_m4",
+      "first_seen": "2026-09-09T00:00:00Z",
+      "last_seen": "2026-09-10T12:00:00Z"
+    },
+    {
+      "address": "s4_mixer",
+      "chain": "BTC",
+      "entity_type": "mixer",
+      "cluster_id": "mixer_cluster",
+      "first_seen": "2023-01-01T00:00:00Z",
+      "last_seen": "2026-09-10T12:00:00Z"
+    },
+    {
+      "address": "s4_quiet",
+      "chain": "BTC",
+      "entity_type": "eoa",
+      "cluster_id": "c_q4",
+      "first_seen": "2026-08-01T00:00:00Z",
+      "last_seen": "2026-08-01T00:00:00Z"
+    },
+    {
+      "address": "s4_out_1",
+      "chain": "BTC",
+      "entity_type": "eoa",
+      "cluster_id": "c_mout",
+      "first_seen": "2026-09-10T12:05:00Z",
+      "last_seen": "2026-09-10T12:05:00Z"
+    },
+    {
+      "address": "s4_out_2",
+      "chain": "BTC",
+      "entity_type": "eoa",
+      "cluster_id": "c_mout",
+      "first_seen": "2026-09-10T12:05:00Z",
+      "last_seen": "2026-09-10T12:05:00Z"
+    },
+    {
+      "address": "s4_out_3",
+      "chain": "BTC",
+      "entity_type": "eoa",
+      "cluster_id": "c_mout",
+      "first_seen": "2026-09-10T12:05:00Z",
+      "last_seen": "2026-09-10T12:05:00Z"
+    },
+    {
+      "address": "s4_out_4",
+      "chain": "BTC",
+      "entity_type": "eoa",
+      "cluster_id": "c_mout",
+      "first_seen": "2026-09-10T12:05:00Z",
+      "last_seen": "2026-09-10T12:05:00Z"
+    }
+  ],
+  "transactions": [
+    {
+      "tx_hash": "s4_in",
+      "chain": "BTC",
+      "from_address": "s4_pre_mixer",
+      "to_address": "s4_mixer",
+      "block_height": 860400,
+      "timestamp": "2026-09-10T12:00:00Z",
+      "amount": 4.0,
+      "asset": "BTC",
+      "direction": "out",
+      "is_bridge_leg": false,
+      "confidence_of_link": 0.95
+    },
+    {
+      "tx_hash": "s4_out_tx_1",
+      "chain": "BTC",
+      "from_address": "s4_mixer",
+      "to_address": "s4_out_1",
+      "block_height": 860401,
+      "timestamp": "2026-09-10T12:05:00Z",
+      "amount": 0.8,
+      "asset": "BTC",
+      "direction": "out",
+      "is_bridge_leg": false,
+      "confidence_of_link": 0.6
+    },
+    {
+      "tx_hash": "s4_out_tx_2",
+      "chain": "BTC",
+      "from_address": "s4_mixer",
+      "to_address": "s4_out_2",
+      "block_height": 860401,
+      "timestamp": "2026-09-10T12:05:00Z",
+      "amount": 0.8,
+      "asset": "BTC",
+      "direction": "out",
+      "is_bridge_leg": false,
+      "confidence_of_link": 0.6
+    },
+    {
+      "tx_hash": "s4_out_tx_3",
+      "chain": "BTC",
+      "from_address": "s4_mixer",
+      "to_address": "s4_out_3",
+      "block_height": 860401,
+      "timestamp": "2026-09-10T12:05:00Z",
+      "amount": 0.8,
+      "asset": "BTC",
+      "direction": "out",
+      "is_bridge_leg": false,
+      "confidence_of_link": 0.6
+    },
+    {
+      "tx_hash": "s4_out_tx_4",
+      "chain": "BTC",
+      "from_address": "s4_mixer",
+      "to_address": "s4_out_4",
+      "block_height": 860401,
+      "timestamp": "2026-09-10T12:05:00Z",
+      "amount": 0.8,
+      "asset": "BTC",
+      "direction": "out",
+      "is_bridge_leg": false,
+      "confidence_of_link": 0.6
+    }
+  ]
+}

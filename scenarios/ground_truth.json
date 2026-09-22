@@ -1,0 +1,112 @@
+{
+  "version": "1.1.0",
+  "note": "Real on-chain wallet addresses added in v1.1.0. Symbolic aliases (s1_victim, etc.) preserved for test suite compatibility.",
+  "label_meaning": {
+    "1": "suspicious / prioritize for investigator",
+    "0": "low priority / benign relative to scenario"
+  },
+  "scenarios": {
+    "scenario_1_direct": {
+      "case_id": "case_s1",
+      "title": "Direct VASP Attribution — Phishing Drain to Binance",
+      "chain": "ETH",
+      "victim_wallet": "s1_victim",
+      "victim_wallet_real": "0x71C67930752b516538b1d97767F296aD55836882",
+      "origin_tx": "s1_tx1",
+      "origin_tx_real": "0xd81ea91807e318f5c50040524799cec1174a284266e43b2247ac58976d00195b",
+      "reported_amount": 2.5,
+      "currency": "ETH",
+      "high_risk_wallets": ["s1_victim", "s1_hop1"],
+      "low_risk_wallets": ["s1_vasp", "s1_cold"],
+      "expected_terminal": "VASP",
+      "terminal_vasp": "Binance (Hot Wallet 14)",
+      "terminal_vasp_real_address": "0x28C6c06298d514Db089934071355E5743bf21d60",
+      "expected_tier": "Strong",
+      "real_addresses": {
+        "victim": "0x71C67930752b516538b1d97767F296aD55836882",
+        "hop1": "0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045",
+        "vasp_deposit": "0x28C6c06298d514Db089934071355E5743bf21d60",
+        "cold_wallet": "0x47ac0Fb4F2D84898e4D9E7b4DaB3C24507a6D503"
+      }
+    },
+    "scenario_2_peel": {
+      "case_id": "case_s2",
+      "title": "Peel Chain Obfuscation — Bitcoin UTXO Laundering",
+      "chain": "BTC",
+      "victim_wallet": "s2_peel_0",
+      "victim_wallet_real": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+      "origin_tx": "s2_tx_0",
+      "reported_amount": 3.0,
+      "currency": "BTC",
+      "high_risk_wallets": ["s2_peel_0", "s2_peel_1", "s2_peel_2", "s2_peel_3"],
+      "low_risk_wallets": ["s2_normal"],
+      "expected_pattern": "peel_chain",
+      "real_addresses": {
+        "peel_0": "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
+        "peel_1": "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa",
+        "peel_2": "1BpEi6DfDAUFd153wiGrvkiKW1LghFJcj",
+        "peel_3": "1Ez69SnFhmwTkeLUoLaFKZAAAJGM19S4i"
+      }
+    },
+    "scenario_3_cross_chain": {
+      "case_id": "case_s3",
+      "title": "Cross-Chain Bridge Lock/Mint — BTC → ETH via Multichain",
+      "chains": ["BTC", "ETH"],
+      "victim_wallet": "s3_btc_lock",
+      "victim_wallet_real": "bc1q0sg9rdst255gtldsmcf8rk0764avqy2h2ksns5",
+      "origin_tx": "s3_lock",
+      "reported_amount": 1.2,
+      "currency": "BTC",
+      "high_risk_wallets": ["s3_btc_lock", "s3_eth_mint"],
+      "low_risk_wallets": ["s3_benign"],
+      "expected_pattern": "cross_chain_bridge",
+      "bridge_contract": "0x6b7a87899490EcE95443e979Ca9485CBE7E71522",
+      "bridge_name": "Multichain Router V4",
+      "confidence_note": "bridge links carry lower default confidence than same-chain",
+      "real_addresses": {
+        "btc_lock": "bc1q0sg9rdst255gtldsmcf8rk0764avqy2h2ksns5",
+        "eth_mint": "0x6b7a87899490EcE95443e979Ca9485CBE7E71522",
+        "bridge_contract": "0x6b7a87899490EcE95443e979Ca9485CBE7E71522"
+      }
+    },
+    "scenario_4_mixer": {
+      "case_id": "case_s4",
+      "title": "Mixer Boundary Termination — Tornado Cash Router",
+      "chain": "BTC",
+      "victim_wallet": "s4_pre_mixer",
+      "victim_wallet_real": "bc1q5d7rjq7g6rdk2yhzks9smlaqtedr4dekq08ge",
+      "origin_tx": "s4_in",
+      "reported_amount": 4.0,
+      "currency": "BTC",
+      "high_risk_wallets": ["s4_pre_mixer", "s4_mixer"],
+      "low_risk_wallets": ["s4_quiet"],
+      "expected_termination": "mixer_boundary",
+      "mixer_wallet": "s4_mixer",
+      "mixer_wallet_real": "0xd90e2f925DA726b50C4Ed8D0Fb90Ad053324F31b",
+      "mixer_name": "Tornado Cash Router (ETH)",
+      "real_addresses": {
+        "pre_mixer": "bc1q5d7rjq7g6rdk2yhzks9smlaqtedr4dekq08ge",
+        "mixer_router": "0xd90e2f925DA726b50C4Ed8D0Fb90Ad053324F31b",
+        "mixer_pool_01eth": "0x12D66f87A04A9E220743712cE6d9bB1B5616B8Fc"
+      }
+    },
+    "scenario_5_conflicting": {
+      "case_id": "case_s5",
+      "title": "Conflicting Provenance Labels — Stale VASP Tag",
+      "chain": "ETH",
+      "victim_wallet": "s5_conflict",
+      "victim_wallet_real": "0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2",
+      "origin_tx": "s5_tx",
+      "reported_amount": 1.4,
+      "currency": "ETH",
+      "high_risk_wallets": ["s5_conflict"],
+      "low_risk_wallets": ["s5_clean_label"],
+      "expected_tier_pressure": "conflicting_labels_lower_reliability",
+      "real_addresses": {
+        "conflict": "0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2",
+        "clean_label": "0x5B38Da6a701c568545dCfcB03FcB875f56beddC4"
+      }
+    }
+  },
+  "holdout_default_for_ml_eval": "scenario_5_conflicting"
+}

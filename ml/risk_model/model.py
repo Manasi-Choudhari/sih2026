@@ -95,6 +95,12 @@ class RiskModel:
 
     def predict_proba_positive(self, X: pd.DataFrame) -> np.ndarray:
         mat = X[self.feature_names].to_numpy(dtype=np.float32)
+        if self.device == "cuda":
+            import xgboost as xgb
+            dmat = xgb.DMatrix(mat, feature_names=self.feature_names)
+            raw = self.clf.get_booster().predict(dmat)
+            if isinstance(raw, np.ndarray) and raw.ndim == 1:
+                return raw
         proba = np.asarray(self.clf.predict_proba(mat))
         classes = [int(c) for c in list(self.clf.classes_)]
         if 1 not in classes:

@@ -1,0 +1,219 @@
+{
+  "scenario_id": "scenario_3_cross_chain",
+  "name": "Cross-Chain Bridge Lock/Mint",
+  "description": "BTC locked on Bitcoin chain, wrapped asset minted on Ethereum via bridge contract.",
+  "case": {
+    "case_id": "case_s3",
+    "complaint_id": "comp_s3",
+    "status": "IN_PROGRESS",
+    "assigned_investigator": "inv_rajesh",
+    "fraud_category": "Investment / Ponzi Fraud",
+    "reported_amount": 1.2,
+    "currency": "BTC",
+    "victim_ref": "investor_mumbai@gmail.com"
+  },
+  "postgres": {
+    "wallets": [
+      {
+        "wallet_id": "w_s3_btc",
+        "address": "s3_btc_lock",
+        "chain": "BTC",
+        "cluster_id": "c_bridge",
+        "entity_type": "bridge_leg"
+      },
+      {
+        "wallet_id": "w_s3_eth",
+        "address": "s3_eth_mint",
+        "chain": "ETH",
+        "cluster_id": "c_bridge",
+        "entity_type": "bridge_leg"
+      },
+      {
+        "wallet_id": "w_s3_ben",
+        "address": "s3_benign",
+        "chain": "ETH",
+        "cluster_id": "c_b3",
+        "entity_type": "eoa"
+      }
+    ],
+    "vasps": [],
+    "labels": []
+  },
+  "neo4j": {
+    "nodes": [
+      {
+        "label": "Wallet",
+        "properties": {
+          "address": "s3_btc_lock",
+          "chain": "BTC",
+          "cluster_id": "c_bridge",
+          "entity_type": "bridge_leg",
+          "scenario_id": "scenario_3_cross_chain",
+          "case_id": "case_s3",
+          "label_risk": 1,
+          "demo_seed": true
+        }
+      },
+      {
+        "label": "Wallet",
+        "properties": {
+          "address": "s3_eth_mint",
+          "chain": "ETH",
+          "cluster_id": "c_bridge",
+          "entity_type": "bridge_leg",
+          "scenario_id": "scenario_3_cross_chain",
+          "case_id": "case_s3",
+          "label_risk": 1,
+          "demo_seed": true
+        }
+      },
+      {
+        "label": "Wallet",
+        "properties": {
+          "address": "s3_benign",
+          "chain": "ETH",
+          "cluster_id": "c_b3",
+          "entity_type": "eoa",
+          "scenario_id": "scenario_3_cross_chain",
+          "case_id": "case_s3",
+          "label_risk": 0,
+          "demo_seed": true
+        }
+      }
+    ],
+    "relationships": [
+      {
+        "from": "s3_btc_lock",
+        "to": "s3_btc_lock",
+        "type": "TRANSACTION",
+        "properties": {
+          "tx_hash": "s3_lock",
+          "chain": "BTC",
+          "block_height": 300,
+          "amount": 1.2,
+          "asset": "BTC",
+          "direction": "out",
+          "is_bridge_leg": true,
+          "confidence_of_link": 0.7,
+          "demo_seed": true
+        }
+      },
+      {
+        "from": "s3_eth_mint",
+        "to": "s3_eth_mint",
+        "type": "TRANSACTION",
+        "properties": {
+          "tx_hash": "s3_mint",
+          "chain": "ETH",
+          "block_height": 301,
+          "amount": 1.18,
+          "asset": "ETH",
+          "direction": "in",
+          "is_bridge_leg": true,
+          "confidence_of_link": 0.7,
+          "demo_seed": true
+        }
+      },
+      {
+        "from": "s3_btc_lock",
+        "to": "s3_eth_mint",
+        "type": "CROSS_CHAIN_LINK",
+        "properties": {
+          "source_chain_tx": "s3_lock",
+          "dest_chain_tx": "s3_mint",
+          "bridge_contract": "demo_bridge",
+          "correlation_method": "amount_time_asset",
+          "correlation_confidence": 0.55,
+          "demo_seed": true
+        }
+      }
+    ]
+  },
+  "expected_pattern": "cross_chain_bridge",
+  "wallets": [
+    {
+      "address": "s3_btc_lock",
+      "chain": "BTC",
+      "entity_type": "bridge_leg",
+      "cluster_id": "c_bridge",
+      "first_seen": "2026-09-10T05:00:00Z",
+      "last_seen": "2026-09-10T06:00:00Z"
+    },
+    {
+      "address": "s3_bridge_custody",
+      "chain": "BTC",
+      "entity_type": "bridge_contract",
+      "cluster_id": "c_bridge",
+      "first_seen": "2024-01-01T00:00:00Z",
+      "last_seen": "2026-09-10T06:00:00Z"
+    },
+    {
+      "address": "s3_eth_mint",
+      "chain": "ETH",
+      "entity_type": "bridge_leg",
+      "cluster_id": "c_bridge",
+      "first_seen": "2026-09-10T06:30:00Z",
+      "last_seen": "2026-09-10T07:00:00Z"
+    },
+    {
+      "address": "s3_benign",
+      "chain": "ETH",
+      "entity_type": "eoa",
+      "cluster_id": "c_b3",
+      "first_seen": "2026-08-20T00:00:00Z",
+      "last_seen": "2026-08-20T00:00:00Z"
+    }
+  ],
+  "transactions": [
+    {
+      "tx_hash": "s3_lock",
+      "chain": "BTC",
+      "from_address": "s3_btc_lock",
+      "to_address": "s3_bridge_custody",
+      "block_height": 860300,
+      "timestamp": "2026-09-10T05:30:00Z",
+      "amount": 1.2,
+      "asset": "BTC",
+      "direction": "out",
+      "is_bridge_leg": true,
+      "confidence_of_link": 0.95
+    },
+    {
+      "tx_hash": "s3_mint",
+      "chain": "ETH",
+      "from_address": "0x0000000000000000000000000000000000000000",
+      "to_address": "s3_eth_mint",
+      "block_height": 19500301,
+      "timestamp": "2026-09-10T06:45:00Z",
+      "amount": 1.18,
+      "asset": "WBTC",
+      "direction": "in",
+      "is_bridge_leg": true,
+      "confidence_of_link": 0.95
+    },
+    {
+      "tx_hash": "s3_ben",
+      "chain": "ETH",
+      "from_address": "s3_benign",
+      "to_address": "s3_benign",
+      "block_height": 19400010,
+      "timestamp": "2026-08-20T00:00:00Z",
+      "amount": 0.04,
+      "asset": "ETH",
+      "direction": "out",
+      "is_bridge_leg": false,
+      "confidence_of_link": 0.9
+    }
+  ],
+  "cross_chain_links": [
+    {
+      "source_wallet": "s3_btc_lock",
+      "dest_wallet": "s3_eth_mint",
+      "source_chain_tx": "s3_lock",
+      "dest_chain_tx": "s3_mint",
+      "bridge_contract": "s3_bridge_custody",
+      "correlation_method": "lock_mint_pairing",
+      "correlation_confidence": 0.75
+    }
+  ]
+}

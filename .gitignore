@@ -1,0 +1,82 @@
+# Environment variables & secrets
+.env
+.env.local
+.env.*.local
+*.env
+env
+!env/
+*.log
+backend/case_management/dynamic_cases.json
+!docs/
+!README*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+build/
+develop-eggs/
+dist/
+.dist/
+downloads/
+eggs/
+.eggs/
+/lib/
+/lib64/
+!frontend/lib/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Testing & Linting
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# Node.js / Frontend
+node_modules/
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/.turbo/
+.next/
+out/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# ML large models (offline ML artifacts tracked in image packaging, not git)
+ml/artifacts/*.joblib
+ml/artifacts/*.pkl
+!ml/artifacts/risk_metrics.json
+ml/artifacts/test_report.json
+
+# Database & local storage data mounts
+postgres_data/
+neo4j_data/
+neo4j_logs/
+redis_data/
+minio_data/
+
+# IDE / OS
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+*.zip

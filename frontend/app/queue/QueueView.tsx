@@ -117,7 +117,7 @@ export default function QueueView({ initialCases }: QueueViewProps) {
             <strong className="text-[#E7EAEE]">I4C / CFCFRMS Zero-Second Pipeline:</strong> All complaints lodged via the National Portal (or 1930 Helpline) are auto-triaged, traced through multi-hop chains, and assigned to this queue with instant freeze recommendations.
           </span>
         </div>
-        <span className="hidden md:inline font-mono-vajra text-[11px] text-[#5A6373]">
+        <span suppressHydrationWarning className="hidden md:inline font-mono-vajra text-[11px] text-[#5A6373]">
           Synced {lastSyncedAt.toLocaleTimeString()}
         </span>
       </div>
